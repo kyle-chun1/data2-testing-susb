@@ -25,7 +25,7 @@ SECRET_KEY = 'local_settings.py - OVERRIDE'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'local_settings.py - OVERRIDE'
 
-ALLOWED_HOSTS = ['local_settings.py - OVERRIDE']
+ALLOWED_HOSTS = ['local_settings.py - OVERRIDE','127.0.0.1',]
 
 
 # Application definition
@@ -123,4 +123,3 @@ try:
 	from .local_settings import *
 except ImportError:
 	pass
-
