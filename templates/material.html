@@ -28,20 +28,21 @@
             </div>
             <div class="row">
               <div class="col form-group"><label>Mode of Transportation: </label><br>
-                 <button id="mForkliftButton" type="button" class="btn btn-warning">FORKLIFT</button>
-                 <button id="mTruckButton" type="button" class="btn btn-outline-success">TRUCK</button>
-                 <button id="mManualButton" type="button" class="btn btn-outline-secondary">MANUAL</button>
-                 <div class="form-check form-check-inline" align="center"><input class="form-check-input" type="radio" name="mTrips" id="mOneTripOption" value="one"><label class="form-check-label" for="mOneTripOption">This is ONE Trip</label></div>
-                 <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mMultipleTripsOption" value="multiple"><label class="form-check-label" for="mMultipleTripsOption">I'm submitting MULTIPLE Trips</label></div>
+                 <button id="mForkliftButton" type="button" class="btn btn-sm btn-warning">FORKLIFT</button>
+                 <button id="mTruckButton" type="button" class="btn btn-sm btn-outline-success">TRUCK</button>
+                 <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>              </div>
+              <div class="col form-group"><br>
+                <div class="form-check form-check-inline" align="center"><input class="form-check-input" type="radio" name="mTrips" id="mOneTripOption" value="one"><label class="form-check-label" for="mOneTripOption">Logging ONE Trip</label></div><br>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mMultipleTripsOption" value="multiple"><label class="form-check-label" for="mMultipleTripsOption">Logging MULTIPLE Trips</label></div>
               </div>
             </div>
 
             <div class="row">
                <div class="col form-group">
                   <label>Origin: </label><br>
-                  <button id="mOriginDonationsButton" type="button" class="btn btn-dark">Donations</button>
-                  <button id="mOriginOverflowButton" type="button" class="btn btn-outline-dark">Overflow</button>
-                  <button id="mOriginProcessingButton" type="button" class="btn btn-outline-dark">Processing</button>
+                  <button id="mOriginDonationsButton" type="button" class="btn btn-sm btn-dark">Donations</button>
+                  <button id="mOriginOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
+                  <button id="mOriginProcessingButton" type="button" class="btn btn-sm btn-outline-dark">Processing</button>
                   <select class="" id="mOriginLocation" disabled="disabled">
                      <option>(Select Location)</option>
                      <option>Container 1</option>
@@ -54,9 +55,9 @@
             <div class="row">
                <div class="col form-group">
                   <label>Destination:</label><br>
-                  <button id="mDestinationOverflowButton" type="button" class="btn btn-outline-dark">Overflow</button>
-                  <button id="mDestinationProcessingButton" type="button" class="btn btn-dark">Processing</button>
-                  <button id="mDestinationWasteButton" type="button" class="btn btn-outline-secondary" disabled="disabled">Waste</button>
+                  <button id="mDestinationOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
+                  <button id="mDestinationProcessingButton" type="button" class="btn btn-sm btn-dark">Processing</button>
+                  <button id="mDestinationWasteButton" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled">Waste</button>
                   <select class="" id="mDestinationLocation" disabled="disabled">
                      <option>(Select Location)</option>
                      <option>Container 1</option>
@@ -65,21 +66,24 @@
                   </select>
                </div>
             </div>
-            <div id="RowOne" class="row">
+            <div class="row" id="mRowLabels">
+              <div class="col"><label>Material Type:</label></div>
+              <div class="col"><label>Pallets:</label></div>
+              <div class="col"><label>Records :</label></div>
+            </div>
+            <div id="mRow" class="row">
                <div class="col">
-                  <label>Material Type:</label>
-                  <select class="form-control" id="mMaterial[0]">
+                  <select class="form-control" id="mRowMaterial">
                      <option>Small Household</option>
                      <option>Medium Household</option>
                      <option>Furniture</option>
                   </select>
                </div>
                <div class="col">
-                  <label>Pallets:</label>
-                  <input id="mPallets[0]" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25">
+                  <input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25">
                </div>
-               <div class="col form-group"><label>Records :</label><br>
-                  <button id="mAddRowsButton" type="button" class="btn btn-secondary">+ Add Row</button>
+               <div class="col form-group">
+                  <button id="mRowButton" type="button" class="btn btn-secondary">+ Add Row</button>
                </div>
             </div>
             <div class="row">
