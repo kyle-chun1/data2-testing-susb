@@ -30,9 +30,10 @@
               <div class="col form-group"><label>Mode of Transportation: </label><br>
                  <button id="mForkliftButton" type="button" class="btn btn-sm btn-warning">FORKLIFT</button>
                  <button id="mTruckButton" type="button" class="btn btn-sm btn-outline-success">TRUCK</button>
-                 <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>              </div>
+                 <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>
+               </div>
               <div class="col form-group"><br>
-                <div class="form-check form-check-inline" align="center"><input class="form-check-input" type="radio" name="mTrips" id="mOneTripOption" value="one"><label class="form-check-label" for="mOneTripOption">Logging ONE Trip</label></div><br>
+                <div class="form-check form-check-inline" align="center"><input class="form-check-input" type="radio" name="mTrips" id="mOneTripOption" value="one" checked="checked"><label class="form-check-label" for="mOneTripOption">Logging ONE Trip</label></div><br>
                 <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mMultipleTripsOption" value="multiple"><label class="form-check-label" for="mMultipleTripsOption">Logging MULTIPLE Trips</label></div>
               </div>
             </div>
@@ -66,25 +67,17 @@
                   </select>
                </div>
             </div>
-            <div class="row" id="mRowLabels">
-              <div class="col"><label>Material Type:</label></div>
-              <div class="col"><label>Pallets:</label></div>
-              <div class="col"><label>Records :</label></div>
-            </div>
-            <div id="mRow" class="row">
-               <div class="col">
-                  <select class="form-control" id="mRowMaterial">
-                     <option>Small Household</option>
-                     <option>Medium Household</option>
-                     <option>Furniture</option>
-                  </select>
-               </div>
-               <div class="col">
-                  <input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25">
-               </div>
-               <div class="col form-group">
-                  <button id="mRowButton" type="button" class="btn btn-secondary">+ Add Row</button>
-               </div>
+              <div class="row" id="mRowLabels">
+                <div class="col"><label>Material Type:</label></div>
+                <div class="col"><label>Pallets:</label></div>
+                <div class="col"><label>Records :</label></div>
+              </div>
+            <div class="mRowContainerClass" id="mRowContainer">
+              <div id="mRow" class="row mRowClass">
+                 <div class="col"><select class="form-control" id="mRowMaterial"><option>Small Household</option><option>Medium Household</option></select></div>
+                 <div class="col"><input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25"></div>
+                 <div class="col form-group"><button id="mRowButton" type="button" class="btn btn-secondary mRowButtonClass">+ Add Row</button></div>
+              </div>
             </div>
             <div class="row">
                <div class="col"><button id="mSubmitButton" type="submit" class="btn btn-lg btn-success btn-block">Submit</button></div>
@@ -93,6 +86,37 @@
       </div>
       <div class="container" style="margin-top:3%;">
       <p>Presets: <a href="#">Forklift-Preset</a>, <a href="#">Truck (5F + 1BM)</a>, <a href="#">Lonnie Data-Cabinet</a></p>
+      </div>
+      <script type="text/javascript">
+
+      $('.mRowButtonClass').click(function(){mRowButtonPress($('.mRowButtonClass').index(this))})
+
+      newRowHtml = $(mRowContainer).html()
+
+
+      function mRowButtonPress(callingRowIndex){
+
+          lastRowIndex = $('.mRowButtonClass').length -1
+          console.log('Index of last row (before Press): ' + lastRowIndex)
+          console.log('Index of calling button: ' + callingRowIndex )
+          console.log('Number of Rows Present now! : ' + $('.mRowClass').length)
+
+          if(lastRowIndex === callingRowIndex){
+            // $('#mRow').clone().appendTo('#mRowContainer')
+            $('#mRowContainer').append(newRowHtml)
+            $('.mRowButtonClass').off()
+            $('.mRowButtonClass').click(function(){mRowButtonPress($('.mRowButtonClass').index(this))})
+
+            for(i=0;i<=lastRowIndex;i++) {
+              $('.mRowButtonClass').eq(i).text('DELETE')
+            }
+
+          }
+          else{
+            $('.mRowClass').eq(callingRowIndex).remove()
+          }
+        }
+
+      </script>
    </body>
 </html>
-<!-- 599D43 -->
