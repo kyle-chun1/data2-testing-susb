@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
@@ -17,14 +16,11 @@
             <div class="row">
                <div class="col">
                   <label>Staff Name:</label>
-                  <select class="form-control" id="mName">
-                     <option>Scarlet Vincent</option>
-                     <option>Lonnie Hinkle</option>
-                     <option selected>Bradley Mack</option>
+                  <select class="form-control" id="mName" name="mName">
                   </select>
                </div>
                <div class="col form-group"><label>Date of Movement: <a id="mChangeDateLink" href="#">(Change)</a></label>
-                 <input id="mDate" type="date" class="form-control" value="{{tDate}}" disabled="disabled"></div>
+                 <input id="mDate" name="mDate" type="date" class="form-control" value="{{tDate}}" disabled="disabled"></div>
             </div>
             <div class="row">
               <div class="col form-group"><label>Mode of Transportation: </label><br>
@@ -33,8 +29,8 @@
                  <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>
                </div>
               <div class="col form-group"><br>
-                <div class="form-check form-check-inline" align="center"><input class="form-check-input" type="radio" name="mTrips" id="mOneTripOption" value="one" checked="checked"><label class="form-check-label" for="mOneTripOption">Logging ONE Trip</label></div><br>
-                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mMultipleTripsOption" value="multiple"><label class="form-check-label" for="mMultipleTripsOption">Logging MULTIPLE Trips</label></div>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mTripsOne" value="one" disabled><label class="form-check-label" for="mTripsOne">Logging ONE Trip</label></div><br>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mTripsMultiple" value="multiple" checked="checked" disabled><label class="form-check-label" for="mTripsMultiple">Logging MULTIPLE Trips</label></div>
               </div>
             </div>
 
@@ -46,9 +42,6 @@
                   <button id="mOriginProcessingButton" type="button" class="btn btn-sm btn-outline-dark">Processing</button>
                   <select class="" id="mOriginLocation" disabled="disabled">
                      <option>(Select Location)</option>
-                     <option>Container 1</option>
-                     <option>Container 2</option>
-                     <option>Container 3</option>
                   </select>
                </div>
 
@@ -61,9 +54,6 @@
                   <button id="mDestinationWasteButton" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled">Waste</button>
                   <select class="" id="mDestinationLocation" disabled="disabled">
                      <option>(Select Location)</option>
-                     <option>Container 1</option>
-                     <option>Container 2</option>
-                     <option>Container 3</option>
                   </select>
                </div>
             </div>
@@ -74,48 +64,173 @@
               </div>
             <div class="mRowContainerClass" id="mRowContainer">
               <div id="mRow" class="row mRowClass">
-                 <div class="col"><select class="form-control" id="mRowMaterial"><option>Small Household</option><option>Medium Household</option></select></div>
+                 <div class="col"><select class="form-control" id="mRowMaterial"></select></div>
                  <div class="col"><input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25"></div>
                  <div class="col form-group"><button id="mRowButton" type="button" class="btn btn-secondary mRowButtonClass">+ Add Row</button></div>
               </div>
             </div>
             <div class="row">
-               <div class="col"><button id="mSubmitButton" type="submit" class="btn btn-lg btn-success btn-block">Submit</button></div>
+               <div class="col"><button id="mSubmitButton" type="button" class="btn btn-lg btn-success btn-block">Submit</button></div>
             </div>
+
+            <!-- D <input type="hidden" name="mName" id="mName" value=""> DIRECT FROM DROPDOWN -->
+            <!-- <input type="hidden" name="mDate" id="mDate" value="">  -->
+            <input type="hidden" name="mMode" id="mMode" value="">
+            <!-- <input type="hidden" name="mTrips" id="mMode" value="">  DIRECT FROM Checkbox -->
+            <input type="hidden" name="mOrigin" id="mOrigin" value="donations">
+            <input type="hidden" name="mOrigin" id="mOrigin" value="processing">
+
          </form>
       </div>
       <div class="container" style="margin-top:3%;">
       <p>Presets: <a href="#">Forklift-Preset</a>, <a href="#">Truck (5F + 1BM)</a>, <a href="#">Lonnie Data-Cabinet</a></p>
       </div>
+
+
+
       <script type="text/javascript">
 
-      $('.mRowButtonClass').click(function(){mRowButtonPress($('.mRowButtonClass').index(this))})
 
+      // START HOOKS
+            StaffList = ['Bradley Mack','Ivan ','Scarlet Vinson','Robert Farrell']
+            for(i=0;i<StaffList.length;i++){ $('#mName').append("<option>" + StaffList[i] + '</option>') }
+
+            ContainerList = ['E1','E2','E3','E3','E4','E5','E6','E7','E8','W1','W2','W3','W4','W5','Outdoor']
+            for(i=0;i<ContainerList.length;i++){ $('#mOriginLocation').append("<option>" + ContainerList[i] + '</option>') }
+            for(i=0;i<ContainerList.length;i++){ $('#mDestinationLocation').append("<option>" + ContainerList[i] + '</option>') }
+
+            DonationsMaterialList = ['Small Household','Medium Household', 'Furniture', 'Small Building Material', 'Medium Building Material', 'Large Building Material (LY)', 'Electronics', 'Computers (Data)', 'Lighting', 'Clothes', 'Linens', 'Bags / Suitcases', 'Art / Frames', 'Jewellery', 'Books', 'Purses', 'Seasonal', 'Media']
+            for(i=0;i<ContainerList.length;i++){ $('#mRowMaterial').append("<option>" + DonationsMaterialList[i] + '</option>') }
+      // END HOOKS
+
+
+// START 0. BUTTON CLICKS
+
+      $('#mChangeDateLink').click(function(){
+        $('#mDate').prop('disabled',false)
+        $('#mChangeDateLink').remove()
+      })
+
+      $('#mForkliftButton').click(function(){
+        $('#mForkliftButton').addClass('btn-warning')
+        $('#mForkliftButton').removeClass('btn-outline-warning')
+        $('#mTruckButton').addClass('btn-outline-success')
+        $('#mTruckButton').removeClass('btn-success')
+        $('#mManualButton').addClass('btn-outline-secondary')
+        $('#mManualButton').removeClass('btn-secondary')
+        $('#mMode').val('forklift')
+        $('#mTripsMultiple').prop('checked',true)
+        $('#mTripsOne').prop('disabled',true)
+        $('#mTripsMultiple').prop('disabled',true)
+      })
+      $('#mTruckButton').click(function(){
+        $('#mForkliftButton').addClass('btn-outline-warning')
+        $('#mForkliftButton').removeClass('btn-warning')
+        $('#mTruckButton').addClass('btn-success')
+        $('#mTruckButton').removeClass('btn-outline-success')
+        $('#mManualButton').addClass('btn-outline-secondary')
+        $('#mManualButton').removeClass('btn-secondary')
+        $('#mMode').val('truck')
+        $('#mTripsOne').prop('checked',true)
+        $('#mTripsOne').prop('disabled',true)
+        $('#mTripsMultiple').prop('disabled',true)
+      })
+      $('#mManualButton').click(function(){
+        $('#mForkliftButton').addClass('btn-outline-warning')
+        $('#mForkliftButton').removeClass('btn-warning')
+        $('#mTruckButton').addClass('btn-outline-success')
+        $('#mTruckButton').removeClass('btn-success')
+        $('#mManualButton').addClass('btn-secondary')
+        $('#mManualButton').removeClass('btn-outline-secondary')
+        $('#mMode').val('manual')
+        $('#mTripsMultiple').prop('checked',true)
+        $('#mTripsOne').prop('disabled',false)
+        $('#mTripsMultiple').prop('disabled',false)
+      })
+
+
+      $('#mOriginDonationsButton').click(function(){
+        $('#mOriginDonationsButton').removeClass('btn-outline-dark')
+        $('#mOriginDonationsButton').addClass('btn-dark')
+        $('#mOriginOverflowButton').removeClass('btn-dark')
+        $('#mOriginOverflowButton').addClass('btn-outline-dark')
+        $('#mOriginProcessingButton').removeClass('btn-dark')
+        $('#mOriginProcessingButton').addClass('btn-outline-dark')
+        $('#mOriginLocation').prop('disabled',true)
+        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('input[name=mOrigin]').val('donations')
+      })
+      $('#mOriginOverflowButton').click(function(){
+        $('#mOriginDonationsButton').removeClass('btn-dark')
+        $('#mOriginDonationsButton').addClass('btn-outline-dark')
+        $('#mOriginOverflowButton').removeClass('btn-outline-dark')
+        $('#mOriginOverflowButton').addClass('btn-dark')
+        $('#mOriginProcessingButton').removeClass('btn-dark')
+        $('#mOriginProcessingButton').addClass('btn-outline-dark')
+        $('#mOriginLocation').prop('disabled',false)
+        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('input[name=mOrigin]').val('overflow')
+      })
+      $('#mOriginProcessingButton').click(function(){
+        $('#mOriginDonationsButton').removeClass('btn-dark')
+        $('#mOriginDonationsButton').addClass('btn-outline-dark')
+        $('#mOriginOverflowButton').removeClass('btn-dark')
+        $('#mOriginOverflowButton').addClass('btn-outline-dark')
+        $('#mOriginProcessingButton').removeClass('btn-outline-dark')
+        $('#mOriginProcessingButton').addClass('btn-dark')
+        $('#mOriginLocation').prop('disabled',true)
+        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('input[name=mOrigin]').val('processing')
+      })
+
+
+      $('#mDestinationOverflowButton').click(function(){
+        $('#mDestinationOverflowButton').removeClass('btn-outline-dark')
+        $('#mDestinationOverflowButton').addClass('btn-dark')
+        $('#mDestinationProcessingButton').removeClass('btn-dark')
+        $('#mDestinationProcessingButton').addClass('btn-outline-dark')
+        // Waste Button curently disabled
+        $('#mDestinationLocation').prop('disabled',false)
+        $('#mDestinationLocation option').eq(0).prop('selected',true)
+        $('input[name=mDestination]').val('overflow')
+      })
+      $('#mDestinationProcessingButton').click(function(){
+        $('#mDestinationOverflowButton').removeClass('btn-dark')
+        $('#mDestinationOverflowButton').addClass('btn-outline-dark')
+        $('#mDestinationProcessingButton').removeClass('btn-outline-dark')
+        $('#mDestinationProcessingButton').addClass('btn-dark')
+        // Waste Button curently disabled
+        $('#mDestinationLocation').prop('disabled',true)
+        $('#mDestinationLocation option').eq(0).prop('selected',true)
+        $('input[name=mDestination]').val('processing')
+      })
+// END 0. BUTTON CLICKS
+
+
+// START 1.ADD/DELETE ROW
+      $('.mRowButtonClass').click(function(){mRowButtonPress($('.mRowButtonClass').index(this))})
+      // Capture the Row HTML (Note: This also captures the Material Defaults)
       newRowHtml = $(mRowContainer).html()
 
-
+      //Main Function when the ADD/DELETE Row is pressed
       function mRowButtonPress(callingRowIndex){
-
           lastRowIndex = $('.mRowButtonClass').length -1
-          console.log('Index of last row (before Press): ' + lastRowIndex)
-          console.log('Index of calling button: ' + callingRowIndex )
-          console.log('Number of Rows Present now! : ' + $('.mRowClass').length)
-
           if(lastRowIndex === callingRowIndex){
             // $('#mRow').clone().appendTo('#mRowContainer')
             $('#mRowContainer').append(newRowHtml)
             $('.mRowButtonClass').off()
             $('.mRowButtonClass').click(function(){mRowButtonPress($('.mRowButtonClass').index(this))})
-
             for(i=0;i<=lastRowIndex;i++) {
               $('.mRowButtonClass').eq(i).text('DELETE')
             }
-
           }
           else{
             $('.mRowClass').eq(callingRowIndex).remove()
           }
         }
+// END 1. ADD/DELETE ROW
+
+
 
       </script>
    </body>
