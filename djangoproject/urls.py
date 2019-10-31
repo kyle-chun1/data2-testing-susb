@@ -25,4 +25,5 @@ from . import views  ##importing the MM view
 urlpatterns = [
     path('admin/', admin.site.urls), ## can be deleted later
     path('mm/',views.mm),
+    path('mm/temp/', views.temp)
 ]

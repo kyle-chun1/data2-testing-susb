@@ -12,102 +12,109 @@
          <p></p>
       </div>
       <div class="container">
-         <form class="form-group">
-            <div class="row">
-               <div class="col">
-                  <label>Staff Name:</label>
-                  <select class="form-control" id="mName" name="mName">
-                  </select>
-               </div>
-               <div class="col form-group"><label>Date of Movement: <a id="mChangeDateLink" href="#">(Change)</a></label>
-                 <input id="mDate" name="mDate" type="date" class="form-control" value="{{tDate}}" disabled="disabled"></div>
-            </div>
-            <div class="row">
-              <div class="col form-group"><label>Mode of Transportation: </label><br>
-                 <button id="mForkliftButton" type="button" class="btn btn-sm btn-warning">FORKLIFT</button>
-                 <button id="mTruckButton" type="button" class="btn btn-sm btn-outline-success">TRUCK</button>
-                 <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>
-               </div>
-              <div class="col form-group"><br>
-                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mTripsOne" value="one" disabled><label class="form-check-label" for="mTripsOne">Logging ONE Trip</label></div><br>
-                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTrips" id="mTripsMultiple" value="multiple" checked="checked" disabled><label class="form-check-label" for="mTripsMultiple">Logging MULTIPLE Trips</label></div>
+         <form class="form-group" id="mMainForm" method="post" action="temp/">{% csrf_token %}
+           <div id="innerForm">
+              <div class="row">
+                 <div class="col">
+                    <label>Staff Name:</label>
+                    <select class="form-control" id="mNameFIELD" name="mNameFIELD">
+                    </select>
+                 </div>
+                 <div class="col form-group"><label>Date of Movement: <a id="mChangeDateLink" href="#">(Change)</a></label>
+                   <input id="mDateFIELD" name="mDateField" type="date" class="form-control" value="{{tDate}}" disabled="disabled"></div>
               </div>
-            </div>
-
-            <div class="row">
-               <div class="col form-group">
-                  <label>Origin: </label><br>
-                  <button id="mOriginDonationsButton" type="button" class="btn btn-sm btn-dark">Donations</button>
-                  <button id="mOriginOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
-                  <button id="mOriginProcessingButton" type="button" class="btn btn-sm btn-outline-dark">Processing</button>
-                  <select class="" id="mOriginLocation" disabled="disabled">
-                     <option>(Select Location)</option>
-                  </select>
-               </div>
-
-            </div>
-            <div class="row">
-               <div class="col form-group">
-                  <label>Destination:</label><br>
-                  <button id="mDestinationOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
-                  <button id="mDestinationProcessingButton" type="button" class="btn btn-sm btn-dark">Processing</button>
-                  <button id="mDestinationWasteButton" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled">Waste</button>
-                  <select class="" id="mDestinationLocation" disabled="disabled">
-                     <option>(Select Location)</option>
-                  </select>
-               </div>
-            </div>
-              <div class="row" id="mRowLabels">
-                <div class="col"><label>Material Type:</label></div>
-                <div class="col"><label>Pallets:</label></div>
-                <div class="col"><label>Records :</label></div>
+              <div class="row">
+                <div class="col form-group"><label>Mode of Transportation: </label><br>
+                   <button id="mForkliftButton" type="button" class="btn btn-sm btn-warning">FORKLIFT</button>
+                   <button id="mTruckButton" type="button" class="btn btn-sm btn-outline-success">TRUCK</button>
+                   <button id="mManualButton" type="button" class="btn btn-sm btn-outline-secondary">MANUAL</button>
+                 </div>
+                <div class="col form-group"><br>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTripsFIELD" id="mTripsOne" value="one" disabled><label class="form-check-label" for="mTripsOne">Logging ONE Trip</label></div><br>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="mTripsFIELD" id="mTripsMultiple" value="multiple" checked="checked" disabled><label class="form-check-label" for="mTripsMultiple">Logging MULTIPLE Trips</label></div>
+                </div>
               </div>
-            <div class="mRowContainerClass" id="mRowContainer">
-              <div id="mRow" class="row mRowClass">
-                 <div class="col"><select class="form-control" id="mRowMaterial"></select></div>
-                 <div class="col"><input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control" max="10" value="0.25"></div>
-                 <div class="col form-group"><button id="mRowButton" type="button" class="btn btn-secondary mRowButtonClass">+ Add Row</button></div>
+
+              <div class="row">
+                 <div class="col form-group">
+                    <label>Origin: </label><br>
+                    <button id="mOriginDonationsButton" type="button" class="btn btn-sm btn-dark">Donations</button>
+                    <button id="mOriginOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
+                    <button id="mOriginProcessingButton" type="button" class="btn btn-sm btn-outline-dark">Processing</button>
+                    <select id="mOriginLocationFIELD" disabled="disabled" name="mOriginLocationFIELD" value="(Select Location)">
+                       <option>(Select Location)</option>
+                    </select>
+                 </div>
+
               </div>
-            </div>
-            <div class="row">
-               <div class="col"><button id="mSubmitButton" type="button" class="btn btn-lg btn-success btn-block">Submit</button></div>
-            </div>
+              <div class="row">
+                 <div class="col form-group">
+                    <label>Destination:</label><br>
+                    <button id="mDestinationOverflowButton" type="button" class="btn btn-sm btn-outline-dark">Overflow</button>
+                    <button id="mDestinationProcessingButton" type="button" class="btn btn-sm btn-dark">Processing</button>
+                    <button id="mDestinationWasteButton" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled">Waste</button>
+                    <select id="mDestinationLocationFIELD" disabled="disabled" name="mDestinationLocationFIELD">
+                       <option>(Select Location)</option>
+                    </select>
+                 </div>
+              </div>
+                <div class="row" id="mRowLabels">
+                  <div class="col"><label>Material Type:</label></div>
+                  <div class="col"><label>Pallets:</label></div>
+                  <div class="col"><label>Records :</label></div>
+                </div>
+              <div class="mRowContainerClass" id="mRowContainer">
+                <div id="mRow" class="row mRowClass">
+                   <div class="col"><select class="form-control mRowMaterialClass" id="mRowMaterial"></select></div>
+                   <div class="col"><input id="mRowPallets" type="number" min="0.25" step="0.25" class="form-control mRowPalletsClass" max="10" value="0.25"></div>
+                   <div class="col form-group"><button id="mRowButton" type="button" class="btn btn-secondary mRowButtonClass">+ Add Row</button></div>
+                </div>
+              </div>
+              <div class="row">
+                 <div class="col"><button id="mSubmitButton" type="button" class="btn btn-lg btn-success btn-block">Submit</button></div>
+              </div>
 
-            <!-- D <input type="hidden" name="mName" id="mName" value=""> DIRECT FROM DROPDOWN -->
-            <!-- <input type="hidden" name="mDate" id="mDate" value="">  -->
-            <input type="hidden" name="mMode" id="mMode" value="">
-            <!-- <input type="hidden" name="mTrips" id="mMode" value="">  DIRECT FROM Checkbox -->
-            <input type="hidden" name="mOrigin" id="mOrigin" value="donations">
-            <input type="hidden" name="mOrigin" id="mOrigin" value="processing">
 
+              <input type="hidden" name="mName" id="mName" value="Bradley Mack">
+              <input type="hidden" name="mDate" id="mDate" value="{{tDate}}">
+              <input type="hidden" name="mMode" id="mMode" value="forklift">
+              <input type="hidden" name="mTrips" id="mTrips" value="one">
+              <input type="hidden" name="mOrigin" id="mOrigin" value="donations">
+              <input type="hidden" name="mOriginLocation" id="mOriginLocation" value="(Select Location)">
+              <input type="hidden" name="mDestination" id="mDestination" value="processing">
+              <input type="hidden" name="mDestinationLocation" id="mDestinationLocation" value="(Select Location)">
+              <input type="hidden" name="mMaterial" id="mMaterial" value="">
+              <input type="hidden" name="mHidden" id="mHidden" value="test">
+
+            </div>
+            <div id="outerForm">
+            </div>
          </form>
       </div>
       <div class="container" style="margin-top:3%;">
-      <p>Presets: <a href="#">Forklift-Preset</a>, <a href="#">Truck (5F + 1BM)</a>, <a href="#">Lonnie Data-Cabinet</a></p>
+      <p>Presets (NOT ENABLED YET): <a href="#">Forklift-Preset</a>, <a href="#">Truck (5F + 1BM)</a>, <a href="#">Lonnie Data-Cabinet</a></p>
       </div>
 
 
 
       <script type="text/javascript">
-
-
       // START HOOKS
-            StaffList = ['Bradley Mack','Ivan ','Scarlet Vinson','Robert Farrell']
-            for(i=0;i<StaffList.length;i++){ $('#mName').append("<option>" + StaffList[i] + '</option>') }
+            StaffList = ['Bradley Mack','Ivan Yalanzhi','Scarlet Vinson','Brad Helfman', 'Paul Elsner', 'Adam Saylor','Andy Farrell','Lonnie Hinkle','Chris Pletcher']
+            for(i=0;i<StaffList.length;i++){ $('#mNameFIELD').append("<option>" + StaffList[i] + '</option>') }
 
             ContainerList = ['E1','E2','E3','E3','E4','E5','E6','E7','E8','W1','W2','W3','W4','W5','Outdoor']
-            for(i=0;i<ContainerList.length;i++){ $('#mOriginLocation').append("<option>" + ContainerList[i] + '</option>') }
-            for(i=0;i<ContainerList.length;i++){ $('#mDestinationLocation').append("<option>" + ContainerList[i] + '</option>') }
+            for(i=0;i<ContainerList.length;i++){ $('#mOriginLocationFIELD').append("<option>" + ContainerList[i] + '</option>') }
+            for(i=0;i<ContainerList.length;i++){ $('#mDestinationLocationFIELD').append("<option>" + ContainerList[i] + '</option>') }
 
             DonationsMaterialList = ['Small Household','Medium Household', 'Furniture', 'Small Building Material', 'Medium Building Material', 'Large Building Material (LY)', 'Electronics', 'Computers (Data)', 'Lighting', 'Clothes', 'Linens', 'Bags / Suitcases', 'Art / Frames', 'Jewellery', 'Books', 'Purses', 'Seasonal', 'Media']
-            for(i=0;i<ContainerList.length;i++){ $('#mRowMaterial').append("<option>" + DonationsMaterialList[i] + '</option>') }
+            for(i=0;i<DonationsMaterialList.length;i++){ $('#mRowMaterial').append("<option>" + DonationsMaterialList[i] + '</option>') }
       // END HOOKS
 
 
 // START 0. BUTTON CLICKS
 
       $('#mChangeDateLink').click(function(){
-        $('#mDate').prop('disabled',false)
+        $('#mDateFIELD').prop('disabled',false)
         $('#mChangeDateLink').remove()
       })
 
@@ -156,8 +163,8 @@
         $('#mOriginOverflowButton').addClass('btn-outline-dark')
         $('#mOriginProcessingButton').removeClass('btn-dark')
         $('#mOriginProcessingButton').addClass('btn-outline-dark')
-        $('#mOriginLocation').prop('disabled',true)
-        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('#mOriginLocationFIELD').prop('disabled',true)
+        $('#mOriginLocationFIELD option').eq(0).prop('selected',true)
         $('input[name=mOrigin]').val('donations')
       })
       $('#mOriginOverflowButton').click(function(){
@@ -167,8 +174,8 @@
         $('#mOriginOverflowButton').addClass('btn-dark')
         $('#mOriginProcessingButton').removeClass('btn-dark')
         $('#mOriginProcessingButton').addClass('btn-outline-dark')
-        $('#mOriginLocation').prop('disabled',false)
-        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('#mOriginLocationFIELD').prop('disabled',false)
+        $('#mOriginLocationFIELD option').eq(0).prop('selected',true)
         $('input[name=mOrigin]').val('overflow')
       })
       $('#mOriginProcessingButton').click(function(){
@@ -178,8 +185,8 @@
         $('#mOriginOverflowButton').addClass('btn-outline-dark')
         $('#mOriginProcessingButton').removeClass('btn-outline-dark')
         $('#mOriginProcessingButton').addClass('btn-dark')
-        $('#mOriginLocation').prop('disabled',true)
-        $('#mOriginLocation option').eq(0).prop('selected',true)
+        $('#mOriginLocationFIELD').prop('disabled',true)
+        $('#mOriginLocationFIELD option').eq(0).prop('selected',true)
         $('input[name=mOrigin]').val('processing')
       })
 
@@ -190,8 +197,8 @@
         $('#mDestinationProcessingButton').removeClass('btn-dark')
         $('#mDestinationProcessingButton').addClass('btn-outline-dark')
         // Waste Button curently disabled
-        $('#mDestinationLocation').prop('disabled',false)
-        $('#mDestinationLocation option').eq(0).prop('selected',true)
+        $('#mDestinationLocationFIELD').prop('disabled',false)
+        $('#mDestinationLocationFIELD option').eq(0).prop('selected',true)
         $('input[name=mDestination]').val('overflow')
       })
       $('#mDestinationProcessingButton').click(function(){
@@ -200,8 +207,8 @@
         $('#mDestinationProcessingButton').removeClass('btn-outline-dark')
         $('#mDestinationProcessingButton').addClass('btn-dark')
         // Waste Button curently disabled
-        $('#mDestinationLocation').prop('disabled',true)
-        $('#mDestinationLocation option').eq(0).prop('selected',true)
+        $('#mDestinationLocationFIELD').prop('disabled',true)
+        $('#mDestinationLocationFIELD option').eq(0).prop('selected',true)
         $('input[name=mDestination]').val('processing')
       })
 // END 0. BUTTON CLICKS
@@ -231,6 +238,46 @@
 // END 1. ADD/DELETE ROW
 
 
+
+
+// FINAL SUBMIT BUTTON CALCULATION - MATERIAL GETS CALCULATED HERE!
+$('#mSubmitButton').click(function(){
+  RowCount = $('.mRowButtonClass').length
+  var MaterialArray = []
+  for(i=0;i<RowCount;i++){
+    $('input[name=mMaterial]').val(MaterialArray)
+    CurrentRow = Array($('.mRowMaterialClass').eq(i).val() , $('.mRowPalletsClass').eq(i).val())
+    MaterialArray.push(CurrentRow)
+  }
+  //GENERATE the HIDDEN VALUES for the form to submit seemlessly
+  $('#mMaterial').val(JSON.stringify(MaterialArray))
+  $('#mDate').val($('#mDateFIELD').val())
+  $('#mName').val($('#mNameFIELD').val())
+  $('#mTrips').val($('[name=mTripsFIELD]:checked').val())
+  $('#mOriginLocation').val($('#mOriginLocationFIELD').val())
+  $('#mDestinationLocation').val($('#mDestinationLocationFIELD').val())
+  //DIABLE the dropdowns (incase of a BACK or REFRESH LOOK)
+  $('#mOriginLocationFIELD').prop('disabled',true)
+  $('#mOriginLocationFIELD option').eq(0).prop('selected',true)
+  $('#mDestinationLocationFIELD').prop('disabled',true)
+  $('#mDestinationLocationFIELD option').eq(0).prop('selected',true)
+
+  $('#outerForm').html('<h2><div align="center"><br>FORM SUBMISSION COMPLETED...<br>Please Refresh page to submit another entry!<br></div></h2>')
+  $('#innerForm').toggle()
+  $('#mMainForm').submit()
+
+})
+// FINAL SUBMIT BUTTON CALCULATION
+
+
+
+
+
+//START UNIVERSAL DOCUMENT LOAD Functions
+
+alert('PAGE LoADED')
+
+// END UNIVERSAL DOCUMENT LOAD Functions
 
       </script>
    </body>
