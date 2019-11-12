@@ -18,12 +18,10 @@ Including another URLconf
 ## This can be deleted later (this admin import)
 from django.contrib import admin
 
-from django.urls import path
+from django.urls import path, include
 
-from . import views  ##importing the MM view
 
 urlpatterns = [
     path('admin/', admin.site.urls), ## can be deleted later
-    path('mm/',views.mm),
-    path('mm/temp/', views.temp)
+    path('mm/',include('mm.urls')),
 ]
