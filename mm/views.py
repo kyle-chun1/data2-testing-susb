@@ -1,21 +1,21 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.timezone import datetime
-from .models import RawMaterialMovement
-import json
+from .models import RawMaterialMovement, ExpandedMaterialMovement
 import requests
+import json
+from .functions import ExpansionFunction
+
 
 def mm(request):
-
-
     return_dict = {
         'tDate' : str(datetime.today())[0:10],
         'tTimestamp' : str(datetime.now().timestamp()),
         }
-
     return  render(request, 'material.html',return_dict)
-
     # return HttpResponse()
+
+
 
 
 def mmsubmit(request):
@@ -63,9 +63,23 @@ def mmsubmit(request):
             'entry.2092600452' : mFormData['rTimestamp'],
         }
 
-        googlerequest = requests.post(googleurl, data=googleparams)
+        #GOOGLE FORM SUBMIT OFF
+        #googlerequest = requests.post(googleurl, data=googleparams)
 
-        return render(request, 'submission.html',{'message': Submission})
+        #THIS iS WHERE WE EXPAND STUFF
+
+
+        # MESSAGE = ExpansionFunction(mFormData)
+        for i in ExpansionFunction(mFormData):
+            if str(mFormData['rHidden']).strip().lower() != 'test':
+                ExpandedMaterialMovement.objects.create(**i).save()
+
+
+        # MESSAGE = RawMaterialDict
+
+
+        return render(request, 'submission.html',{'message': ExpandedMaterialMovement.objects.count() })
+
     else:
         return redirect('../')
     return HttpResponse(x)
