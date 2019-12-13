@@ -15,7 +15,7 @@ class RawMaterialMovement(models.Model):
     rTimestamp = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.rTimestamp
+        return str(self.rTimestamp)
 
     def __all__(self):
         return {
@@ -43,7 +43,8 @@ class ExpandedMaterialMovement(models.Model):
         eDestinationLocation = models.CharField(max_length=128)
         eTimestamp = models.CharField(max_length=128)
         eMaterial = models.CharField(max_length=128)
-        ePallets = models.CharField(max_length=128)
+        ePallets = models.DecimalField(max_digits=8,decimal_places=2, default='0.00')
+        # ePalletsX = models.CharField(max_length=128)
         eTripID = models.CharField(max_length=128)
 
         # REMOVED rMaterial :)

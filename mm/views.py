@@ -64,7 +64,7 @@ def mmsubmit(request):
         }
 
         #GOOGLE FORM SUBMIT OFF
-        #googlerequest = requests.post(googleurl, data=googleparams)
+        googlerequest = requests.post(googleurl, data=googleparams)
 
         #THIS iS WHERE WE EXPAND STUFF
 
@@ -78,7 +78,7 @@ def mmsubmit(request):
         # MESSAGE = RawMaterialDict
 
 
-        return render(request, 'submission.html',{'message': ExpandedMaterialMovement.objects.count() })
+        return render(request, 'submission.html',{'message':Submission })
 
     else:
         return redirect('../')
