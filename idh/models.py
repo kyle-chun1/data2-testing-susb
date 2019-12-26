@@ -18,6 +18,6 @@ class ddo_hourly(models.Model):
     h17 = models.IntegerField()
     h18 = models.IntegerField()
     h19 = models.IntegerField()
-
+    hTotal = models.IntegerField(default=-1)
     def __str__(self):
         return str(self.hDate)
