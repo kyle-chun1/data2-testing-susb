@@ -143,3 +143,20 @@ def AddAll():
         if str(i.__all__()['rHidden']).strip().lower() != 'test':
             for j in ExpansionFunction(i.__all__()):
                 ExpandedMaterialMovement.objects.create(**j).save()
+
+
+def RebuildMM():
+    import os
+    import json
+    from mm.models import RawMaterialMovement
+    from mm.functions import AddAll
+
+    text_records = os.listdir('raw_log')
+
+    RawMaterialMovement.objects.all().delete()
+
+    for i in text_records:
+        with open('raw_log/' + i) as temp:  
+            RawMaterialMovement.objects.create(**(json.loads(temp.read())))
+
+    AddAll()
