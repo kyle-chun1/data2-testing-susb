@@ -4,12 +4,12 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.models import HoverTool
 
-from bokeh.layouts import row   
+from bokeh.layouts import row, column   
 
 from .models import ddo_hourly
 
 from datetime import datetime
-from .functions import bokeh_render_hours
+from .functions import bokeh_render_hours, bokeh_render_by_weekday, bokeh_render_by_hour
 
 
 
@@ -64,8 +64,10 @@ def idh(request):
     
     
     # layout = row(bokeh_render_hours(d),bokeh_render_hours(d),bokeh_render_hours(d),sizing_mode='scale_width')
-    layout = bokeh_render_hours(d)
+    layout = column( bokeh_render_hours(d),row( bokeh_render_by_weekday(d) , bokeh_render_by_hour(d) ), sizing_mode='scale_both' )
     script1 , div1 = components(layout)
+    
+    
     
     return render(request,'idh.html',{
     'script1' : script1,
