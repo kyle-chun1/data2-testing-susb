@@ -20,16 +20,35 @@
       </div>
 
 
+      <!-- START DATE RANGE CONTAINER -->
+            <div class="container">
+            <form method="GET">
+              <div class="row">
+                <div class="col form-group"><label>Start Date:</label>
+                  <input id="start_date" name="start" type="date" class="form-control" value="{{start_date}}" min="2019-11-01" max="{{max_date}}">
+                </div>
+                 <div class="col form-group"><label>End Date:</label>
+                   <input id="end_date" name="end" type="date" class="form-control" value="{{end_date}}" min="2019-11-01" max="{{max_date}}">
+                 </div>
+                <div class="col form-group"><label id="message_text">TEST{{message_text}}</label><br>
+                  <input id="submit_button" type="submit" class="btn btn-success btn-block" value="Submit">
+                </div>
+              </div>
+            </form>
+            </div>
+      <!-- END DATE RANGE CONTAINER -->
+
+
       <hr>
       <div class="container mb-5">
         <div class="row">
-          <div class="col" align="center"><h4 style="padding-bottom:2%;" align="center">Overall Volumes Received</h4></div>
+          <div class="col" align="center"><h4 style="padding-bottom:2%;" align="center">Overall Volumes (at DDO)</h4></div>
         </div>
         <div class="row">
-          <div class="col" align="center"><h5 class="display-3">2700</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{total_pallets}}</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{total_to_processing}}</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{total_to_overflow}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">*</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{total_pallets|floatformat:0}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{total_to_processing|floatformat:0}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{total_to_overflow|floatformat:0}}</h5></div>
         </div>
         <div class="row">
           <div class="col" align="center"><p class="badge badge-success">Donations</p></div>
@@ -52,10 +71,10 @@
           <div class="col" align="center"><h4 style="padding-bottom:2%;" align="center">Processing Volumes</h4></div>
         </div>
         <div class="row">
-          <div class="col" align="center"><h5 class="display-3">{{processing_from_ddo}}</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{processing_from_overflow}}</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{processing_to_irc}}</h5></div>
-          <div class="col" align="center"><h5 class="display-3">{{processing_to_trc}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{processing_from_ddo|floatformat:0}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{processing_from_overflow|floatformat:0}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{processing_to_irc|floatformat:0}}</h5></div>
+          <div class="col" align="center"><h5 class="display-3">{{processing_to_trc|floatformat:0}}</h5></div>
           <!-- <div class="col" align="center"><h5 class="display-3">X</h5></div> -->
         </div>
         <div class="row">

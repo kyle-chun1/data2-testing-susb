@@ -12,6 +12,7 @@ db.sqlite3
 media/
 static/
 raw_log/*.*
+raw_log2/*.*
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -142,4 +143,3 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/django
-
