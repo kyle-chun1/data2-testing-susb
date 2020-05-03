@@ -123,6 +123,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 #local_settings.py - OVERRIDE
 try:
-	from .local_settings import *
-except ImportError:
+	from local_settings import *
+except Importerror:
 	pass
