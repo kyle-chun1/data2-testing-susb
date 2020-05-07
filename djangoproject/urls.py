@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls), ## can be deleted later
     path('mm/',include('mm.urls')),
     path('idh/',include('idh.urls')),
-    path('reports/',include('reports.urls')),    
+    path('reports/',include('reports.urls')),
+    path('shopify/', include('shopify.urls')),
 ]

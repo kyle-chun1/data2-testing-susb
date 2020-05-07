@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mm.apps.mmConfig',
     'idh.apps.IdhConfig',
     'reports.apps.ReportsConfig',
+    'shopify.apps.ShopifyConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,8 @@ ROOT_URLCONF = 'djangoproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],    ## added Templates Folder
+        # 'DIRS': ['templates'],    ## added Templates Folder
+        'DIRS' :[],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

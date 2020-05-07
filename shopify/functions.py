@@ -1,0 +1,68 @@
+from local_settings import S_URL
+
+import requests
+from bs4 import BeautifulSoup
+import json
+import re
+
+
+
+
+#SURE FUNCTION - Definitely returns something
+#Function will raise an error for invalid code or inability to get sucessful parameters
+def acetap_function(code):
+    request = requests.get(f'https://www.acehardware.com/search?searchSettings=lowerMatch&query={code}')
+    request.encoding = 'utf-8'
+    if request.status_code!=200  or  request.url.strip()[:40]!='https://www.acehardware.com/departments/':
+        raise NameError
+    else:
+        data = json.loads(re.findall(r'<script type="text/json" id="data-mz-preload-product">(.*?)</script>',request.text)[0])
+        soup = BeautifulSoup(request.text,'html.parser')
+
+        #COMPLIE THE SALE AND REGULAR PRICE
+        if data['price']['onSale'] == True:
+            saleprice = data['price']['salePrice']
+        else:
+            saleprice = data['price']['price']
+
+        #COMPILE THE SPECS, FEATURES, ETC.
+        features = []
+        specifications = {}
+        producttype = ''
+        whatsinthebox = ''
+        try:
+            for i in data['properties']:
+                if not i['isHidden']:
+                    if 'stringValue' in i['values'][0]:
+                        if 'tenant~feature-' in i['attributeFQN']:
+                            features.append(i['values'][0]['stringValue'])
+                        if 'tenant~whats-in-the-box' in i['attributeFQN']:
+                            whatsinthebox = i['values'][0]['stringValue']
+                        if 'tenant~A0' in i['attributeFQN']:
+                            specifications[i['attributeDetail']['name']] = i['values'][0]['stringValue']
+                        if 'tenant~product-type' in i['attributeFQN']:
+                            producttype = i['values'][0]['stringValue']
+        except:
+            pass
+
+
+        return {
+            'url': request.url,
+            'code' : code,
+            'title': data['content']['productName'].strip(),
+            'mpn': data['mfgPartNumber'].strip(),
+            'description' : data['content']['productFullDescription'].strip(),
+            'category1': request.url[40:].split('/')[0],
+            'category2': request.url[40:].split('/')[1],
+            'category3': request.url[40:].split('/')[2],
+            'photos':  ['https:' + i['src'] for i in data['content']['productImages']],
+
+            'price': data['price']['price'],
+            'saleprice': saleprice,
+
+            'producttype': producttype,
+            'whatsinthebox' : whatsinthebox,
+            'features': features,
+            'specifications': specifications,
+
+        }
