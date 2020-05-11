@@ -7,7 +7,7 @@ import re
 
 
 
-
+#######################################################################################################
 #SURE FUNCTION - Definitely returns something
 #Function will raise an error for invalid code or inability to get sucessful parameters
 def acetap_function(code):
@@ -66,3 +66,25 @@ def acetap_function(code):
             'specifications': specifications,
 
         }
+
+
+#######################################################################################################
+# TESTER FUNCTION - THIS IS USE FOR PRE-TESTING and DEPLOYMENT OF A FUNCTION
+# UNSURE FUNCTION  - ERROR AT ANY FAIL
+def test_function(endpoint_url='',params={}, endpoint=''):
+    the_request_url = S_URL + endpoint_url
+    the_request = requests.get(the_request_url,params=params)
+    return_list = json.loads(the_request.text)[endpoint]
+
+    while('next' in the_request.links):
+        the_request_url = the_request.links['next']['url']
+        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-04/',S_URL)
+        print('\n\nBEFORE',the_request.links,'\n')
+        the_request = requests.get(the_request_url)
+        print('\n\nAFTER',the_request.links,'\n\n\n')
+        return_list += json.loads(the_request.text)[endpoint]
+
+
+    # if 'Link' in the_request.headers:
+    #     print('\n\n',the_request.links,'\n\n')
+    return return_list
