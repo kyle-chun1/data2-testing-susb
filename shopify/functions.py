@@ -97,7 +97,7 @@ def FINAL_import():
     import pandas as pd
     from shopify.models import AceInventory
     FINAL = pd.read_csv('FINAL.csv')
-    AceInventory.objects.all().delete()
+#    AceInventory.objects.all().delete()
     for i in range(FINAL.shape[0]):
         FINAL_dict = {
             'Index' : i,

@@ -10,3 +10,4 @@ class AceInventory(models.Model):
     Mpn = models.CharField(max_length=64)
     Retail = models.DecimalField(max_digits=8, decimal_places=2)
     Status = models.CharField(max_length=64)
+
