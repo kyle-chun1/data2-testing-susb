@@ -71,6 +71,7 @@ def acetap_function(code):
 #######################################################################################################
 # TESTER FUNCTION - THIS IS USE FOR PRE-TESTING and DEPLOYMENT OF A FUNCTION
 # UNSURE FUNCTION  - ERROR AT ANY FAIL
+# MULTIPLE REQUETST!!!!
 def test_function(endpoint_url='',params={}, endpoint=''):
     the_request_url = S_URL + endpoint_url
     the_request = requests.get(the_request_url,params=params)
@@ -88,3 +89,26 @@ def test_function(endpoint_url='',params={}, endpoint=''):
     # if 'Link' in the_request.headers:
     #     print('\n\n',the_request.links,'\n\n')
     return return_list
+
+
+#######################################################################
+
+def FINAL_import():
+    import pandas as pd
+    from shopify.models import AceInventory
+    FINAL = pd.read_csv('FINAL.csv')
+    AceInventory.objects.all().delete()
+    for i in range(FINAL.shape[0]):
+        FINAL_dict = {
+            'Index' : i,
+            'ItemCode' : FINAL.loc[i]['SKU'],
+            'Location' : FINAL.loc[i]['Loc'],
+            'Department' : FINAL.loc[i]['Dept #'],
+            'Upc' : FINAL.loc[i]['UPC'],
+            'Qoh' : FINAL.loc[i]['QOH'],
+            'Mpn' : FINAL.loc[i]['Mfg Part #'],
+            'Retail' : FINAL.loc[i]['Retail'],
+            'Status' : FINAL.loc[i]['STATUS'],
+        }
+        AceInventory.objects.create(**FINAL_dict).save()
+        print(FINAL_dict)
