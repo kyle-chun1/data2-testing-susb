@@ -104,6 +104,7 @@ def FINAL_import():
             'ItemCode' : FINAL.loc[i]['SKU'],
             'Location' : FINAL.loc[i]['Loc'],
             'Department' : FINAL.loc[i]['Dept #'],
+            'Title' : FINAL.loc[i]['Description'],
             'Upc' : FINAL.loc[i]['UPC'],
             'Qoh' : FINAL.loc[i]['QOH'],
             'Mpn' : FINAL.loc[i]['Mfg Part #'],

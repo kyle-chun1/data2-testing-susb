@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <meta charset="utf-8">
+      <title>Ace Inventory Lookup</title>
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+   </head>
+   <body onload="focusCursor()" onclick="focusCursor()">
+      <nav class="navbar navbar-dark bg-dark"><span class="navbar-brand mb-0 h1"><div class="container">Ace Inventory Lookup</div></span></nav>
+      <div class="container">
+         <p></p>
+      </div>
+      <div class="container">
+        <form action="" method="POST" class="form-group">
+        {% csrf_token %}
+        <div class="row">
+           <div class="col form-group"><input type="text" class="form-control" id="barcode" name="barcode"></div>
+           <div class="col form-group"><input type="submit" value="SCAN BARCODE" class="form-control btn btn-md btn-success btn-block"></div>
+        </div>
+        </form>
+      </div>
+      <div class="container">
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><h1 class="display-1">{{L1}}</h1></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><h1>{{L2}}</h1></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><h3>{{L3}}</h3></div>
+      </div>
+
+      <nav id="mFooter" class="navbar fixed-bottom navbar-light bg-light">
+        <a style="color:grey" id="mTestModeButton">Finger Lakes ReUse Inc.</a>
+      </nav>
+
+      <script type="text/javascript">
+
+      function focusCursor()
+      {
+        $('#barcode').focus();
+      }
+
+      </script>
+
+   </body>
+</html>
