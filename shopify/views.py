@@ -49,20 +49,49 @@ def test(request):
 
 
 
+
+###################### QUEUED ENDPOINT
+def queued(request):
+    return_dict = {'count': 0, 'barcodes': []}
+    query =  AceInventoryList.objects.filter(Status='QUEUED')
+    return_dict['count'] = len(query)
+    for i in query:
+        return_dict['barcodes'].append(i.Upc)
+
+    return JsonResponse(return_dict)
+
+
 ############################################
-######LOOKUP FUNCTION
+######LOOKUP VIEW - Write All codes to Database
 
 
 def lookup(request):
+    # ASSUME A BLANK SUBMISSION
+    Title = ''
+    Message = ''
+    Color = ''
+    Price = ''
+
     if 'barcode' in request.POST and str(request.POST['barcode']).strip()!='':
-        L1 = request.POST['barcode']
-        query = AceInventoryList.objects.filter(Upc=L1)
+        Upc = request.POST['barcode']
+        query = AceInventoryList.objects.filter(Upc=Upc)
         if len(query):
-            L1 = '$'+str(query[0].Retail)
+            Price = '$ ' +str(query[0].Retail)
+            if query[0].Status == 'minimal' or query[0].Status == 'ADDED':
+                Color = 'text-success'
+                Title = query[0].Title
+                Message = '[Status: Listed]'
+            else:
+                Color = 'text-primary'
+                Title = query[0].Title
+                Message = '[Status: Not listed, but will be listed soon!]'
+                #ADD THIS TO QUEUED IF IT IS A ZERO
+                if query[0].Status == 'zero':
+                    print('Needs to be FLAGGED FOR QUEUE')
+                    query[0].Status = 'QUEUED'
+                    query[0].save()
         else:
-            L1 = 'NOT FOUND'
-    else:
-        L1 = 'BLANK'
-    L2 = ''
-    L3 = ''
-    return render(request,'shopify/lookup.html', {'L1':L1,'L2':L2,'L3':L3})
+            Price = 'NOT FOUND'
+            Color = 'text-dark'
+            Title = '<a id="message" target="_blank" href="https://google.com/search?q='+ Upc +'">GOOGLE SEARCH IT FOR PRICES</a>'
+    return render(request,'shopify/lookup.html', {'Title':Title,'Message':Message,'Price':Price,'Color':Color})

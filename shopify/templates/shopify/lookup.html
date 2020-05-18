@@ -24,13 +24,21 @@
         <div class="row"><p></p></div>
         <div class="row"><p></p></div>
         <div class="row"><p></p></div>
-        <div class="row"><h1 class="display-1">{{L1}}</h1></div>
+        <div class="row"><h1 id="price" class="display-1 {{Color}}">{{Price}}</h1></div>
         <div class="row"><p></p></div>
         <div class="row"><p></p></div>
-        <div class="row"><h1>{{L2}}</h1></div>
         <div class="row"><p></p></div>
         <div class="row"><p></p></div>
-        <div class="row"><h3>{{L3}}</h3></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><h1>{{Title | safe}}</h1></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><p></p></div>
+        <div class="row"><h3>{{Message}}</h3></div>
       </div>
 
       <nav id="mFooter" class="navbar fixed-bottom navbar-light bg-light">
@@ -38,10 +46,16 @@
       </nav>
 
       <script type="text/javascript">
-
+      var flag = 1;
       function focusCursor()
       {
         $('#barcode').focus();
+        // if($('#price').html() == 'NOT FOUND' && flag)
+        //   {
+        //     // alert($('#message').attr('href'));
+        //     setTimeout(function(){ alert("Hello"); }, 5000);
+        //     flag = 0;
+        //   }
       }
 
       </script>

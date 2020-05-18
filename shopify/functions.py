@@ -95,7 +95,7 @@ def test_function(endpoint_url='',params={}, endpoint=''):
 
 def FINAL_import():
     import pandas as pd
-    from shopify.models import AceInventory
+    from shopify.models import AceInventoryList
     FINAL = pd.read_csv('FINAL.csv')
 #    AceInventory.objects.all().delete()
     for i in range(FINAL.shape[0]):
@@ -111,5 +111,5 @@ def FINAL_import():
             'Retail' : FINAL.loc[i]['Retail'],
             'Status' : FINAL.loc[i]['STATUS'],
         }
-        AceInventory.objects.create(**FINAL_dict).save()
+        AceInventoryList.objects.create(**FINAL_dict).save()
         print(FINAL_dict)
