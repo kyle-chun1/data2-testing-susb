@@ -66,6 +66,7 @@ def queued(request):
 
 
 def lookup(request):
+    from shopify.functions import rch_post_shopify
     # ASSUME A BLANK SUBMISSION
     Title = ''
     Message = ''
@@ -77,19 +78,22 @@ def lookup(request):
         query = AceInventoryList.objects.filter(Upc=Upc)
         if len(query):
             Price = '$ ' +str(query[0].Retail)
+            Title = query[0].Title
             if query[0].Status == 'minimal' or query[0].Status == 'ADDED':
                 Color = 'text-success'
-                Title = query[0].Title
-                Message = '[Status: Listed]'
+                Message = '[Status: Listed and Scanable in POS]'
             else:
                 Color = 'text-primary'
-                Title = query[0].Title
-                Message = '[Status: Not listed, but will be listed soon!]'
                 #ADD THIS TO QUEUED IF IT IS A ZERO
-                if query[0].Status == 'zero':
-                    print('Needs to be FLAGGED FOR QUEUE')
+                if query[0].Status == 'zero' or query[0].Status == 'QUEUED':
                     query[0].Status = 'QUEUED'
                     query[0].save()
+                    Message = '[Status: Not listed, has been queued for listing]'
+                    add_result = rch_post_shopify(query[0].Index)
+                    if add_result:
+                        Message = '[Status: Product has just been listed - Thanks for scanning!'
+                        query[0].Status = 'ADDED'
+                        query[0].save()
         else:
             Price = 'NOT FOUND'
             Color = 'text-dark'
