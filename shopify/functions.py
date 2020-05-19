@@ -113,3 +113,43 @@ def FINAL_import():
         }
         AceInventoryList.objects.create(**FINAL_dict).save()
         print(FINAL_dict)
+
+
+############################################################################
+#THIS IS SPECIFIC TO POSTIN THE ITEMS IN QUEUE
+# WARNING:  THIS FUNCTION DOESN'T CHECK IF THE PRODUCT IS IN shopify
+# IT ONLY CHECKS FOR STATUS- and POSTS REGARDLESS
+
+def rch_post_shopify(itemindex):
+    from local_settings import S_URL
+    from shopify.models import AceInventoryList
+
+    try:
+        query = AceInventoryList.objects.get(Index=itemindex)
+        if query.Status == 'QUEUED' or query.Status == 'zero':
+            PRODUCT = {'product':
+            {
+            'title': str(query.Title),
+            'handle' : str(query.ItemCode),
+            'product_type': 'R-' + str(query.Department),
+            'published': 'FALSE',
+            'vendor': 'RCH-ACE',
+            'variants': [{
+                'sku':'R-' + str(query.Location) + '-' + str(query.ItemCode),
+                'compare_at_price': str(query.Retail),
+                'price': f'{float(query.Retail) * 0.85:.2f}',
+                'barcode': query.Upc,
+                'inventory_quantity': query.Qoh,
+                'inventory_management': 'shopify',
+                }]
+            }}
+            request = requests.post(S_URL+'products.json', json=PRODUCT)
+            if request.status_code!=201 and request.status_code!=200:
+                raise ImportError
+            else:
+                query.save()
+                return True
+        else:
+            raise NameError
+    except:
+        return False
