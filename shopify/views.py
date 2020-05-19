@@ -73,8 +73,8 @@ def lookup(request):
     Color = ''
     Price = ''
 
-    if 'barcode' in request.POST and str(request.POST['barcode']).strip()!='':
-        Upc = request.POST['barcode']
+    if 'barcode' in request.GET and str(request.GET['barcode']).strip()!='':
+        Upc = request.GET['barcode']
         query = AceInventoryList.objects.filter(Upc=Upc)
         if len(query):
             Price = '$ ' +str(query[0].Retail)
@@ -91,7 +91,7 @@ def lookup(request):
                     Message = '[Status: Not listed, has been queued for listing]'
                     add_result = rch_post_shopify(query[0].Index)
                     if add_result:
-                        Message = '[Status: Product has just been listed - Thanks for scanning!'
+                        Message = 'Status: Product has just been listed - Thanks for scanning!'
                         query[0].Status = 'ADDED'
                         query[0].save()
         else:
