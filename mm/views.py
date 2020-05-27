@@ -12,7 +12,7 @@ def mm(request):
         'tDate' : str(datetime.today())[0:10],
         'tTimestamp' : str(datetime.now().timestamp()),
         }
-    return  render(request, 'material.html',return_dict)
+    return  render(request, 'mm/material.html',return_dict)
     # return HttpResponse()
 
 
@@ -78,7 +78,7 @@ def mmsubmit(request):
         # MESSAGE = RawMaterialDict
 
 
-        return render(request, 'submission.html',{'message':Submission })
+        return render(request, 'mm/submission.html',{'message':Submission })
 
     else:
         return redirect('../')

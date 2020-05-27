@@ -70,7 +70,7 @@ def idh(request):
 
 
 
-    return render(request,'idh.html',{
+    return render(request,'idh/idh.html',{
     'script1' : script1,
     'div1' : div1,
     'message_text' : str(56),

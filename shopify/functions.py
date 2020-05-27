@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
-
+from time import sleep
 
 
 #######################################################################################################
@@ -72,7 +72,7 @@ def acetap_function(code):
 # TESTER FUNCTION - THIS IS USE FOR PRE-TESTING and DEPLOYMENT OF A FUNCTION
 # UNSURE FUNCTION  - ERROR AT ANY FAIL
 # MULTIPLE REQUETST!!!!
-def test_function(endpoint_url='',params={}, endpoint=''):
+def shopify_get_query(endpoint_url='',params={}, endpoint=''):
     the_request_url = S_URL + endpoint_url
     the_request = requests.get(the_request_url,params=params)
     return_list = json.loads(the_request.text)[endpoint]
@@ -84,10 +84,11 @@ def test_function(endpoint_url='',params={}, endpoint=''):
         the_request = requests.get(the_request_url)
         print('\n\nAFTER',the_request.links,'\n\n\n')
         return_list += json.loads(the_request.text)[endpoint]
-
+        sleep(4)
 
     # if 'Link' in the_request.headers:
     #     print('\n\n',the_request.links,'\n\n')
+    print("DONE \n DONE \n DONE \n DONE")   #TTTTTTTTTTTTTTTTTTTTTTTTTTT
     return return_list
 
 

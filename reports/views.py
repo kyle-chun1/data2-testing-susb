@@ -36,7 +36,7 @@ def materialflow(request):
     e = ExpandedMaterialMovement.objects.filter(eDate__range=[start_date,end_date])
     print(len(e))
 
-    return render(request,'materialflow.html', {
+    return render(request,'reports/materialflow.html', {
     'start_date' : start_date,
     'end_date' : end_date,
     'total_pallets' : e.filter(eOrigin='donations').aggregate(Sum('ePallets'))['ePallets__sum'],
