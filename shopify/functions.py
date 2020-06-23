@@ -138,7 +138,7 @@ def rch_post_shopify(itemindex):
             'variants': [{
                 'sku':'R-' + str(query.Location) + '-' + str(query.ItemCode),
                 'compare_at_price': str(query.Retail),
-                'price': f'{float(query.Retail) * 0.85:.2f}',
+                'price': f'{float(query.Retail) * 0.8:.2f}',
                 'barcode': query.Upc,
                 'inventory_quantity': query.Qoh,
                 'inventory_management': 'shopify',
