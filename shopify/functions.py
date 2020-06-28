@@ -6,6 +6,12 @@ import json
 import re
 from time import sleep
 
+from reportlab.pdfgen import canvas
+from reportlab.graphics.barcode import code128
+from datetime import datetime
+from bitcoin import sha256
+
+
 
 #######################################################################################################
 #SURE FUNCTION - Definitely returns something
@@ -154,3 +160,27 @@ def rch_post_shopify(itemindex):
             raise NameError
     except:
         return False
+
+
+
+
+##################################################
+#BARCODE FUNCTION - IN TEST MODE
+
+def reuse_barcode(PRICE,BARCODE,TITLE):
+    X = 1.25 * 300
+    Y = 0.85 * 300
+    timestampname = sha256(str(datetime.now()))
+    c = canvas.Canvas('static/barcodes/'+timestampname+'.pdf',pagesize=(X,Y))
+    c.setFont("Helvetica", 5)
+    c.line(0,Y*0.75,X,Y*0.75)
+    x = code128.Code128(BARCODE,barWidth=3.33, barHeight=65).drawOn(c,25,38)
+
+    c.setFont("Helvetica-Bold", 60)
+    c.drawString(55,125,f'{PRICE:>8}')
+
+    c.setFont("Helvetica", 35)
+    c.drawString(55,Y*0.80,TITLE)
+
+    c.save()
+    return timestampname + '.pdf'

@@ -78,3 +78,27 @@ def lookup(request):
             Color = 'text-dark'
             Title = '<a id="message" target="_blank" href="https://google.com/search?q='+ Upc +'">GOOGLE SEARCH IT FOR PRICES</a>'
     return render(request,'shopify/lookup.html', {'Title':Title,'Message':Message,'Price':Price,'Color':Color})
+
+
+
+############################
+#RETURNBARCODE Function
+
+
+
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from shopify.functions import reuse_barcode
+
+def barcodetest(request):
+# open('', 'rb')
+    try:
+        BARCODE = request.GET['barcode']
+        TITLE = request.GET['title']
+        PRICE = request.GET['price']
+    except:
+        return HttpResponseNotFound('Invalid Input | Please parse: barcode/title/price')
+    X = reuse_barcode(PRICE,BARCODE,TITLE)
+    # return HttpResponse(x)
+    return FileResponse(open('static/barcodes/'+X,'rb'), as_attachment=False, )
