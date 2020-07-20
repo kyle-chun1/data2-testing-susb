@@ -9,7 +9,6 @@ from time import sleep
 from reportlab.pdfgen import canvas
 from reportlab.graphics.barcode import code128
 from datetime import datetime
-from bitcoin import sha256
 
 
 
@@ -164,23 +163,74 @@ def rch_post_shopify(itemindex):
 
 
 
+
+
+
 ##################################################
 #BARCODE FUNCTION - IN TEST MODE
-
-def reuse_barcode(PRICE,BARCODE,TITLE):
+import io
+def rch_barcode_generator(PRICE,BARCODE,TITLE,QUANTITY):
     X = 1.25 * 300
     Y = 0.85 * 300
-    timestampname = sha256(str(datetime.now()))
-    c = canvas.Canvas('static/barcodes/'+timestampname+'.pdf',pagesize=(X,Y))
-    c.setFont("Helvetica", 5)
-    c.line(0,Y*0.75,X,Y*0.75)
-    x = code128.Code128(BARCODE,barWidth=3.33, barHeight=65).drawOn(c,25,38)
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=(X,Y))
 
-    c.setFont("Helvetica-Bold", 60)
-    c.drawString(55,125,f'{PRICE:>8}')
-
-    c.setFont("Helvetica", 35)
-    c.drawString(55,Y*0.80,TITLE)
-
+    for i in range(QUANTITY):
+        c.setFont("Helvetica", 5)
+        c.line(0,Y*0.75,X,Y*0.75)
+        x = code128.Code128(BARCODE,barWidth=3.33, barHeight=65).drawOn(c,25,38)
+        c.setTitle('BARCODE')
+        c.setFont("Helvetica-Bold", 60)
+        c.drawString(55,125,f'{PRICE:>8}')
+        c.setFont("Helvetica", 30)
+        c.drawString(28,Y*0.80,f'{TITLE:>20}')
+        c.showPage()
+    #End part to close the PDF
     c.save()
-    return timestampname + '.pdf'
+    buffer.seek(0)
+    return buffer
+
+
+
+
+
+
+
+
+from django.utils import timezone
+#################### IMPORTER FUNCTION SETUP!!!!! ########################
+################## SETUP THE BASE BARCODES IN THE SYSTEM TO MONITOR
+##########################################################################
+# the ITEM CODES HAVE BEEN HARDCODED TEMPORARILY,  In future they will be store in a model/the DB
+def build_barcode_inventory_ids():#Function returns a dictionry which have {'barcode':'inventory_id',...}
+    #list of inventory items to track
+    LIST = ['99900000','99800000','99700000','99600000','99500000','98900000']
+    request = requests.get(S_URL+'/products.json',params={'handle':','.join(LIST),'fields':'id,variants,handle,title,product_type,vendor,body_html'})
+    response = json.loads(request.text)
+    barcode_db = []
+    for VARIANTS in response['products']:
+        for VARIANT in VARIANTS['variants']:
+            temp_dict = {
+            'timestamp' : timezone.now(),
+            'handle' : VARIANTS['handle'],
+            'barcode' : VARIANT['barcode'],
+            'title' : VARIANTS['title'],
+            'option1' : VARIANT['option1'],
+            'product_id' : VARIANT['product_id'],
+            'variant_id' : VARIANT['id'],
+            'compare_at_price' : float(VARIANT['compare_at_price']),
+            'inventory_item_id' : VARIANT['inventory_item_id'],
+            'product_type' : VARIANTS['product_type'],
+            'vendor': VARIANTS['vendor'],
+            'sku' : VARIANT['sku'],
+            'body_html' : VARIANTS['body_html']
+            }
+            barcode_db.append(temp_dict)
+    #Print out a list of Handles in the set
+    print(LIST,'\nHandles in the response:')
+    for PRODUCTS in response['products']:
+        print(PRODUCTS['handle'])
+
+    return barcode_db
+
+##########################################################################

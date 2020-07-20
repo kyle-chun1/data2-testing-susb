@@ -81,15 +81,18 @@ def lookup(request):
 
 
 
+
+
+
 ############################
 #RETURNBARCODE Function
-
+#### NEEDS TO BE REWRITTEN
 
 
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
-from shopify.functions import reuse_barcode
+from shopify.functions import rch_barcode_generator
 
 def barcodetest(request):
 # open('', 'rb')
@@ -97,8 +100,105 @@ def barcodetest(request):
         BARCODE = request.GET['barcode']
         TITLE = request.GET['title']
         PRICE = request.GET['price']
+        QUANTITY = int(request.GET['quantity'])
+        if QUANTITY < 1:
+            QUANTITY = 1
     except:
-        return HttpResponseNotFound('Invalid Input | Please parse: barcode/title/price')
-    X = reuse_barcode(PRICE,BARCODE,TITLE)
+        return HttpResponseNotFound('Invalid Barcode')
+    X = rch_barcode_generator(PRICE,BARCODE,TITLE,QUANTITY)
     # return HttpResponse(x)
-    return FileResponse(open('static/barcodes/'+X,'rb'), as_attachment=False, )
+    return FileResponse(X, as_attachment=False, filename="barcode.pdf")
+
+
+
+
+
+#########################################
+####RCHBARCODETEST VIEW
+
+#THIS IS THE PAGE THAT LOADS (NEED TO SEND THE JS OBJECT HERE)
+def rchbarcodetest(request):
+    return render(request,'shopify/rchbarcodetest.html',{})
+
+
+
+
+
+
+
+
+
+
+
+#THIS IS THE PRINTER FUNCTION!
+
+from shopify.models import InventoryLookup
+import json
+from django.utils import timezone
+from local_settings import S_URL
+import requests
+from shopify.models import InventoryMovement
+
+def rchbarcodesubmissiontest(request):
+    #Need to get BARCODE, QUANTITY, UPDATE(0/1)
+    #Step 1 : This is where the decision happens !  If
+    try:
+        BARCODE = request.GET['barcode']
+        QUANTITY = int(request.GET['quantity'])
+        UPDATE = bool(int(request.GET['update']))   #0 or 1
+
+        X = InventoryLookup.objects.get(barcode=BARCODE)
+
+
+        if QUANTITY > 10:
+            QUANTITY = 10
+        elif QUANTITY <1:         ########## NEEDS TO BE CHANGED IN ALPHA to allow negetive inventory
+            QUANTITY = 1
+
+        ############UPDATE INVENTORY PART
+        if UPDATE:
+            the_request = requests.post(S_URL+'inventory_levels/adjust.json',json={'inventory_item_id': X.inventory_item_id,'location_id' : '45063176332','available_adjustment': QUANTITY,})
+            the_dict = {
+                'timestamp' : timezone.now(),
+                'handle' : X.handle,
+                'barcode' : X.barcode,
+                'title' : X.title,
+                'option1': X.option1,
+                'product_id': X.product_id,
+                'variant_id': X.variant_id,
+                'compare_at_price' : X.compare_at_price,
+                'inventory_item_id' : X.inventory_item_id,
+                'product_type' : X.product_type,
+                'vendor' : X.vendor,
+                'sku' : X.sku,
+
+                'staff' : 'chris@fingerlakesreuse.org.',  #############HARCODED
+                'meta' : the_request.text,
+                'location_id' : '45063176332',  ########HARCODED Reuse Community Hardware
+                'quantity' : QUANTITY,
+            }
+
+            xx = InventoryMovement(**the_dict).save()
+        #Update the DB and save a record of this transaction
+
+
+    except:
+        Y = rch_barcode_generator('INVALID','00000000','INVALID',1)
+        return FileResponse(Y, as_attachment=False, filename="barcode.pdf")
+
+    #Check is the Title begins with a $, if yes then DON't ATTACH NAME,  if its doensn't begin with $, then name first
+    if X.option1[0] == '$':
+        TITLE = f'{X.title}'
+    else:
+        TITLE = f'{X.option1}'
+    Y = rch_barcode_generator('$'+ f'{X.compare_at_price:.2f}' ,X.barcode,TITLE,QUANTITY)
+
+
+
+
+
+
+
+    return FileResponse(Y, as_attachment=False, filename="barcode.pdf")
+
+#########################################
