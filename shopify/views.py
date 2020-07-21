@@ -116,9 +116,30 @@ def barcodetest(request):
 #########################################
 ####RCHBARCODETEST VIEW
 
+
 #THIS IS THE PAGE THAT LOADS (NEED TO SEND THE JS OBJECT HERE)
+from shopify.models import InventoryLookup as L
 def rchbarcodetest(request):
-    return render(request,'shopify/rchbarcodetest.html',{})
+    the_dict = {}
+    LIST = ['99900000','99700000','99800000','99600000','98900000','99500000']
+    for i in LIST:
+        BARCODES = L.objects.filter(handle=i)
+        HANDLE = BARCODES[0]
+        BARCODES_DICT = {}
+        for j in BARCODES:
+            if j.barcode != '':
+                BARCODES_DICT[j.barcode] = j.option1
+                print(j.barcode, type(j.barcode))
+        the_dict[i] = {
+            'title': HANDLE.title,
+            'body_html':HANDLE.body_html,
+            'tag-color': '',
+            'barcodes':BARCODES_DICT,
+        }
+
+
+    return render(request,'shopify/rchbarcodetest.html',{'JSONOBJECT': json.dumps(the_dict) })
+
 
 
 
@@ -192,12 +213,6 @@ def rchbarcodesubmissiontest(request):
     else:
         TITLE = f'{X.option1}'
     Y = rch_barcode_generator('$'+ f'{X.compare_at_price:.2f}' ,X.barcode,TITLE,QUANTITY)
-
-
-
-
-
-
 
     return FileResponse(Y, as_attachment=False, filename="barcode.pdf")
 

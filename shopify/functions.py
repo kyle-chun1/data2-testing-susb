@@ -84,7 +84,8 @@ def shopify_get_query(endpoint_url='',params={}, endpoint=''):
 
     while('next' in the_request.links):
         the_request_url = the_request.links['next']['url']
-        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-04/',S_URL)
+        ####### NOTE !!!!!!!!! - HARDCODED API VERSION NUMBER - NOW 2020/>>>>>07<<<<<<<
+        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-07/',S_URL)
         print('\n\nBEFORE',the_request.links,'\n')
         the_request = requests.get(the_request_url)
         print('\n\nAFTER',the_request.links,'\n\n\n')
@@ -143,7 +144,8 @@ def rch_post_shopify(itemindex):
             'variants': [{
                 'sku':'R-' + str(query.Location) + '-' + str(query.ItemCode),
                 'compare_at_price': str(query.Retail),
-                'price': f'{float(query.Retail) * 0.8:.2f}',
+                # DROP PRICE DISCOUNT HERE FOR NEW PRODUCTS (NOW 25% OFF - July 2020)
+                'price': f'{float(query.Retail) * 0.75:.2f}',
                 'barcode': query.Upc,
                 'inventory_quantity': query.Qoh,
                 'inventory_management': 'shopify',
