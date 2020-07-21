@@ -14,11 +14,11 @@
       <div class="row pt-3"><h4>Select your Tag: </h4></div>
 
       <div class="row mt-3">
-        <button class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-P</button>
-        <button class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-P ($100+)</button>
-        <button class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-E</button>
-        <button class="btn border btn-lg btn-success mx-1 my-1 rounded-pill">FURNITURE (FLR)</button>
-        <button class="btn btn-lg btn-success mx-1 my-1 rounded-pill">MEDIA (FLR)</button>
+        <button id="98900000" class="btn border btn-lg btn-success mx-1 my-1 rounded-pill">FURNITURE (FLR)</button>
+        <button id="99500000" class="btn btn-lg btn-success mx-1 my-1 rounded-pill">MEDIA (FLR)</button>
+        <button id="99600000" class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-E</button>
+        <button id="99700000" class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-P</button>
+        <button id="99800000" class="btn border btn-lg btn-light mx-1 my-1 rounded-pill">MISC-P ($100+)</button>
       </div>
 
       <div class="row mt-3" id="targetButtons">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="row mt-3">
-        <p id="targetTitle">THIS IS SOME TEXT</p>
+        <!-- <p id="targetTitle">THIS IS SOME TEXT</p> -->
       </div>
 
       <div class="row mt-5"><!-- THE THREE OPTION ROW -->
@@ -109,6 +109,32 @@
       targetOBJECT['barcode'] = $("#targetBarcode").prop("value")
     }
 
+    function toggleButton(){
+      $(".rounded-pill").each(function(index){$(this).removeClass("shadow")})
+      $(this).addClass("shadow")
+      var handle = $(this).prop("id")
+      var barcodes_dict = JSONOBJECT[handle]['barcodes']
+      $("#targetBarcode").html("")
+      for(i=0;i<Object.keys(barcodes_dict).length;i++){
+        $("#targetBarcode").append("<option value='" + Object.keys(barcodes_dict)[i] + "' >"+ barcodes_dict[Object.keys(barcodes_dict)[i]] +"</option>")
+        // console.log(   ,   )
+
+      }
+      // for(i=0;i<Object.keys(JSONOBJECT).length; i++){
+      //
+      // }
+    }
+
+
+    function printFunction(){
+      var the_dict = {
+        'barcode':   $("#targetBarcode").prop("value"),
+        'quantity':  $("#targetQuantity").prop("value"),
+        'update':    targetOBJECT['update']
+      }
+      print_url = "/shopify/rchbarcodesubmissiontest?" + jQuery.param(the_dict)
+      printJS(print_url)
+    }
 
     // DOCUMENT IS READY, NOW PLACE LISTENERS
     $(document).ready(function(){
@@ -120,9 +146,19 @@
         $("#targetBarcode").change(toggleBarcode)
 
         // RENDER BUTTONS
-        for(i=0;i<Object.keys(JSONOBJECT).length;i++){
-          $("#targetButtons").append("<button " + "id=" + Object.keys(JSONOBJECT)[i] + ">" + Object.keys(JSONOBJECT)[i]                                                                    ['title'] + "</button>")
-        }
+        // for(i=0;i<Object.keys(JSONOBJECT).length;i++){
+        //   the_color = buttonLookup['']
+        //   $("#targetButtons").append("<button class='btn border btn-lg btn-success mx-1 my-1 rounded-pill'>" + JSONOBJECT[Object.keys(JSONOBJECT)[i]]['title'] + "</button>")
+        //   console.log(   buttonLookup[Object.keys(JSONOBJECT)[i]]    )
+        //   console.log( buttonLookup[Object.keys(JSONOBJECT)[i]['title']] )
+        // }
+        // $(".rounded-pill").on("mouseout",function(){console.log($(this).prop('id'))})
+
+        $(".rounded-pill").on("click",toggleButton)
+
+        $("#targetPrint").on("click",printFunction)
+
+        $("#98900000").click() //HARDCODED !!!!
 
     })
 
