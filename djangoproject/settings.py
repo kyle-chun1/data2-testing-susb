@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'idh.apps.IdhConfig',
     'reports.apps.ReportsConfig',
     'shopify.apps.ShopifyConfig',
+    'visitors.apps.VisitorsConfig',
 ]
 
 MIDDLEWARE = [

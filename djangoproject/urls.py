@@ -27,4 +27,5 @@ urlpatterns = [
     path('idh/',include('idh.urls')),
     path('reports/',include('reports.urls')),
     path('shopify/', include('shopify.urls')),
+    path('visitors/',include('visitors.urls')),
 ]
