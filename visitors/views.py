@@ -72,4 +72,4 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
 
     x = Visitors(timestamp=timezone.now(),flr_email=flr_email,count=count,location=location).save()
 
-    return redirect('/visitors/' + location.lower() + '?flr_email=' + flr_email)
+    return redirect('/visitors/' + location.lower() + '?default_email=' + flr_email)
