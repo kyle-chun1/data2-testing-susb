@@ -1,3 +1,4 @@
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,8 +16,8 @@
     <div class="container mt-5 mb-3">
 
       <h1 class="text-center display-1">{{current}}</h1>
-      <h3 class="text-center mt-5 pb-5">Visitors currently at location</h3>
-      <br class="mb-5">
+      <h3 class="text-center mt-3 pb-5">Visitors currently at location</h3>
+
       <hr class="mt-5">
       <h3 class="text-center mb-5">Update this count by:</h3>
       <p class="text-center"></p>
@@ -31,9 +32,9 @@
         <input type="hidden" id="location" name="location" value="{{ location }}">
         <input type="hidden" name="count" id="count" value="0">
         <div class="form-group justify-content-center ">
-          <label for="flremail">Email address</label>
-          <input required type="email" class="form-control" name="flr_email" id="flr_email" aria-describedby="emailHelp" value="{{default_email}}">
-          <small id="emailHelp" class="form-text text-muted">Enter you FLR email address. It will be autofilled next time!</small>
+          <p class="pt-5 text-center">Submitting as:<br>
+            {{ user.email }}
+            <a href={% url 'HOME' %}>(change)</a></p>
         </div>
         <div class=" text-center justify-content-center">
         <button id="submit_button" type="submit justify-content-center" class="btn btn-lg btn-success">Submit Change & Refresh</button>

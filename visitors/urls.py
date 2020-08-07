@@ -10,5 +10,6 @@ urlpatterns = [
     path('ddo/', ddo, name='ddo'),
     path('rch/', rch, name='rch'),
     path('test/', test, name='test'),
-    path('submit/', submit, name='submit')
+    path('submit/', submit, name='submit'),
+
 ]
