@@ -12,36 +12,46 @@ def irc(request):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
+    capacity = 70
     current = Visitors.objects.filter(location='IRC').aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'IRC', 'current':current})
+    total_today = Visitors.objects.filter(location='IRC').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+    return render(request, 'visitors/index.html',{'location':'IRC', 'current':current, 'capacity':capacity, 'total_today':total_today})
 
 def trc(request):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
+    capacity = 92
     current = Visitors.objects.filter(location='TRC').aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'TRC', 'current':current})
+    total_today = Visitors.objects.filter(location='TRC').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+    return render(request, 'visitors/index.html',{'location':'TRC', 'current':current, 'capacity':capacity, 'total_today':total_today})
 
 def rch(request):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
+    capacity = 88
     current = Visitors.objects.filter(location='RCH').aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'RCH', 'current':current})
+    total_today = Visitors.objects.filter(location='RCH').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+    return render(request, 'visitors/index.html',{'location':'RCH', 'current':current, 'capacity':capacity, 'total_today':total_today})
 
 def ddo(request):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
+    capacity = 999
     current = Visitors.objects.filter(location='DDO').aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'DDO', 'current':current})
+    total_today = Visitors.objects.filter(location='DDO').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+    return render(request, 'visitors/index.html',{'location':'DDO', 'current':current, 'capacity':capacity, 'total_today':total_today})
 
 def test(request):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
+    capacity = 999
     current = Visitors.objects.filter(location='TEST').aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'TEST', 'current':current})
+    total_today = Visitors.objects.filter(location='TEST').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+    return render(request, 'visitors/index.html',{'location':'TEST', 'current':current, 'capacity':capacity, 'total_today':total_today})
 
 
 
@@ -64,10 +74,10 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
     try:
         flr_email = request.user.email
         count = int(request.POST['count'])
-        if count > 5:
-            count = 5
-        if count <-5:
-            count = -5
+        if count > 10:
+            count = 10
+        if count <-10:
+            count = -10
     except:
         return redirect('/visitors/test')
 

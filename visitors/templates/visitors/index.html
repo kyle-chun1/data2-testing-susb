@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="noindex">
@@ -15,8 +16,20 @@
 
     <div class="container mt-5 mb-3">
 
-      <h1 class="text-center display-1">{{current}}</h1>
-      <h3 class="text-center mt-3 pb-5">Visitors currently at location</h3>
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="display-4 text-secondary">{{capacity}}</h1>
+          <h5 class="mt-3 pb-5 text-secondary">Maximum Capacity<br><strong>{{location}}</strong></h5>
+        </div>
+        <div class="col text-center">
+          <h1 class="text-center display-1">{{current}}</h1>
+          <h5 class="text-center mt-3 pb-5">Visitors currently at location</h5>
+        </div>
+        <div class="col text-center">
+          <h1 class="display-4 text-secondary">{{total_today}}</h1>
+          <h5 class="mt-3 pb-5 text-secondary">Total visitors today</h5>
+        </div>
+      </div>
 
       <hr class="mt-5">
       <h3 class="text-center mb-5">Update this count by:</h3>
@@ -37,7 +50,8 @@
             <a href={% url 'HOME' %}>(change)</a></p>
         </div>
         <div class=" text-center justify-content-center">
-        <button id="submit_button" type="submit justify-content-center" class="btn btn-lg btn-success">Submit Change & Refresh</button>
+        <button id="submit_button" type="submit" class="btn btn-lg btn-success">Submit Change & Refresh</button>
+
         </div>
       </form>
     </div>
@@ -57,9 +71,9 @@
 
     function minus_function(){
 
-      if(count_value<-4){
-        $("#count").val("-5")
-        $("#count_label").html("-5")
+      if(count_value<-9){
+        $("#count").val("-10")
+        $("#count_label").html("-10")
       }
       else{
         count_value = count_value - 1
@@ -70,9 +84,9 @@
     }
 
     function plus_function(){
-      if(count_value>4){
-        $("#count").val("5")
-        $("#count_label").html("5")
+      if(count_value>9){
+        $("#count").val("10")
+        $("#count_label").html("10")
       }
       else{
         count_value = count_value + 1

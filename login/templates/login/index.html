@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Google Login - Finger Lakes ReUse Internal Portal</title>
+
   </head>
   <body>
   <h1>Finger Lakes ReUse Internal Portal (Beta)</h1>
@@ -11,7 +12,8 @@
   <h2>Welcome, {{ user.email }}</h2>
   <form method="post" action="/accounts/logout/">
     {% csrf_token %}
-    <button type="submit">Logout</button>
+    <button onClick="openWin()"  type="submit">Logout of Portal</button>
+    <a target="_new" href="https://accounts.google.com/logout">Sign out or switch your Google account</a>
   </form>
   <p><br></p>
   <h2>Visitor Tracker</h2>
@@ -22,11 +24,13 @@
     <li><a href="visitors/test">TESTER - For Training and experimenting</a></li>
   </ul>
 
-
   {% else %}
   <h1>Please Login to Access the Portal</h1>
   <a href="{% provider_login_url 'google' %}"><button>Login with Google</button></a>
   {% endif %}
     {% csrf_token %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
 </html>
