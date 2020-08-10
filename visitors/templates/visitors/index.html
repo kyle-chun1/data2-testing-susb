@@ -54,6 +54,12 @@
 
         </div>
       </form>
+
+      <div class="mt-5"><br></div>
+      <div>
+        {{info | safe}}
+      </div>
+
     </div>
 
 
@@ -99,6 +105,10 @@
 
       $("#minus").on("click",minus_function)
       $("#plus").on("click", plus_function)
+
+
+    // CHEAP OVERRIDE OF PANDAS DATAFRAME!!!!!!!!!!!
+    // $("thead tr").prop("style","") //MAKES THE THEAD TR ROW GO CENTER ALIGNED
 
     })
 

@@ -7,55 +7,11 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from visitors.models import Visitors
 from django.db.models import Sum
 
+from visitors.functions import useastern,useastern_start, useastern_end
 
-def irc(request):
-    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
-    if not request.user.is_authenticated:
-        return redirect('HOME')
-    capacity = 70
-    current = Visitors.objects.filter(location='IRC').aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location='IRC').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'IRC', 'current':current, 'capacity':capacity, 'total_today':total_today})
-
-def trc(request):
-    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
-    if not request.user.is_authenticated:
-        return redirect('HOME')
-    capacity = 92
-    current = Visitors.objects.filter(location='TRC').aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location='TRC').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'TRC', 'current':current, 'capacity':capacity, 'total_today':total_today})
-
-def rch(request):
-    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
-    if not request.user.is_authenticated:
-        return redirect('HOME')
-    capacity = 88
-    current = Visitors.objects.filter(location='RCH').aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location='RCH').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'RCH', 'current':current, 'capacity':capacity, 'total_today':total_today})
-
-def ddo(request):
-    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
-    if not request.user.is_authenticated:
-        return redirect('HOME')
-    capacity = 999
-    current = Visitors.objects.filter(location='DDO').aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location='DDO').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'DDO', 'current':current, 'capacity':capacity, 'total_today':total_today})
-
-def test(request):
-    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
-    if not request.user.is_authenticated:
-        return redirect('HOME')
-    capacity = 999
-    current = Visitors.objects.filter(location='TEST').aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location='TEST').filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
-    return render(request, 'visitors/index.html',{'location':'TEST', 'current':current, 'capacity':capacity, 'total_today':total_today})
-
-
-
-
+import pytz
+from datetime import datetime
+import pandas as pd
 
 from visitors.models import Visitors
 from django.utils import timezone
@@ -91,7 +47,6 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
 
 
 
-
 def VISITORS(request, location=''):
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
@@ -103,18 +58,37 @@ def VISITORS(request, location=''):
         location = location.upper()
     #HARDCODED
     capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999}[location]
-    current = Visitors.objects.filter(location=location).aggregate(Sum('count'))['count__sum']
-    total_today = Visitors.objects.filter(location=location).filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+
+
+
+    Visitors_here_today = Visitors.objects.filter(
+        location=location,
+        timestamp__range=(useastern_start(),useastern_end())
+        )
+
+    ################# Section to Make the Hours Box at the bottom
+    hours_dict = {}
+    for i in Visitors_here_today:  #######ALSO TESTS FOR POSITIVE COUNTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        the_hour_str = useastern(i.timestamp).strftime("%I %p --")
+        if i.count > 0:  ########### IMPORTANT : FILTER OUT ZEROS!
+            if the_hour_str in hours_dict:
+                hours_dict[the_hour_str] += i.count
+            else:
+                hours_dict[the_hour_str] = i.count
+    print(hours_dict)
+    # THIS OUTPUT THE HTML TABLE!
+    info = pd.DataFrame([{'Hour of Day (Today)': i, 'Total Visitors that Entered': hours_dict[i]}  for i in hours_dict ])
+    info = info.to_html(index=False,classes="text-center table table-sm")
+    info = info.replace("right;", "center;")
+    ################# INFOSECTION GET HOURLY DATA
 
     render_dict = {
         'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999}[location],
         'location' : location,
-        'current' : Visitors.objects.filter(location=location).filter(timestamp__date=timezone.now()).aggregate(Sum('count'))['count__sum'],
-        'total_today' : Visitors.objects.filter(location=location).filter(timestamp__date=timezone.now()).filter(count__gte=0).aggregate(Sum('count'))['count__sum']
+
+        'current' : Visitors_here_today.aggregate(Sum('count'))['count__sum'],
+        'total_today' : Visitors_here_today.filter(count__gte=0).aggregate(Sum('count'))['count__sum'],
+        'info': info,
     }
-    print(timezone.now())
+
     return render(request, 'visitors/index.html',render_dict)
-
-
-def TESTER2(request, message=''):
-    return redirect('TESTER1', message='YOLOMF')
