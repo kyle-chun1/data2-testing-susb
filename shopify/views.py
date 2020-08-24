@@ -121,7 +121,7 @@ def barcodetest(request):
 from shopify.models import InventoryLookup as L
 def rchbarcodetest(request):
     the_dict = {}
-    LIST = ['99900000','99700000','99800000','99600000','98900000','99500000']
+    LIST = ['99900000','99800000','99700000','99600000','99500000','99300000',   '98900000', '98800000']
     for i in LIST:
         BARCODES = L.objects.filter(handle=i)
         HANDLE = BARCODES[0]

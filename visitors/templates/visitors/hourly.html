@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.1.1.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.1.1.min.css"/>
 
-    <title>(Private) - All Stores Capacity Utilization</title>
+    <title>(Private) - All Stores Hourly Statistics</title>
   </head>
   <body>
 
@@ -23,10 +23,10 @@
     <form method="GET">
       <div class="row">
         <div class="col form-group"><label>Start Date:</label>
-          <input id="start_date" name="start" type="date" class="form-control" value="{{start_date}}" min="2020-08-06" max="{{max_date}}">
+          <input id="start_date" name="start" type="date" class="form-control" value="{{start_date}}" min="2020-07-01" max="{{max_date}}">
         </div>
          <div class="col form-group"><label>End Date:</label>
-           <input disabled id="end_date" name="end" type="date" class="form-control" value="{{end_date}}" min="2019-01-01" max="{{max_date}}">
+          <input id="end_date" name="end" type="date" class="form-control" value="{{end_date}}" min="2020-07-01" max="{{max_date}}">
          </div>
         <div class="col form-group"><label id="message_text">.</label><br>
           <input id="submit_button" type="submit" class="btn btn-success btn-block">
@@ -38,12 +38,27 @@
     <div class="my-3"><br></div>
 
     <div align="center" class="container col">
-      <h3 class="">Capacity Tracker by Time</h3>
-      {{allstores_bokeh_html | safe}}
+      <h3 class="">All Stores Hourly Statistics</h3>
+      {{hourly_bokeh_html | safe}}
 
     </div>
 
-
+<!--
+    <div class="container-fluid mx-5 my-5"><div class="row">
+      <div class="col-md-4">
+        <h3 class="text-center">IRC</h3>
+          {{irc_bokeh_html | safe}}
+      </div>
+      <div class="col-md-4">
+        <h3 class="text-center">TRC</h3>
+          {{trc_bokeh_html | safe}}
+      </div>
+      <div class="col-md-4">
+        <h3 class="text-center">RCH</h3>
+          {{rch_bokeh_html | safe}}
+      </div>
+    </div></div>
+-->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -53,7 +68,7 @@
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.4.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-api.1.4.0.min.js"></script>
-    {{allstores_bokeh_script | safe}}
+    {{hourly_bokeh_script | safe}}
 
   </body>
 </html>

@@ -113,7 +113,7 @@ def VISITORS(request, location=''):
 
 
 ###########################################################################
-# ALL STORES VIEW - 3 Column charset
+# ALL STORES CAPCTITY VIEW - 3 Column charset
 def capacity(request):
 
     try:
@@ -157,9 +157,48 @@ def capacity(request):
     allstores_bokeh_script, allstores_bokeh_html = components(p)
 
     render_dict = {
-        'allstores_bokeh_html':'<h3>GOOGLE</h3>',
         'allstores_bokeh_script' : allstores_bokeh_script,
         'allstores_bokeh_html': allstores_bokeh_html,
         'start_date': start_date,
     }
     return render(request,'visitors/capacity.html',render_dict)
+
+
+
+
+
+
+
+
+
+
+
+###########################################################################
+# visitors_hourly VIEW - HOURLY STATISTICS
+def visitors_hourly(request):
+
+############## START DATE STATS
+    try:
+        GET_start = datetime.strptime(request.GET['start'], "%Y-%m-%d")
+        GET_end = datetime.strptime(request.GET['end'], "%Y-%m-%d")
+        start = useastern_start().replace(year=GET_start.year, month=GET_start.month, day=GET_start.day)
+        end = useastern_end().replace(year=GET_start.year, month=GET_start.month, day=GET_end.day)
+
+    except:
+        start = useastern_start()
+        end = useastern_end()
+
+    start_date = start.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
+    end_date = end.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
+
+
+    p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
+    allstores_bokeh_script, allstores_bokeh_html = components(p)
+
+    render_dict = {
+        'allstores_bokeh_script' : allstores_bokeh_script,
+        'allstores_bokeh_html': allstores_bokeh_html,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+    return render(request,'visitors/hourly.html',render_dict)
