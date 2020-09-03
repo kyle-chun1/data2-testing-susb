@@ -8,9 +8,15 @@ from .functions import ExpansionFunction
 
 
 def mm(request):
+
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
     return_dict = {
-        'tDate' : str(datetime.today())[0:10],
+        'tDate' : str(datetime.today())[0:10],          #################NEED TO FIGURE OUT THE TIMEZONE DIFF!!!
         'tTimestamp' : str(datetime.now().timestamp()),
+        'tName' : request.user.email
         }
     return  render(request, 'mm/material.html',return_dict)
     # return HttpResponse()

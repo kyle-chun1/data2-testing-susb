@@ -16,7 +16,7 @@
            <div id="innerForm">
               <div class="row">
                  <div class="col">
-                    <label>Staff Name:</label>
+                    <label>Staff Name: </label><a href={% url 'HOME' %}> (change)</a>
                     <select class="form-control" id="mNameFIELD" name="mNameFIELD">
                     </select>
                  </div>
@@ -111,7 +111,7 @@
 
       function StaffListFunction() {
         $('#mNameFIELD').html('')
-        StaffList = ['Bradley Mack','Ivan Yalanzhi','Scarlet Vinson','Brad Helfman', 'Paul Elsner', 'Adam Saylor','Justin Meddaugh','Andy Farrell','Lonnie Hinkle','Chris Pletcher']
+        StaffList = ['{{tName}}']
         for(i=0;i<StaffList.length;i++){ $('#mNameFIELD').append("<option>" + StaffList[i] + '</option>') }
       }
 
@@ -130,13 +130,13 @@
 
       function OriginLocationsListFunction() {
         $('#mOriginLocationFIELD').html('')
-        LocationsList = ['IRC','TRC']
+        LocationsList = ['IRC','TRC','RCH']
         for(i=0;i<LocationsList.length;i++){ $('#mOriginLocationFIELD').append("<option>" + LocationsList[i] + '</option>') }
       }
 
       function DestinationLocationsListFunction() {
         $('#mDestinationLocationFIELD').html('')
-        LocationsList = ['IRC','TRC']
+        LocationsList = ['IRC','TRC','RCH']
         for(i=0;i<LocationsList.length;i++){ $('#mDestinationLocationFIELD').append("<option>" + LocationsList[i] + '</option>') }
       }
 
