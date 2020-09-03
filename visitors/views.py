@@ -132,7 +132,7 @@ def capacity(request):
     p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
 
     locations = {'IRC':'green','TRC':'blue','RCH':'red', '700RNR': 'black'}
-    capacities = {'IRC':70,'TRC':92,'RCH':88, '701RNR':50}
+    capacities = {'IRC':70,'TRC':92,'RCH':88, '700RNR':50}
     for location in locations:
         print([(x.location,x.count) for x in V.filter(location=location)])
         x = [useastern(x.timestamp) for x in V.filter(location=location)]
