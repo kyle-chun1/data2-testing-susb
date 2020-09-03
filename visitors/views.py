@@ -29,7 +29,7 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
         return redirect('HOME')
 
 # HARCOCDED LOCATIONS!!!!!!!!!!!!!!!!
-    if 'location' in request.POST and str(request.POST['location']) not in ['IRC','TRC','DDO','RCH','TEST']:
+    if 'location' in request.POST and str(request.POST['location']) not in ['IRC','TRC','DDO','RCH','TEST', '701RNR']:
         location = 'TEST'
     else:
         location = request.POST['location']
@@ -59,12 +59,12 @@ def VISITORS(request, location=''):
     if not request.user.is_authenticated:
         return redirect('HOME')
     # HARDCODED STUFF - LOCATION
-    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST']:
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '701RNR']:
         return redirect('HOME')
     else:
         location = location.upper()
     #HARDCODED
-    capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999}[location]
+    capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999, '701RNR': 50}[location]
 
 
 
@@ -90,7 +90,7 @@ def VISITORS(request, location=''):
     ################# INFOSECTION GET HOURLY DATA
 
     render_dict = {
-        'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999}[location],
+        'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999,'701RNR': 50}[location],
         'location' : location,
 
         'current' : Visitors_here_today.aggregate(Sum('count'))['count__sum'],
@@ -131,8 +131,8 @@ def capacity(request):
 
     p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
 
-    locations = {'IRC':'green','TRC':'blue','RCH':'red'}
-    capacities = {'IRC':70,'TRC':92,'RCH':88}
+    locations = {'IRC':'green','TRC':'blue','RCH':'red', '701RNR': 'black'}
+    capacities = {'IRC':70,'TRC':92,'RCH':88, '701RNR':50}
     for location in locations:
         print([(x.location,x.count) for x in V.filter(location=location)])
         x = [useastern(x.timestamp) for x in V.filter(location=location)]
