@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 # Create your views here.
 
@@ -115,13 +115,18 @@ def barcodetest(request):
 
 #########################################
 ####RCHBARCODETEST VIEW
-
-
+#*******************************************************************
 #THIS IS THE PAGE THAT LOADS (NEED TO SEND THE JS OBJECT HERE)
 from shopify.models import InventoryLookup as L
 def rchbarcodetest(request):
+
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+
     the_dict = {}
-    LIST = ['99900000','99800000','99700000','99600000','99500000','99300000',   '98900000', '98800000']
+    LIST = ['99900000','99800000','99700000','99600000',  '99500000','99300000','99200000','99100000','98900000',     '98800000','98600000']
     for i in LIST:
         BARCODES = L.objects.filter(handle=i)
         HANDLE = BARCODES[0]
@@ -129,7 +134,6 @@ def rchbarcodetest(request):
         for j in BARCODES:
             if j.barcode != '':
                 BARCODES_DICT[j.barcode] = j.option1
-                print(j.barcode, type(j.barcode))
         the_dict[i] = {
             'title': HANDLE.title,
             'body_html':HANDLE.body_html,

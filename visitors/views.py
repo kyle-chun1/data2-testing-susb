@@ -134,7 +134,6 @@ def capacity(request):
     locations = {'IRC':'green','TRC':'blue','RCH':'red', '700RNR': 'black'}
     capacities = {'IRC':70,'TRC':92,'RCH':88, '700RNR':50}
     for location in locations:
-        print([(x.location,x.count) for x in V.filter(location=location)])
         x = [useastern(x.timestamp) for x in V.filter(location=location)]
         y = [y.count for y in V.filter(location=location)]
         running_sum = 0
@@ -142,7 +141,6 @@ def capacity(request):
         for i in y:
             running_sum += i
             Y.append(running_sum/capacities[location]*100)
-        print("\n\n\n",Y,"\n",y,"\n\n\n\n")
         p.line(x,Y,color=locations[location],line_width=4,line_alpha=0.5,legend_label=location)
 
     p.legend.click_policy="hide"
