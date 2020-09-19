@@ -67,7 +67,7 @@ class InventoryLookup(models.Model):
     vendor = models.CharField(max_length=128)
     sku = models.CharField(max_length=128)
 
-    body_html = models.TextField()
+    body_html = models.TextField(default='')
 
     def __str__(self):
         return self.barcode

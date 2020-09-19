@@ -203,7 +203,7 @@ from django.utils import timezone
 # the ITEM CODES HAVE BEEN HARDCODED TEMPORARILY,  In future they will be store in a model/the DB
 def build_barcode_inventory_ids():#Function returns a dictionry which have {'barcode':'inventory_id',...}
     #list of inventory items to track
-    LIST = ['99900000','99800000','99700000','99600000',  '99500000','99300000','99200000','99100000','98900000',     '98800000','98600000']
+    LIST = ['99900000','99800000','99700000','99600000',  '99400000','99000000','99500000','99300000','99200000','99100000','98900000',     '98800000','98600000']
     request = requests.get(S_URL+'/products.json',params={'handle':','.join(LIST),'fields':'id,variants,handle,title,product_type,vendor,body_html'})
     response = json.loads(request.text)
     barcode_db = []
@@ -222,7 +222,7 @@ def build_barcode_inventory_ids():#Function returns a dictionry which have {'bar
             'product_type' : VARIANTS['product_type'],
             'vendor': VARIANTS['vendor'],
             'sku' : VARIANT['sku'],
-            'body_html' : VARIANTS['body_html']
+            'body_html' : ' ' #VARIANTS['body_html'] ############### OVERIDIE TO NULL FOR NOW
             }
             barcode_db.append(temp_dict)
     #Print out a list of Handles in the set

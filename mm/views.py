@@ -16,7 +16,7 @@ def mm(request):
     return_dict = {
         'tDate' : str(datetime.today())[0:10],          #################NEED TO FIGURE OUT THE TIMEZONE DIFF!!!
         'tTimestamp' : str(datetime.now().timestamp()),
-        'tName' : request.user.email
+        'tName' : request.user.email,
         }
     return  render(request, 'mm/material.html',return_dict)
     # return HttpResponse()

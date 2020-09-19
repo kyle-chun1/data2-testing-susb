@@ -126,7 +126,7 @@ def rchbarcodetest(request):
 
 
     the_dict = {}
-    LIST = ['99900000','99800000','99700000','99600000',  '99500000','99300000','99200000','99100000','98900000',     '98800000','98600000']
+    LIST = ['99900000','99800000','99700000','99600000',  '99400000','99000000','99500000','99300000','99200000','99100000','98900000',     '98800000','98600000']
     for i in LIST:
         BARCODES = L.objects.filter(handle=i)
         HANDLE = BARCODES[0]
@@ -197,7 +197,7 @@ def rchbarcodesubmissiontest(request):
                 'vendor' : X.vendor,
                 'sku' : X.sku,
 
-                'staff' : 'chris@fingerlakesreuse.org.',  #############HARCODED
+                'staff' : request.user.email,  #############HARCODED
                 'meta' : the_request.text,
                 'location_id' : '45063176332',  ########HARCODED Reuse Community Hardware
                 'quantity' : QUANTITY,
