@@ -35,7 +35,11 @@
 
 
       <div class="row mt-3" id="targetButtons">
-        <!-- THIS IS WHERE THE AUTO GENERATED BUTTONS WILL APPEAR -->
+        <!-- THIS IS WHERE THE AUTO GENERATED BUTTONS WILL APPEAR
+
+        NOT BEING USED RIGHT NOW - HARDCODED ABOVE
+
+       -->
 
       </div>
 
@@ -57,16 +61,37 @@
             <option value="8">8</option>
             <option value="9">9</option>
             <option value="10">10</option>
+            <option value="15">15 - (BULK)</option>
+            <option value="20">20 - (BULK)</option>
+            <option value="25">25 - (BULK)</option>
+            <option value="30">30 - (BULK)</option>
+            <option value="35">35 - (BULK)</option>
+            <option value="40">40 - (BULK)</option>
+            <option value="45">45 - (BULK)</option>
+            <option value="50">50 - (BULK)</option>
+            <option value="60">60 - (BULK)</option>
+            <option value="70">70 - (BULK)</option>
+            <option value="80">80 - (BULK)</option>
+            <option value="100">100- (BULK)</option>
           </select>
         </div>
         <div class="col form-group">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="targetAddtoInventory" checked >
-            <label class="form-check-label" for="targetAddtoInventory">Add to Inventory</label>
+          <div class="form-check row">
+            <div class='col'>
+              <input class="form-check-input" type="checkbox" value="" id="targetAddtoInventory" checked >
+              <label class="form-check-label" for="targetAddtoInventory">Add to Inventory</label>
+            </div>
+            <div class="col">
+              <input class="form-check-input" type="checkbox" value="" id="targetPrintTags" checked >
+              <label class="form-check-label" for="targetPrintTags">Print Tag(s)</label>
+            </div>
           </div><p></p>
           <button type="button" onClick="toggleInventory()" class="btn border btn-secondary form-control" id="targetPrint">PRINT + ADD TO INVENTORY</button></div>
       </div>
+      <div class="row mt-5"><!-- THE THREE OPTION ROW -->
 
+        <h3 id="targetMessage"></h3>
+      </div>
 
 
     </div>
@@ -77,6 +102,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src= "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+
+
     <script type="text/javascript">
 
 
@@ -98,7 +126,7 @@
     JSONOBJECT['99200000']['tag-color'] = 'green' // HOME GOODS
     JSONOBJECT['99100000']['tag-color'] = 'green' // MUSIC
     JSONOBJECT['99000000']['tag-color'] = 'green' // ELECTRONICS
-    JSONOBJECT['99400000']['tag-color'] = 'green' // BUILDING MATERIALS    
+    JSONOBJECT['99400000']['tag-color'] = 'green' // BUILDING MATERIALS
 
 
     JSONOBJECT['98800000']['tag-color'] = 'blue'  //    Cortland Decon
@@ -108,62 +136,132 @@
     var targetOBJECT = {
       "barcode" : "satan",
       "quantity" : "",
-      "update" : "",
+      "update" : "1",
+      "print" : "1",
     }
 
-    // TOGGLE LISTER FOR CHECKBOX
+
+    function renderButton(){
+      if($("#targetPrintTags").prop("checked") == false &&  $("#targetAddtoInventory").prop("checked") == false  ){
+        $("#targetPrint").prop("disabled","true")
+      }
+      else{
+        $("#targetPrint").removeAttr("disabled")
+
+        if(  $("#targetPrintTags").prop("checked") == true &&  $("#targetAddtoInventory").prop("checked") == false  ){
+          $("#targetPrint").html("PRINT ONLY")
+        }
+        if(  $("#targetPrintTags").prop("checked") == false &&  $("#targetAddtoInventory").prop("checked") == true  ){
+          $("#targetPrint").html("ADD TO INVENTORY")
+        }
+        if(  $("#targetPrintTags").prop("checked") == true &&  $("#targetAddtoInventory").prop("checked") == true  ){
+          $("#targetPrint").html("PRINT + ADD TO INVENTORY")
+
+        }
+
+      }
+
+    }
+
+    // TOGGLE LISTER FOR PRINT TAGS CHECKBOX
+    function togglePrint(){
+
+      if($("#targetPrintTags").prop("checked") == true){
+          targetOBJECT['print'] = "1"
+      }
+      else if($("#targetPrintTags").prop("checked") == false){
+          targetOBJECT['print'] = "0"
+      }
+      renderButton()
+    }
+
+    // TOGGLE LISTER FOR INVENTORY CHECKBOX
     function toggleInventory(){
       if($("#targetAddtoInventory").prop("checked") == true){
           targetOBJECT['update'] = "1"
-          $("#targetPrint").html("PRINT + ADD TO INVENTORY")
       }
       else if($("#targetAddtoInventory").prop("checked") == false){
           targetOBJECT['update'] = "0"
-          $("#targetPrint").html("PRINT ONLY")
       }
+      renderButton()
     }
 
     //TOGGLE FUNCTION FOR QUANTITY CHANGE
     function toggleQuantity(){
+      renderButton()
       targetOBJECT['quantity'] = $("#targetQuantity").prop("value")
     }
 
     //TOGGLE FUNCTION FOR BARCODE CHANGE CHANGE
     function toggleBarcode(){
+      renderButton()
       targetOBJECT['barcode'] = $("#targetBarcode").prop("value")
     }
 
     function toggleButton(){
+      renderButton()
       $(".rounded-pill").each(function(index){$(this).removeClass("shadow")})
       $(this).addClass("shadow")
+      // $(this).css("padding-top","100px")
       var handle = $(this).prop("id")
       var barcodes_dict = JSONOBJECT[handle]['barcodes']
+      $("#targetMessage").html( "> > " + $(this).html()  )
       $("#targetBarcode").html("")
       for(i=0;i<Object.keys(barcodes_dict).length;i++){
         $("#targetBarcode").append("<option value='" + Object.keys(barcodes_dict)[i] + "' >"+ barcodes_dict[Object.keys(barcodes_dict)[i]] +"</option>")
-        // console.log(   ,   )
 
       }
-      // for(i=0;i<Object.keys(JSONOBJECT).length; i++){
-      //
-      // }
+
     }
 
 
     function printFunction(){
+
       var the_dict = {
         'barcode':   $("#targetBarcode").prop("value"),
         'quantity':  $("#targetQuantity").prop("value"),
         'update':    targetOBJECT['update']
       }
+
       print_url = "/shopify/rchbarcodesubmissiontest?" + jQuery.param(the_dict)
-      printJS(print_url)
+
+
+      // Check if we can print OR NOT!
+      if(targetOBJECT['print'] != "0"){
+        printJS(print_url)
+
+        if(targetOBJECT['update'] == "1"){
+          $("#targetMessage").html("SUCCESS: Submission & Print Complete!")
+        }
+        else{
+          $("#targetMessage").html("SUCCESS: Print Complete!")
+        }
+      }
+
+      // "MAN GOTTA SUBMIT ONLY BUT NOT PRINT")
+      if(targetOBJECT['print']=="0" && targetOBJECT['update']=="1"  ){
+        $("#targetMessage").html("submitting inventory . . .")
+        x = new Response(print_url)['status']
+        if(x==200){
+          $("#targetMessage").html("SUCCESS: Submitted to Inventory!")
+        }
+
+      }
+
+      // Diable the button after completion
+      $("#targetPrint").prop("disabled","true")
+
     }
+
+
+
+
 
     // DOCUMENT IS READY, NOW PLACE LISTENERS
     $(document).ready(function(){
 
         $("#targetAddtoInventory").on("click",toggleInventory)
+        $("#targetPrintTags").on("click",togglePrint)
 
         $("#targetQuantity").change(toggleQuantity)
 
@@ -182,7 +280,9 @@
 
         $("#targetPrint").on("click",printFunction)
 
+
         $("#98900000").click() //HARDCODED !!!!
+        // $("#targetPrintTags").click()
 
     })
 

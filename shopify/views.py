@@ -175,8 +175,8 @@ def rchbarcodesubmissiontest(request):
         X = InventoryLookup.objects.get(barcode=BARCODE)
 
 
-        if QUANTITY > 10:
-            QUANTITY = 10
+        if QUANTITY > 100:
+            QUANTITY = 100
         elif QUANTITY <1:         ########## NEEDS TO BE CHANGED IN ALPHA to allow negetive inventory
             QUANTITY = 1
 
