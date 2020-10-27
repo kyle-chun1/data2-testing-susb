@@ -179,8 +179,12 @@ def visitors_hourly(request):
     try:
         GET_start = datetime.strptime(request.GET['start'], "%Y-%m-%d")
         GET_end = datetime.strptime(request.GET['end'], "%Y-%m-%d")
+        if GET_start > GET_end:
+            GET_end,GET_start = GET_start,GET_end
+
         start = useastern_start().replace(year=GET_start.year, month=GET_start.month, day=GET_start.day)
-        end = useastern_end().replace(year=GET_start.year, month=GET_start.month, day=GET_end.day)
+        end = useastern_end().replace(year=GET_end.year, month=GET_end.month, day=GET_end.day)
+
 
     except:
         start = useastern_start()
@@ -188,6 +192,26 @@ def visitors_hourly(request):
 
     start_date = start.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
     end_date = end.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
+
+
+    V = Visitors.objects.filter(timestamp__gte=start, timestamp__lte=end,count__gte=1)
+
+
+
+
+    df = pd.DataFrame(columns=['Date','Location','Hour','Count'])
+    for i in V:
+        t = useastern(i.timestamp)
+        df = df.append({
+            'Date': t.strftime("%Y-%m-%d"),
+            'Hour': t.hour,
+            'Count': i.count,
+            'Location' : i.location,
+        },ignore_index=True)
+
+    # df2 = df.pivot(index='Date',columns='Hour',values='Count')
+
+
 
 
     p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
@@ -198,5 +222,8 @@ def visitors_hourly(request):
         'allstores_bokeh_html': allstores_bokeh_html,
         'start_date': start_date,
         'end_date': end_date,
+        'TEST':df.to_html(),
+        'max_date':'2020-10-27',
     }
+
     return render(request,'visitors/hourly.html',render_dict)

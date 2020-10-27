@@ -18,6 +18,8 @@
 
     <div class="nav bg-dark"><div class="container pb-3 pt-5 shadow-sm"><h3 class="row text-light">All Stores Visitor Statistics</h3></div></div>
 
+
+
     <!-- START DATE RANGE CONTAINER -->
     <div class="container pt-3">
     <form method="GET">
@@ -37,12 +39,15 @@
 <!-- END DATE RANGE CONTAINER -->
     <div class="my-3"><br></div>
 
+
     <div align="center" class="container col">
       <h3 class="">All Stores Hourly Statistics</h3>
       {{hourly_bokeh_html | safe}}
 
     </div>
-
+    <div align="center" class="container col mt-5">
+      {{TEST | safe}}
+    </div>
 <!--
     <div class="container-fluid mx-5 my-5"><div class="row">
       <div class="col-md-4">
