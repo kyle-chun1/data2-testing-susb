@@ -145,7 +145,7 @@ def rch_post_shopify(itemindex):
                 'sku':'R-' + str(query.Location) + '-' + str(query.ItemCode),
                 'compare_at_price': str(query.Retail),
                 # DROP PRICE DISCOUNT HERE FOR NEW PRODUCTS (NOW 50% OFF - Sep 25 2020)
-                'price': f'{float(query.Retail) * 0.50:.2f}',
+                'price': f'{float(query.Retail) * 0.30:.2f}',
                 'barcode': query.Upc,
                 'inventory_quantity': query.Qoh,
                 'inventory_management': 'shopify',

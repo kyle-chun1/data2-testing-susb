@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'reports.apps.ReportsConfig',
     'shopify.apps.ShopifyConfig',
     'visitors.apps.VisitorsConfig',
+    'sru.apps.SruConfig',
 
     ################ ALLAUTH RELATED
     'django.contrib.sites',
