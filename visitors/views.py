@@ -5,9 +5,10 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 # Create your views here.
 
 from visitors.models import Visitors
-from django.db.models import Sum
+from django.db.models import Sum, Count, DateTimeField
+from django.db.models.functions import Trunc
 
-from visitors.functions import useastern,useastern_start, useastern_end
+from visitors.functions import useastern,useastern_start, useastern_end, start_end_date
 
 import pytz
 from datetime import datetime
@@ -164,66 +165,20 @@ def capacity(request):
 
 
 
-
-
-
-
-
-
-
 ###########################################################################
 # visitors_hourly VIEW - HOURLY STATISTICS
+# v2.0
+
 def visitors_hourly(request):
-
-############## START DATE STATS
-    try:
-        GET_start = datetime.strptime(request.GET['start'], "%Y-%m-%d")
-        GET_end = datetime.strptime(request.GET['end'], "%Y-%m-%d")
-        if GET_start > GET_end:
-            GET_end,GET_start = GET_start,GET_end
-
-        start = useastern_start().replace(year=GET_start.year, month=GET_start.month, day=GET_start.day)
-        end = useastern_end().replace(year=GET_end.year, month=GET_end.month, day=GET_end.day)
-
-
-    except:
-        start = useastern_start()
-        end = useastern_end()
-
-    start_date = start.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
-    end_date = end.strftime("%Y-%m-%d")  # DONE FOR PARSING IT TO THE HTML START DATE
-
-
-    V = Visitors.objects.filter(timestamp__gte=start, timestamp__lte=end,count__gte=1)
-
-
-
-
-    df = pd.DataFrame(columns=['Date','Location','Hour','Count'])
-    for i in V:
-        t = useastern(i.timestamp)
-        df = df.append({
-            'Date': t.strftime("%Y-%m-%d"),
-            'Hour': t.hour,
-            'Count': i.count,
-            'Location' : i.location,
-        },ignore_index=True)
-
-    # df2 = df.pivot(index='Date',columns='Hour',values='Count')
-
-
-
-
-    p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
-    allstores_bokeh_script, allstores_bokeh_html = components(p)
-
-    render_dict = {
-        'allstores_bokeh_script' : allstores_bokeh_script,
-        'allstores_bokeh_html': allstores_bokeh_html,
-        'start_date': start_date,
-        'end_date': end_date,
-        'TEST':df.to_html(),
-        'max_date':'2020-10-27',
+    start_date,end_date = start_end_date(request.GET)
+    return_dict = {
+        'start_date' : start_date.strftime('%Y-%m-%d'),
+        'end_date' : end_date.strftime('%Y-%m-%d'),
     }
 
-    return render(request,'visitors/hourly.html',render_dict)
+    QUERY = Visitors.objects.filter(count__gte=0, timestamp__range=(start_date,end_date)).annotate(trunc=Trunc('timestamp',kind='hour',tzinfo=pytz.timezone('US/Eastern'))).values('trunc')
+
+    print(QUERY)
+
+
+    return render(request,'visitors/hourly.html',return_dict)
