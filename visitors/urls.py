@@ -8,7 +8,7 @@ urlpatterns = [
 
     path('submit/', submit, name='submit'),
     path('capacity/', capacity, name='capacity'),
-    path('hourly/', visitors_hourly, name='visitors_hourly'),
+    path('hourly/<slug:location>/', visitors_hourly, name='visitors_hourly'),
     path('<slug:location>/', VISITORS, name='VISITORS'),
 
 ]

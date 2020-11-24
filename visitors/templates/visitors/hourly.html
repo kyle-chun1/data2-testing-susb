@@ -12,11 +12,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.1.1.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.1.1.min.css"/>
 
-    <title>(Private) - All Stores Hourly Statistics</title>
+    <title>(Private) - {{location}} Hourly Visitors</title>
   </head>
   <body>
 
-    <div class="nav bg-dark"><div class="container pb-3 pt-5 shadow-sm"><h3 class="row text-light">All Stores Visitor Statistics</h3></div></div>
+    <div class="nav bg-dark"><div class="container pb-3 pt-5 shadow-sm"><h3 class="row text-light">{{location}} Hourly Visitors</h3></div></div>
 
 
 
@@ -41,29 +41,14 @@
 
 
     <div align="center" class="container col">
-      <h3 class="">All Stores Hourly Statistics</h3>
-      {{hourly_bokeh_html | safe}}
+      <h3 class="">{{location}} Hourly Visitors</h3>
+      {{table | safe}}
 
     </div>
-    <div align="center" class="container col mt-5">
-      {{TEST | safe}}
-    </div>
-<!--
-    <div class="container-fluid mx-5 my-5"><div class="row">
-      <div class="col-md-4">
-        <h3 class="text-center">IRC</h3>
-          {{irc_bokeh_html | safe}}
-      </div>
-      <div class="col-md-4">
-        <h3 class="text-center">TRC</h3>
-          {{trc_bokeh_html | safe}}
-      </div>
-      <div class="col-md-4">
-        <h3 class="text-center">RCH</h3>
-          {{rch_bokeh_html | safe}}
-      </div>
-    </div></div>
--->
+
+
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

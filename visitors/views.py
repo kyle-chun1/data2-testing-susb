@@ -169,16 +169,37 @@ def capacity(request):
 # visitors_hourly VIEW - HOURLY STATISTICS
 # v2.0
 
-def visitors_hourly(request):
+def visitors_hourly(request, location=''):
+
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+    # HARDCODED STUFF - LOCATION
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700RNR']:
+        return redirect('HOME')
+    else:
+        location = location.upper()
+
+
+
     start_date,end_date = start_end_date(request.GET)
+
+
+    QUERY = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)).annotate(ha_hour=Trunc('timestamp',kind='hour',tzinfo=pytz.timezone('US/Eastern'))).values('ha_hour').annotate(ha_sum=Sum('count'))
+
+
+    df = pd.DataFrame(columns=['ha_hour','ha_sum'])
+
+    for i in QUERY:
+        df = df.append(i,ignore_index=True)
+
+    df['hour'] = df['ha_hour'].dt.hour
+    df['date'] = df['ha_hour'].dt.date
+
     return_dict = {
         'start_date' : start_date.strftime('%Y-%m-%d'),
         'end_date' : end_date.strftime('%Y-%m-%d'),
+        'table' : df.pivot(index='date',columns='hour',values='ha_sum'  ).fillna('').to_html(),
+        'location': location,
     }
-
-    QUERY = Visitors.objects.filter(count__gte=0, timestamp__range=(start_date,end_date)).annotate(trunc=Trunc('timestamp',kind='hour',tzinfo=pytz.timezone('US/Eastern'))).values('trunc')
-
-    print(QUERY)
-
-
     return render(request,'visitors/hourly.html',return_dict)
