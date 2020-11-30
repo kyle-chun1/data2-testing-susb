@@ -221,3 +221,40 @@ def rchbarcodesubmissiontest(request):
     return FileResponse(Y, as_attachment=False, filename="barcode.pdf")
 
 #########################################
+
+
+
+######################
+from visitors.functions import start_end_date
+import pandas as pd
+from django.db.models import Sum
+from shopify.models import InventoryMovement as I
+################
+# COPIED FROM VISITORS HOURLY NOV 2020
+################
+def rchpricingtest(request):
+
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    #Start and End Date!
+    start_date,end_date = start_end_date(request.GET)
+
+    QUERY = I.objects.filter(timestamp__range=(start_date,end_date)).values('barcode').annotate(Quantity = Sum('quantity')).values('barcode','compare_at_price','Quantity','option1','title','product_type','vendor')
+
+    try:
+        df = pd.DataFrame(data=list(QUERY),columns=list(QUERY[0].keys()))
+        df['TOTAL Pricing ($)'] = df['compare_at_price'] * df['Quantity']
+    except:
+        df = pd.DataFrame(columns=['No Table Data in this range'])
+
+
+    return_dict = {
+        'table': df.to_html(),
+        'start_date' : start_date.strftime('%Y-%m-%d'),
+        'end_date' : end_date.strftime('%Y-%m-%d'),
+    }
+
+# ERASE THIS::::::::::::::::::::
+    return render(request,'shopify/rchpricingtest.html',return_dict)
