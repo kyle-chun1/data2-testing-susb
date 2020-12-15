@@ -23,6 +23,8 @@ from django.views.generic import TemplateView
 
 from login.views import logout
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls), ## can be deleted later
     path('mm/',include('mm.urls')),
@@ -30,6 +32,7 @@ urlpatterns = [
     path('reports/',include('reports.urls')),
     path('shopify/', include('shopify.urls')),
     path('visitors/',include('visitors.urls')),
+
 
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='login/index.html'), name='HOME'),

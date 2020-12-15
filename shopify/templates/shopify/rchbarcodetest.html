@@ -241,10 +241,24 @@
       // "MAN GOTTA SUBMIT ONLY BUT NOT PRINT")
       if(targetOBJECT['print']=="0" && targetOBJECT['update']=="1"  ){
         $("#targetMessage").html("submitting inventory . . .")
-        x = new Response(print_url)['status']
-        if(x==200){
-          $("#targetMessage").html("SUCCESS: Submitted to Inventory!")
-        }
+        // x = new Response(print_url)['status']
+
+        xhr = new XMLHttpRequest();
+        xhr.open('get', print_url)
+        xhr.send()
+
+        // let myGreeting = setTimeout(function() {alert('Hello, Mr. Universe!');}, 5000)
+        // alert('Submission sent - Make sure you get a Code 200')
+        //
+        //
+        // if(xhr.status==200){
+        //   $("#targetMessage").html("Submission Complete - Success Confrimed with Status 200")
+        // }
+        // else{
+        //   $('#targetMesage').html("Submission might not have got through <br> " + xhr.status_code)
+        // }
+
+        $("#targetMessage").html("Submission Complete - (without Printing)")
 
       }
 
