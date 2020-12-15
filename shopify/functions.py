@@ -85,7 +85,7 @@ def shopify_get_query(endpoint_url='',params={}, endpoint=''):
     while('next' in the_request.links):
         the_request_url = the_request.links['next']['url']
         ####### NOTE !!!!!!!!! - HARDCODED API VERSION NUMBER - NOW 2020/>>>>>07<<<<<<<
-        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-07/',S_URL)
+        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-10/',S_URL)
         print('\n\nBEFORE',the_request.links,'\n')
         the_request = requests.get(the_request_url)
         print('\n\nAFTER',the_request.links,'\n\n\n')
