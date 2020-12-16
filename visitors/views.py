@@ -6,11 +6,12 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 
 from visitors.models import Visitors
 from django.db.models import Sum, Count, DateTimeField
-from django.db.models.functions import Trunc
+from django.db.models.functions import Trunc, Extract
 
 from visitors.functions import useastern,useastern_start, useastern_end, start_end_date
 
 import pytz
+import json
 from datetime import datetime
 import pandas as pd
 
@@ -184,22 +185,101 @@ def visitors_hourly(request, location=''):
 
     start_date,end_date = start_end_date(request.GET)
 
+    # Segment 1 : The Pivot table for the chart  ############################
+    QUERY_1 = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)) \
+        .annotate( tr_hour =Trunc('timestamp',kind='hour', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('tr_hour').annotate(tr_hour_sum=Sum('count'))
 
-    QUERY = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)).annotate(ha_hour=Trunc('timestamp',kind='hour',tzinfo=pytz.timezone('US/Eastern'))).values('ha_hour').annotate(ha_sum=Sum('count'))
 
 
-    df = pd.DataFrame(columns=['ha_hour','ha_sum'])
+    try:
+        df = pd.DataFrame(data=list(QUERY_1),columns=list(QUERY_1[0].keys()))
+        df['hour'] = df['tr_hour'].dt.hour
+        df['date'] = df['tr_hour'].dt.date
 
-    for i in QUERY:
-        df = df.append(i,ignore_index=True)
+        print(df)
 
-    df['hour'] = df['ha_hour'].dt.hour
-    df['date'] = df['ha_hour'].dt.date
+        df_1 = df.pivot(index='date',columns='hour',values='tr_hour_sum'  ).fillna('0')
+
+    except:
+        df_1 = pd.DataFrame(columns=['No Table Data in this range'])
+
+
+    # Segment 2 : the BAR CHART by DAY OF WEEK  ############################
+    QUERY_2 = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)) \
+        .annotate(week_day_number = Extract('timestamp','week_day', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('week_day_number').annotate(week_day_sum=Sum('count')).order_by('week_day_number')
+
+    weekday_list = { 1:'Sunday', 2:'Monday', 3:'Tuesday', 4:'Wednesday', 5:'Thursday', 6:'Friday', 7:'Saturday'}
+
+    chartJS_2 = {
+                'type': 'bar',
+                'data': {
+                    'labels': [weekday_list[x['week_day_number']] for x in list(QUERY_2)],
+                    'datasets': [{
+                        'label': 'Visitor Total by Weekday',
+                        'data': [x['week_day_sum'] for x in QUERY_2],
+                        'backgroundColor': 'rgba(0, 120, 0, 0.75)',
+                        'borderWidth': 1
+                    }]
+                },
+                'options': {
+                    'scales': {
+                        'yAxes': [{
+                            'ticks': {
+                                'beginAtZero': True
+                            }
+                        }]
+                    }
+                }
+            }
+
+
+
+
+
+    # Segment 3 : bar chart hour of the day  ############################
+
+    QUERY_3 = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)) \
+        .annotate(hour_number = Extract('timestamp','hour', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('hour_number').annotate(hour_sum=Sum('count')).order_by('hour_number')
+
+    df_3 = pd.DataFrame(data=list(QUERY_3), columns=list(QUERY_3[0].keys()))
+
+    print(df_3)
+    # weekday_list = { 1:'Sunday', 2:'Monday', 3:'Tuesday', 4:'Wednesday', 5:'Thursday', 6:'Friday', 7:'Saturday'}
+
+    #This makes a definitive list from 10am to 5pm.   Entries after 6pm are added to the 5pm list, if its less than 10am, it gets added to start.')
+
+    chartJS_3 = {
+                'type': 'bar',
+                'data': {
+                    'labels': [x['hour_number'] for x in list(QUERY_3)],
+                    'datasets': [{
+                        'label': 'Visitor Total by Hour',
+                        'data': [x['hour_sum'] for x in QUERY_3],
+                        'backgroundColor': 'rgba(0, 0, 120, 0.75)',
+                        'borderWidth': 1
+                    }]
+                },
+                'options': {
+                    'scales': {
+                        'yAxes': [{
+                            'ticks': {
+                                'beginAtZero': True
+                            }
+                        }]
+                    }
+                }
+            }
+
 
     return_dict = {
         'start_date' : start_date.strftime('%Y-%m-%d'),
         'end_date' : end_date.strftime('%Y-%m-%d'),
-        'table' : df.pivot(index='date',columns='hour',values='ha_sum'  ).fillna('').to_html(),
+        'table' : df_1.to_html(),
         'location': location,
+        'chartJS_2' : json.dumps(chartJS_2),
+        'chartJS_3' : json.dumps(chartJS_3),
     }
     return render(request,'visitors/hourly.html',return_dict)

@@ -142,6 +142,10 @@
 
 
     function renderButton(){
+
+      // This resets the Message
+      $("#targetMessage").html("")
+
       if($("#targetPrintTags").prop("checked") == false &&  $("#targetAddtoInventory").prop("checked") == false  ){
         $("#targetPrint").prop("disabled","true")
       }
@@ -153,9 +157,13 @@
         }
         if(  $("#targetPrintTags").prop("checked") == false &&  $("#targetAddtoInventory").prop("checked") == true  ){
           $("#targetPrint").html("ADD TO INVENTORY")
+
+
         }
         if(  $("#targetPrintTags").prop("checked") == true &&  $("#targetAddtoInventory").prop("checked") == true  ){
           $("#targetPrint").html("PRINT + ADD TO INVENTORY")
+
+
 
         }
 
@@ -259,6 +267,8 @@
         // }
 
         $("#targetMessage").html("Submission Complete - (without Printing)")
+
+
 
       }
 
