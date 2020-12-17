@@ -176,7 +176,7 @@ def visitors_hourly(request, location=''):
     if not request.user.is_authenticated:
         return redirect('HOME')
     # HARDCODED STUFF - LOCATION
-    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE']:
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS']:
         return redirect('HOME')
     else:
         location = location.upper()
@@ -192,17 +192,29 @@ def visitors_hourly(request, location=''):
 
 
 
+
     try:
         df = pd.DataFrame(data=list(QUERY_1),columns=list(QUERY_1[0].keys()))
         df['hour'] = df['tr_hour'].dt.hour
         df['date'] = df['tr_hour'].dt.date
-
-        print(df)
-
-        df_1 = df.pivot(index='date',columns='hour',values='tr_hour_sum'  ).fillna('0')
+        df_1 = df.pivot(index='date',columns='hour',values='tr_hour_sum'  ).fillna('')
 
     except:
         df_1 = pd.DataFrame(columns=['No Table Data in this range'])
+
+    finally:
+        # RETURN THE TABLE TO THE USER IF NEEDED !!!!!!!!!!!!!!!
+        # PARSER SECTION
+        if 'download' in request.GET:
+            if request.GET['download'] == 'CSV':
+                # PANDAS MANUAL RETURN THE OBJECT!
+                response = HttpResponse(content_type='text/csv')
+                response['Content-Disposition'] = 'attachment; filename=raw_data_export.csv'
+                df_1.to_csv(path_or_buf=response)
+                return response
+
+        df_1_html = df_1.to_html(classes='table table-sm table-striped text-center')
+
 
 
     # Segment 2 : the BAR CHART by DAY OF WEEK  ############################
@@ -217,9 +229,9 @@ def visitors_hourly(request, location=''):
                 'data': {
                     'labels': [weekday_list[x['week_day_number']] for x in list(QUERY_2)],
                     'datasets': [{
-                        'label': 'Visitor Total by Weekday',
+                        'label': 'Visitor Total by WEEKDAY',
                         'data': [x['week_day_sum'] for x in QUERY_2],
-                        'backgroundColor': 'rgba(0, 120, 0, 0.75)',
+                        'backgroundColor': 'rgba(0, 120, 0, 0.85)',
                         'borderWidth': 1
                     }]
                 },
@@ -244,21 +256,45 @@ def visitors_hourly(request, location=''):
         .annotate(hour_number = Extract('timestamp','hour', tzinfo=pytz.timezone('US/Eastern'))) \
         .values('hour_number').annotate(hour_sum=Sum('count')).order_by('hour_number')
 
-    df_3 = pd.DataFrame(data=list(QUERY_3), columns=list(QUERY_3[0].keys()))
-
-    print(df_3)
-    # weekday_list = { 1:'Sunday', 2:'Monday', 3:'Tuesday', 4:'Wednesday', 5:'Thursday', 6:'Friday', 7:'Saturday'}
-
-    #This makes a definitive list from 10am to 5pm.   Entries after 6pm are added to the 5pm list, if its less than 10am, it gets added to start.')
 
     chartJS_3 = {
                 'type': 'bar',
                 'data': {
                     'labels': [x['hour_number'] for x in list(QUERY_3)],
                     'datasets': [{
-                        'label': 'Visitor Total by Hour',
+                        'label': 'Visitor Total by HOUR',
                         'data': [x['hour_sum'] for x in QUERY_3],
-                        'backgroundColor': 'rgba(0, 0, 120, 0.75)',
+                        'backgroundColor': 'rgba(84,100,191,0.85)',
+                        'borderWidth': 1
+                    }]
+                },
+                'options': {
+                    'scales': {
+                        'yAxes': [{
+                            'ticks': {
+                                'beginAtZero': True
+                            }
+                        }]
+                    }
+                }
+            }
+
+    # Segment 4 : bar chart MONTHLY AGGREGATION  ############################
+
+    QUERY_4 = Visitors.objects.filter(location=location, count__gte=0, timestamp__range=(start_date,end_date)) \
+        .annotate(month_number = Extract('timestamp','month', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('month_number').annotate(month_sum=Sum('count')).order_by('month_number')
+
+    month_list = { 1:'Jan', 2:'Feb', 3:'Mar', 4:'Apr', 5:'May', 6:'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec'}
+
+    chartJS_4 = {
+                'type': 'bar',
+                'data': {
+                    'labels': [ month_list[ x['month_number'] ] for x in list(QUERY_4)],
+                    'datasets': [{
+                        'label': 'Visitor Total by MONTH',
+                        'data': [x['month_sum'] for x in QUERY_4],
+                        'backgroundColor': 'rgba(242,170,82,0.85)',
                         'borderWidth': 1
                     }]
                 },
@@ -274,12 +310,18 @@ def visitors_hourly(request, location=''):
             }
 
 
+    # Render section :::::::::
+    start_date_f = start_date.strftime('%Y-%m-%d')
+    end_date_f = end_date.strftime('%Y-%m-%d')
+
     return_dict = {
-        'start_date' : start_date.strftime('%Y-%m-%d'),
-        'end_date' : end_date.strftime('%Y-%m-%d'),
-        'table' : df_1.to_html(),
+        'start_date' : start_date_f,
+        'end_date' : end_date_f,
+        'table' : df_1_html,
         'location': location,
+        'download_csv_link' : f'?download=CSV&start={start_date_f}&end={end_date_f}',
         'chartJS_2' : json.dumps(chartJS_2),
         'chartJS_3' : json.dumps(chartJS_3),
+        'chartJS_4' : json.dumps(chartJS_4),
     }
     return render(request,'visitors/hourly.html',return_dict)

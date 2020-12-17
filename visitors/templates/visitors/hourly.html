@@ -36,19 +36,24 @@
     <div class="my-3"><br></div>
 
 
-    <div align="center" class="container col my-5">
-      <h3 class="">{{location}} Hourly Visitors</h3>
-      {{table | safe}}
-    </div>
 
 
     <div align="center" class="container my-5">
-      <canvas id="chartJS_2"></canvas>
+      <div class="row">
+        <div class="col-md-6 my-3"><canvas id="chartJS_2"></canvas></div>
+        <div class="col-md-6 my-3"><canvas id="chartJS_4"></canvas></div>
+      </div>
     </div>
 
     <div align="center" class="container my-5">
       <canvas id="chartJS_3"></canvas>
     </div>
+
+    <div align="center" class="container my-5">
+      <h3 class="">Raw Table Data</h3><h5><a href="{{download_csv_link}}">(Download CSV)</a></h5>
+      {{table | safe}}
+    </div>
+
 
 
 
@@ -63,9 +68,11 @@
     let ctx_2 = document.getElementById('chartJS_2').getContext('2d');
     let myChart_2 = new Chart(ctx_2, {{chartJS_2 | safe}} );
 
-
     let ctx_3 = document.getElementById('chartJS_3').getContext('2d');
     let myChart_3 = new Chart(ctx_3, {{chartJS_3 | safe}} );
+
+    let ctx_4 = document.getElementById('chartJS_4').getContext('2d');
+    let myChart_4 = new Chart(ctx_4, {{chartJS_4 | safe}} );
 
     </script>
     <!-- CHART JS -->
