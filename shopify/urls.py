@@ -14,5 +14,5 @@ urlpatterns = [
     path('rchbarcodetest/',rchbarcodetest, name='rchbarcodetest'),
     path('rchbarcodesubmissiontest/',rchbarcodesubmissiontest, name='rchbarcodesubmissiontest'),
     path('rchpricingtest/', rchpricingtest, name='rchpricingtest'),
-    path('rchpricing_usertest', rchpricing_usertest, name='rchpricing_usertest'),
+    path('rchpricing_usertest/', rchpricing_usertest, name='rchpricing_usertest'),
 ]

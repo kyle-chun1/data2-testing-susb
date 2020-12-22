@@ -293,6 +293,3 @@ def rchpricing_usertest(request):
 
     except:
         return HttpResponse(pd.DataFrame(columns=['No Table Data found for this request']).to_html())
-
-
-    return HttpResponse('WORKING')
