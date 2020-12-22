@@ -258,3 +258,41 @@ def rchpricingtest(request):
 
 # ERASE THIS::::::::::::::::::::
     return render(request,'shopify/rchpricingtest.html',return_dict)
+
+
+
+
+
+import pytz
+from datetime import datetime #?
+from django.db.models.functions import Trunc
+############################################
+# html table END-POINT Test - - -   /rchpricing_usertest - > to return html table of the last 10 pricing items
+# This can help you
+def rchpricing_usertest(request):
+
+    try:
+        QUERY = I.objects.filter(staff=request.user.email) \
+        .annotate(DATE_TIME=Trunc('timestamp', kind='second',tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('id','DATE_TIME','barcode','quantity','option1','compare_at_price','title').order_by('-timestamp')[0:10]
+
+        #Construct DF from QUERY
+        df = pd.DataFrame(data=list(QUERY),columns=list(QUERY[0].keys()))
+
+        #Rename Fields for Viewing
+        df.rename( columns={'id':'Record#','DATE_TIME':'Date & Time','compare_at_price':'Price','option1':'Variant','title':'Title','barcode':'Barcode','quantity':'Quantity'},inplace=True )
+
+        #ReOrder Fields - safely
+        df = df[['Record#','Date & Time','Title','Variant','Price','Quantity']]
+
+        #Convert Time to Viewable Format
+        df['Date & Time'] = df['Date & Time'].apply(lambda x: datetime.strftime(x,'%b %d, %Y - %I:%M %p') )
+
+        return HttpResponse(df.to_html(classes='table table-sm table-striped text-center',index=False))
+
+
+    except:
+        return HttpResponse(pd.DataFrame(columns=['No Table Data found for this request']).to_html())
+
+
+    return HttpResponse('WORKING')

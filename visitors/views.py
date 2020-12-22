@@ -190,9 +190,6 @@ def visitors_hourly(request, location=''):
         .annotate( tr_hour =Trunc('timestamp',kind='hour', tzinfo=pytz.timezone('US/Eastern'))) \
         .values('tr_hour').annotate(tr_hour_sum=Sum('count'))
 
-
-
-
     try:
         df = pd.DataFrame(data=list(QUERY_1),columns=list(QUERY_1[0].keys()))
         df['hour'] = df['tr_hour'].dt.hour

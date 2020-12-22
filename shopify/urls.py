@@ -3,7 +3,7 @@ from django.urls import path
 
 
 
-from shopify.views import acetap,lookup,queued,barcodetest,rchbarcodetest,rchbarcodesubmissiontest, rchpricingtest
+from shopify.views import *
 
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('rchbarcodetest/',rchbarcodetest, name='rchbarcodetest'),
     path('rchbarcodesubmissiontest/',rchbarcodesubmissiontest, name='rchbarcodesubmissiontest'),
     path('rchpricingtest/', rchpricingtest, name='rchpricingtest'),
+    path('rchpricing_usertest', rchpricing_usertest, name='rchpricing_usertest'),
 ]
