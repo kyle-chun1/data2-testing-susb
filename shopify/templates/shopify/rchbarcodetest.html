@@ -94,6 +94,13 @@
       </div>
 
 
+      <div class="row mt-5"><!-- The TABLE SECTION -->
+        <div align="center" class="container" id="targetTable"></div>
+      </div>
+
+
+
+
     </div>
 
 
@@ -170,6 +177,24 @@
       }
 
     }
+
+
+
+    function renderTable(){
+      $('#targetTable').html('google')
+      xhr1 = new XMLHttpRequest();
+      xhr1.open('get', '/shopify/rchpricing_usertest/')
+      xhr1.send()
+
+      xhr1.onreadystatechange = function(){
+        if (xhr1.readyState === 4){
+          $('#targetTable').html(xhr1.response)
+        }
+      }
+    }
+
+
+
 
     // TOGGLE LISTER FOR PRINT TAGS CHECKBOX
     function togglePrint(){
@@ -249,33 +274,29 @@
       // "MAN GOTTA SUBMIT ONLY BUT NOT PRINT")
       if(targetOBJECT['print']=="0" && targetOBJECT['update']=="1"  ){
         $("#targetMessage").html("submitting inventory . . .")
-        // x = new Response(print_url)['status']
 
         xhr = new XMLHttpRequest();
         xhr.open('get', print_url)
         xhr.send()
 
-        // let myGreeting = setTimeout(function() {alert('Hello, Mr. Universe!');}, 5000)
-        // alert('Submission sent - Make sure you get a Code 200')
-        //
-        //
-        // if(xhr.status==200){
-        //   $("#targetMessage").html("Submission Complete - Success Confrimed with Status 200")
-        // }
-        // else{
-        //   $('#targetMesage').html("Submission might not have got through <br> " + xhr.status_code)
-        // }
+        $("#targetMessage").html("")
 
-        $("#targetMessage").html("Submission Complete - (without Printing)")
+        xhr.onreadystatechange = function(){
+          if (xhr.readyState === 4){
+            $("#targetMessage").html("Submission Complete - (without Printing)")
+            renderTable()
+          }
+        }
 
+
+        // $("#targetMessage").html("Submission Complete - (without Printing)")
 
 
       }
 
       // Diable the button after completion
       $("#targetPrint").prop("disabled","true")
-
-    }
+      renderTable()    }
 
 
 
@@ -304,6 +325,8 @@
 
         $("#targetPrint").on("click",printFunction)
 
+        // Renders the table by Default!!!!!!!!!
+        renderTable()
 
         $("#98900000").click() //HARDCODED !!!!
         // $("#targetPrintTags").click()
