@@ -31,7 +31,7 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
         return redirect('HOME')
 
 # HARCOCDED LOCATIONS!!!!!!!!!!!!!!!!
-    if 'location' in request.POST and str(request.POST['location']) not in ['IRC','TRC','DDO','RCH','TEST', '700-CABOOSE']:
+    if 'location' in request.POST and str(request.POST['location']) not in ['IRC','TRC','DDO','RCH','TEST', '700-CABOOSE', 'TRC-DONATIONS' ,'700-WAREHOUSE']:
         location = 'TEST'
     else:
         location = request.POST['location']
@@ -41,7 +41,7 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
         count = int(request.POST['count'])
         if count > 10:
             count = 10
-        if count <-10:
+        if count < -10:
             count = -10
     except:
         return redirect('/visitors/test')
@@ -61,12 +61,12 @@ def VISITORS(request, location=''):
     if not request.user.is_authenticated:
         return redirect('HOME')
     # HARDCODED STUFF - LOCATION
-    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE']:
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS','700-WAREHOUSE']:
         return redirect('HOME')
     else:
         location = location.upper()
     #HARDCODED
-    capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999, '700-CABOOSE': 35}[location]
+    capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999, '700-CABOOSE': 35, 'TRC-DONATIONS' : 999,'700-WAREHOUSE' : 19}[location]
 
 
 
@@ -92,7 +92,7 @@ def VISITORS(request, location=''):
     ################# INFOSECTION GET HOURLY DATA
 
     render_dict = {
-        'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999,'700-CABOOSE': 35}[location],
+        'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999,'700-CABOOSE': 35,'TRC-DONATIONS':999 ,'700-WAREHOUSE': 19}[location],
         'location' : location,
 
         'current' : Visitors_here_today.aggregate(Sum('count'))['count__sum'],
@@ -133,8 +133,8 @@ def capacity(request):
 
     p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
 
-    locations = {'IRC':'green','TRC':'blue','RCH':'red', '700-CABOOSE': 'black'}
-    capacities = {'IRC':70,'TRC':92,'RCH':88, '700-CABOOSE':35}
+    locations = {'IRC':'green','TRC':'blue','RCH':'red', '700-CABOOSE': 'black', '700-WAREHOUSE': 'yellow'}
+    capacities = {'IRC':70,'TRC':92,'RCH':88, '700-CABOOSE':35, '700-WAREHOUSE': 19}
     for location in locations:
         x = [useastern(x.timestamp) for x in V.filter(location=location)]
         y = [y.count for y in V.filter(location=location)]
@@ -176,7 +176,7 @@ def visitors_hourly(request, location=''):
     if not request.user.is_authenticated:
         return redirect('HOME')
     # HARDCODED STUFF - LOCATION
-    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS']:
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS','700-WAREHOUSE']:
         return redirect('HOME')
     else:
         location = location.upper()
