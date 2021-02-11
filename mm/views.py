@@ -89,3 +89,17 @@ def mmsubmit(request):
     else:
         return redirect('../')
     return HttpResponse(x)
+
+
+
+from .models import ExpandedMaterialMovement
+
+def rawdata(request):
+    E = ExpandedMaterialMovement.objects.all()
+    print('\n\n\n\n',dict(vars(E[0])).keys(),'\n\n\n\n')
+    for i in E:
+        temp = dict(vars(i))
+        for j in temp:
+            print(temp[j], end=',')
+        print()
+    return HttpResponse('WORKING')
