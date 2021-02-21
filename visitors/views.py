@@ -322,3 +322,57 @@ def visitors_hourly(request, location=''):
         'chartJS_4' : json.dumps(chartJS_4),
     }
     return render(request,'visitors/hourly.html',return_dict)
+
+
+
+####################################
+######### TEMP FOR IVAN - Estimating CAPACITY
+####################################
+def estimated_capacity(request, location=''):
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+    # HARDCODED STUFF - LOCATION
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS','700-WAREHOUSE']:
+        return redirect('HOME')
+    else:
+        location = location.upper()
+
+
+
+    start_date,end_date = start_end_date(request.GET)
+
+    # Segment 1 : The Pivot table for the chart  ############################
+    QUERY_1 = Visitors.objects.filter(location=location, timestamp__range=(start_date,end_date)) \
+        .annotate( tr_hour =Trunc('timestamp',kind='hour', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('tr_hour').annotate(tr_hour_sum=Sum('count'))
+    print(len(QUERY_1))
+    try:
+        df = pd.DataFrame(data=list(QUERY_1),columns=list(QUERY_1[0].keys()))
+        df['hour'] = df['tr_hour'].dt.hour
+        df['date'] = df['tr_hour'].dt.date
+        df_1 = df.pivot(index='date',columns='hour',values='tr_hour_sum'  ).fillna('0')
+        print(df)
+
+    except:
+        df_1 = pd.DataFrame(columns=['No Table Data in this range'])
+
+    finally:
+        # RETURN THE TABLE TO THE USER IF NEEDED !!!!!!!!!!!!!!!
+        # PARSER SECTION
+        # if 'download' in request.GET:
+        #     if request.GET['download'] == 'CSV':
+        #         # PANDAS MANUAL RETURN THE OBJECT!
+        #         response = HttpResponse(content_type='text/csv')
+        #         response['Content-Disposition'] = 'attachment; filename=raw_data_export.csv'
+        #         df_1.to_csv(path_or_buf=response)
+        #         return response
+
+        df_1_html = df_1.to_html(classes='table table-sm table-striped text-center')
+
+
+
+
+
+
+    return HttpResponse(df_1_html)

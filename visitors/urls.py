@@ -9,6 +9,7 @@ urlpatterns = [
     path('submit/', submit, name='submit'),
     path('capacity/', capacity, name='capacity'),
     path('hourly/<slug:location>/', visitors_hourly, name='visitors_hourly'),
+    path('estimated_capacity/<slug:location>/', estimated_capacity, name='estimated_capacity'),    
 
     # PUT ALL VIEW ABOVE THIS OR ELSR THE BELOW VIEW HITS AND RETURNS HOME!
     path('<slug:location>/', VISITORS, name='VISITORS'),
