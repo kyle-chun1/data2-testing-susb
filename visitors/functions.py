@@ -54,3 +54,21 @@ def start_end_date(GET, type='month'):
 
 
     return start_date, end_date
+
+
+
+
+#####################################################
+# Function to get simulated Capacity of a Visitors OBject and Write its 'capcity' field to the running total of the day / Capacity of it locations
+#####################################################
+from visitors.models import Visitors
+from django.db.models import Sum
+
+def capacity_generate(x):
+
+    capacities = {'IRC':70,'TRC':92,'RCH':88, '700-CABOOSE':35, '700-WAREHOUSE': 19, 'TEST':999, 'DDO':999}
+
+    QUERY = Visitors.objects.filter(location=x.location, timestamp__range=(useastern_start(x.timestamp), useastern(x.timestamp))).aggregate(Running_total=Sum('count'))
+    x.capacity = QUERY['Running_total'] / capacities[x.location]
+    x.save()
+    return x.capacity
