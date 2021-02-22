@@ -8,3 +8,5 @@ class Visitors(models.Model):
     flr_email = models.CharField(max_length=64)
     count = models.IntegerField()
     location = models.CharField(max_length=64)
+
+    capacity = models.FloatField(null=True)
