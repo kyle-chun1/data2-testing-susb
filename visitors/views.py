@@ -8,7 +8,7 @@ from visitors.models import Visitors
 from django.db.models import Sum, Count, DateTimeField
 from django.db.models.functions import Trunc, Extract
 
-from visitors.functions import useastern,useastern_start, useastern_end, start_end_date
+from visitors.functions import useastern,useastern_start, useastern_end, start_end_date, capacity_generate
 
 import pytz
 import json
@@ -48,7 +48,9 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
 
     ##############################
     if count != 0 :
-        Visitors(timestamp=timezone.now(),flr_email=flr_email,count=count,location=location).save()
+        RECORD = Visitors(timestamp=timezone.now(),flr_email=flr_email,count=count,location=location)
+        RECORD.save()
+        capacity_generate(RECORD)
 
     return redirect('/visitors/' + location.lower() + '/')
 
@@ -84,7 +86,7 @@ def VISITORS(request, location=''):
                 hours_dict[the_hour_str] += i.count
             else:
                 hours_dict[the_hour_str] = i.count
-    print(hours_dict)
+
     # THIS OUTPUT THE HTML TABLE!
     info = pd.DataFrame([{'Hour of Day (Today)': i, 'Total Visitors that Entered': hours_dict[i]}  for i in hours_dict ])
     info = info.to_html(index=False,classes="text-center table table-sm")
@@ -100,8 +102,6 @@ def VISITORS(request, location=''):
         'info': info,
     }
 
-    for i in Visitors_here_today:
-        print(useastern(i.timestamp), i.count)
 
     return render(request, 'visitors/index.html',render_dict)
 
