@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 # Create your views here.
 
 from visitors.models import Visitors
-from django.db.models import Sum, Count, DateTimeField, Avg
+from django.db.models import Sum, Count, DateTimeField, Avg, Max
 from django.db.models.functions import Trunc, Extract
 
 from visitors.functions import useastern,useastern_start, useastern_end, start_end_date, capacity_generate
@@ -330,7 +330,6 @@ def visitors_hourly(request, location=''):
 ####################################
 def capacity_test(request, location=''):
 
-
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
@@ -367,16 +366,60 @@ def capacity_test(request, location=''):
         for n, i in enumerate(list(df_2.index)[::-1]):
             series_list.append( { 'name':weekday_list[i], 'data': [f'{x*100:.0f}%' for x in list(df_2.iloc[n]) ]})
 
+    else:
+        df_1_html = pd.DataFrame(columns=['No Table Data in this range']).to_html()
+        df_2_html = pd.DataFrame(columns=['No Table Data in this range']).to_html()
 
+    # return HttpResponse()
+    return render(request,'visitors/capacity_test.html',{'location':location, 'table1': df_1_html,  'table2':df_2_html, 'hours': json.dumps(list(df_2.columns)) ,  'series_list':json.dumps(series_list)  })
+
+
+
+####################################
+######### TEMP FOR IVAN - Estimating CAPACITY
+####################################
+
+def capacity_max_test(request, location=''):
+
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+    # HARDCODED STUFF - LOCATION
+    if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST','700RNR','700-CABOOSE','TRC-DONATIONS','700-WAREHOUSE']:
+        return redirect('HOME')
+    else:
+        location = location.upper()
+
+    start_date,end_date = start_end_date(request.GET)
+
+    QUERY_1 = Visitors.objects.filter(location=location, timestamp__range=(start_date,end_date)) \
+        .annotate( tr_hour =Trunc('timestamp',kind='hour', tzinfo=pytz.timezone('US/Eastern'))) \
+        .values('tr_hour').annotate(tr_hour_max_capacity=Max('capacity'))
+
+    if len(QUERY_1) >= 0:
+        df = pd.DataFrame(data=list(QUERY_1),columns=list(QUERY_1[0].keys()))
+        df['hour'] = df['tr_hour'].dt.hour
+        df['date'] = df['tr_hour'].dt.date
+        df_1 = df.pivot(index='date',columns='hour',values='tr_hour_max_capacity'  ).fillna('0')
+        df_1_html = df_1.to_html(classes='table table-sm table-striped text-center')
+
+        QUERY_2 = Visitors.objects.filter(location=location, timestamp__range=(start_date,end_date)) \
+            .annotate(week_day_number = Extract('timestamp','week_day', tzinfo=pytz.timezone('US/Eastern')),   hour_number = Extract('timestamp','hour', tzinfo=pytz.timezone('US/Eastern'))  ) \
+            .values('week_day_number', 'hour_number').annotate(week_day_max=Max('capacity')).order_by('week_day_number')
+
+        weekday_list = { 1:'Sunday', 2:'Monday', 3:'Tuesday', 4:'Wednesday', 5:'Thursday', 6:'Friday', 7:'Saturday'}
+        df_2 = pd.DataFrame(data=list(QUERY_2), columns = list(QUERY_2[0].keys()))
+        df_2.sort_values('week_day_number', inplace=True)
+        df_2 = df_2.pivot(index='week_day_number', columns='hour_number', values='week_day_max').fillna(0)
+        df_2_html = df_2.to_html()
+
+        series_list = []
+        for n, i in enumerate(list(df_2.index)[::-1]):
+            series_list.append( { 'name':weekday_list[i], 'data': [f'{x*100:.0f}%' for x in list(df_2.iloc[n]) ]})
 
     else:
         df_1_html = pd.DataFrame(columns=['No Table Data in this range']).to_html()
         df_2_html = pd.DataFrame(columns=['No Table Data in this range']).to_html()
 
-
-
-
-
-
     # return HttpResponse()
-    return render(request,'visitors/capacity_test.html',{'location':location, 'table1': df_1_html,  'table2':df_2_html, 'hours': json.dumps(list(df_2.columns)) ,  'series_list':json.dumps(series_list)  })
+    return render(request,'visitors/capacity_max_test.html',{'location':location, 'table1': df_1_html,  'table2':df_2_html, 'hours': json.dumps(list(df_2.columns)) ,  'series_list':json.dumps(series_list)  })
