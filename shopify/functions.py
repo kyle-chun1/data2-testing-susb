@@ -5,10 +5,16 @@ from bs4 import BeautifulSoup
 import json
 import re
 from time import sleep
+from datetime import datetime
 
+
+#ReportLab
 from reportlab.pdfgen import canvas
 from reportlab.graphics.barcode import code128
-from datetime import datetime
+import io
+
+
+
 
 
 
@@ -85,7 +91,7 @@ def shopify_get_query(endpoint_url='',params={}, endpoint=''):
     while('next' in the_request.links):
         the_request_url = the_request.links['next']['url']
         ####### NOTE !!!!!!!!! - HARDCODED API VERSION NUMBER - NOW 2020/>>>>>07<<<<<<<
-        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2020-10/',S_URL)
+        the_request_url = the_request_url.replace('https://fingerlakesreuse.myshopify.com/admin/api/2021-01/',S_URL)
         print('\n\nBEFORE',the_request.links,'\n')
         the_request = requests.get(the_request_url)
         print('\n\nAFTER',the_request.links,'\n\n\n')
@@ -144,8 +150,8 @@ def rch_post_shopify(itemindex):
             'variants': [{
                 'sku':'R-' + str(query.Location) + '-' + str(query.ItemCode),
                 'compare_at_price': str(query.Retail),
-                # DROP PRICE DISCOUNT HERE FOR NEW PRODUCTS (NOW 50% OFF - Sep 25 2020)
-                'price': f'{float(query.Retail) * 0.50:.2f}',
+                # DROP PRICE DISCOUNT HERE FOR NEW PRODUCTS (NOW 75% OFF - 2021)
+                'price': f'{float(query.Retail) * 0.75:.2f}',
                 'barcode': query.Upc,
                 'inventory_quantity': query.Qoh,
                 'inventory_management': 'shopify',
@@ -170,7 +176,6 @@ def rch_post_shopify(itemindex):
 
 ##################################################
 #BARCODE FUNCTION - IN TEST MODE
-import io
 def rch_barcode_generator(PRICE,BARCODE,TITLE,QUANTITY):
     X = 1.25 * 300
     Y = 0.85 * 300
