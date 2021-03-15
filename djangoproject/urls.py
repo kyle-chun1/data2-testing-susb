@@ -32,6 +32,7 @@ urlpatterns = [
     path('reports/',include('reports.urls')),
     path('shopify/', include('shopify.urls')),
     path('visitors/',include('visitors.urls')),
+    path('pricing/', include('pricing.urls')),
 
 
     path('accounts/', include('allauth.urls')),

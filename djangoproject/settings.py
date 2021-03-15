@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'shopify.apps.ShopifyConfig',
     'visitors.apps.VisitorsConfig',
     'sru.apps.SruConfig',
+    'pricing.apps.PricingConfig',
 
     ################ ALLAUTH RELATED
     'django.contrib.sites',
