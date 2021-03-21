@@ -29,9 +29,10 @@ class Variant(models.Model):   #PROXY FOR BARCODE / SKU (Can be referenced!)
     variant = models.CharField(max_length=16, unique=True)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=8,decimal_places=2)
-    title = models.CharField(max_length=256, default='')    
+    title = models.CharField(max_length=256, default='')
+    code = models.CharField(max_length=4, default='')
     def __str__(self):
-        return self.variant
+        return f'{self.product} - {self.variant}'
 
 class Pricing(models.Model):
     variant = models.ForeignKey(Variant, on_delete=models.PROTECT)
