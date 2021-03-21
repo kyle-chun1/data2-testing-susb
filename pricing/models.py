@@ -19,7 +19,7 @@ class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.PROTECT)
     classifier_choices = [('U','Unit'),('W','White'),('Y','Yellow'),('R','Red'),('O','Orange'),('B','Blue'),('G','Green'),('L','Lavender')]
     classifier = models.CharField(max_length=1, choices = classifier_choices)
-    code = models.CharField(max_length=3, unique=True)
+    code = models.CharField(max_length=3)
     shopify_handle = models.CharField(max_length=5, unique=True)
     title = models.CharField(max_length=256, default='')
     def __str__(self):
