@@ -54,20 +54,20 @@
         </a>
 			<div class="sidebar-content">
 				<div class="sidebar-user">
-					<img src="https://lh6.googleusercontent.com/-3Dvqda7xu9Q/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclvovTXdfJmWWj97nWPtCtAhli9Bw/s96-c/photo.jpg" class="img-fluid rounded-circle mb-2" alt="Linda Miller" />
-					<div class="font-weight-bold">Tova Wilensky</div>
-					<small><a href="#">Logout / Switch Account</a></small>
+					<img src="{{user.socialaccount_set.all.0.get_avatar_url}}" class="img-fluid rounded-circle mb-2" alt="Linda Miller" />
+					<div class="font-weight-bold">{{ request.user.name }}</div>
+					<small><a href="https://accounts.google.com/logout">Logout / Switch Account</a></small>
 				</div>
 
 				<!-- SIDEBAR OPTIONS -->
 				<ul class="sidebar-nav">
 					<li class="sidebar-item active">
-						<a class="sidebar-link" href="calendar.html"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
-							<span class="align-middle">Retail Resouces</span>
+						<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+							<span class="align-middle">PRICING PORTAL</span>
 								<span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
 					</li>
 					<!-- SINGULAR DIRECT LINK -->
-					<li class="sidebar-item"><a href="https://data1.ithacareuse.org/shopify/rchbarcodetest/" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i> <span class="align-middle">RCH Pricing Portal</span></a></li>
+					<li class="sidebar-item"><a href="https://data1.ithacareuse.org/shopify/rchbarcodetest/" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i> <span class="align-middle">RCH Pricing (old)</span></a></li>
 
 
 					<li class="sidebar-header">
@@ -93,8 +93,8 @@
 
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="https://spark.bootlab.io/icons-font-awesome.html">
-                <i class="align-middle mr-2 far fa-fw fa-calendar-alt"></i> <span class="align-middle">Icon Reference</span>
+						<a class="sidebar-link" href="#">
+                <i class="align-middle mr-2 far fa-fw fa-calendar-alt"></i> <span class="align-middle">Icon Reference (inactive)</span>
               </a>
 					</li>
 
@@ -130,7 +130,7 @@
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item dropdown active">
-							<a class="nav-link dropdown-toggle position-relative" href="https://google.com/" id="messagesDropdown" title="Logout / Switch Account">
+							<a class="nav-link dropdown-toggle position-relative" href="https://accounts.google.com/logout" id="messagesDropdown" title="Logout / Switch Account">
                 <i class="align-middle fas fa-sign-out-alt"></i>
               </a>
 						</li>
@@ -260,7 +260,7 @@
 
 				</div>
 			</main>
-			<footer class="footer">
+			<!-- <footer class="footer">
 				<div class="container-fluid">
 					<div class="row text-muted">
 						<div class="col-8 text-left">
@@ -279,10 +279,10 @@
 								</li>
 							</ul>
 						</div>
-						<div class="col-4 text-right"><p class="mb-0">&copy; 2021 - Spark</p></div>
+						<div class="col-4 text-right"><p class="mb-0">&copy; 2021</p></div>
 					</div>
 				</div>
-			</footer>
+			</footer> -->
 		</div>
 
 	</div>
