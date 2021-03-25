@@ -7,127 +7,270 @@
 
 
 {% block content %}
+
+
 <div class="row">
-  <div class="col-12 col-lg-8">
-    <div class="card">
-      <h1>{{message}}</h1>
-      <div class="tab" style='background:#CCC'>
-      	<ul class="nav nav-tabs" role="tablist">
-      		<li class="nav-item"><a class="nav-link active" href="#tab-1" data-toggle="tab" role="tab" aria-selected="true">UNIT Priced</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-2" data-toggle="tab" role="tab" aria-selected="false">WHITE</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">GREEN</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">RED</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">YELLOW</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">ORANGE</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">LAVENDER</a></li>
-      		<li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" aria-selected="false">BLUE</a></li>
-      	</ul>
-      	<div class="tab-content">
-      		<div class="tab-pane active" id="tab-1" role="tabpanel">
-      			<h2 class="pt-2 pb-2">UNIT Priced</h2>
-            <p class="pb-2">Unit Priced Items. These codes must be printed on WHITE tags.</p>
-            <button class='btn btn-lg white-tag'>Books</button>
-            <button class='btn btn-lg white-tag'>Music</button>
-            <button class='btn btn-lg white-tag'>Movies</button>
-            <button class='btn btn-lg white-tag'>Building Materials</button>
-            <button class='btn btn-lg white-tag'>Doors/Windows</button>
-            <button class='btn btn-lg white-tag'>Lighting</button>
-            <button class='btn btn-lg white-tag'>Tools</button>
-            <button class='btn btn-lg white-tag'>Electronics</button>
-            <button class='btn btn-lg white-tag'>Appliances</button>
+  <div class="col-12">
+		<div class="card" style="background:#eee;">
 
+			<div class="card-body">
+        <div class="tab">
+      		<ul class="nav nav-tabs" role="tablist">
+      			<li class="nav-item"><a class="nav-link active" href="#lavender-tab" data-toggle="tab" role="tab" aria-selected="true">Lavender</a></li>
+      			<li class="nav-item"><a class="nav-link" href="#white-tab" data-toggle="tab" role="tab" aria-selected="false">White</a></li>
+      			<li class="nav-item"><a class="nav-link" href="#unit-tab" data-toggle="tab" role="tab" aria-selected="false">Unit Priced(White)</a></li>
+      		</ul>
+      		<div class="tab-content">
+      			<div class="tab-pane active" id="lavender-tab" role="tabpanel">
+              <p>Lavender Tagged Items with standard prices...</p>
+              <button id="LTBKS" type="button" class="btn lavender-tag btn-lg">Books</button>
+              <button id="LTBMM" type="button" class="btn lavender-tag btn-lg">Building Materials</button>
+              <button id="LTLIT" type="button" class="btn lavender-tag btn-lg">Lighting</button>
+              <button id="LTTLS" type="button" class="btn lavender-tag btn-lg">Tools</button>
+              <button id="LTELC" type="button" class="btn lavender-tag btn-lg">Electronics</button>
+              <button id="LTFUR" type="button" class="btn lavender-tag btn-lg">Furniture</button>
+              <button id="LTAPL" type="button" class="btn lavender-tag btn-lg">Appliances</button>
+              <button id="LTHOW" type="button" class="btn lavender-tag btn-lg">Housewares</button>
+              <button id="LTJWL" type="button" class="btn lavender-tag btn-lg">Jewelry</button>
+              <button id="LTSEA" type="button" class="btn lavender-tag btn-lg">Seasonal</button>
+              <button id="LTACS" type="button" class="btn lavender-tag btn-lg">Accessories</button>
+              <button id="LTCLO" type="button" class="btn lavender-tag btn-lg">Clothing</button>
+              <button id="LTLIN" type="button" class="btn lavender-tag btn-lg">Linens</button>
+              <button id="LTSHO" type="button" class="btn lavender-tag btn-lg">Shoes</button>
+              <button id="LTHOL" type="button" class="btn lavender-tag btn-lg">Holiday</button>
+      			</div>
+      			<div class="tab-pane" id="white-tab" role="tabpanel">
+              <p>White tagged items with standard prices. Use these for items that will not automatically go through the automatic discount system.</p>
+              <button id="WTBKS" type="button" class="btn white-tag btn-lg">Books</button>
+              <button id="WTMOV" type="button" class="btn white-tag btn-lg">Movies</button>
+              <button id="WTMUS" type="button" class="btn white-tag btn-lg">Music</button>
+              <button id="WTBMM" type="button" class="btn white-tag btn-lg">Building Materials</button>
+              <button id="WTLIT" type="button" class="btn white-tag btn-lg">Lighting</button>
+              <button id="WTTLS" type="button" class="btn white-tag btn-lg">Tools</button>
+              <button id="WTELC" type="button" class="btn white-tag btn-lg">Electronics</button>
+              <button id="WTFUR" type="button" class="btn white-tag btn-lg">Furniture</button>
+              <button id="WTAPL" type="button" class="btn white-tag btn-lg">Appliances</button>
+              <button id="WTHOW" type="button" class="btn white-tag btn-lg">Housewares</button>
+              <button id="WTJWL" type="button" class="btn white-tag btn-lg">Jewelry</button>
+              <button id="WTSEA" type="button" class="btn white-tag btn-lg">Seasonal</button>
+              <button id="WTACS" type="button" class="btn white-tag btn-lg">Accessories</button>
+              <button id="WTCLO" type="button" class="btn white-tag btn-lg">Clothing</button>
+              <button id="WTLIN" type="button" class="btn white-tag btn-lg">Linens</button>
+              <button id="WTSHO" type="button" class="btn white-tag btn-lg">Shoes</button>
+              <button id="WTDWS" type="button" class="btn white-tag btn-lg">Doors/Windows</button>
+              <button id="WTLUM" type="button" class="btn white-tag btn-lg">Lumber</button>
+              <button id="WTHOL" type="button" class="btn white-tag btn-lg">Holiday</button>
+      			</div>
+      			<div class="tab-pane" id="unit-tab" role="tabpanel">
+              <p>Unit priced tags: Please print these on white tags.</p>
+              <button id="UTBKS" class="btn unit-tag btn-lg">Books</button>
+              <button id="UTMOV" class="btn unit-tag btn-lg">Movies</button>
+              <button id="UTMUS" class="btn unit-tag btn-lg">Music</button>
+              <button id="UTBMM" class="btn unit-tag btn-lg">Building Materials</button>
+              <button id="UTLIT" class="btn unit-tag btn-lg">Lighting</button>
+              <button id="UTTLS" class="btn unit-tag btn-lg">Tools</button>
+              <button id="UTELC" class="btn unit-tag btn-lg">Electronics</button>
+              <button id="UTAPL" class="btn unit-tag btn-lg">Appliances</button>
+              <button id="UTHOW" class="btn unit-tag btn-lg">Housewares</button>
+              <button id="UTJWL" class="btn unit-tag btn-lg">Jewelry</button>
+              <button id="UTSEA" class="btn unit-tag btn-lg">Seasonal</button>
+              <button id="UTACS" class="btn unit-tag btn-lg">Accessories</button>
+              <button id="UTCLO" class="btn unit-tag btn-lg">Clothing</button>
+              <button id="UTLIN" class="btn unit-tag btn-lg">Linens</button>
+              <button id="UTSHO" class="btn unit-tag btn-lg">Shoes</button>
+              <button id="UTDWS" class="btn unit-tag btn-lg">Doors/Windows</button>
+              <button id="UTLUM" class="btn unit-tag btn-lg">Lumber</button>
+              <button id="UTHOL" class="btn unit-tag btn-lg">Holiday</button>
+      			</div>
       		</div>
-      		<div class="tab-pane" id="tab-2" role="tabpanel">
-      			<h2 class="pt-2 pb-2">WHITE Tags</h2>
-            <p class="pb-2">Unit Priced Items. These codes must be printed on WHITE tags.</p>
-            <button class='btn btn-lg white-tag'>Books</button>
-            <button class='btn btn-lg white-tag'>Music</button>
-            <button class='btn btn-lg white-tag'>Movies</button>
-            <button class='btn btn-lg white-tag'>Building Materials</button>
-            <button class='btn btn-lg white-tag'>Doors/Windows</button>
-            <button class='btn btn-lg white-tag'>Lighting</button>
-            <button class='btn btn-lg white-tag'>Tools</button>
-            <button class='btn btn-lg white-tag'>Electronics</button>
-            <button class='btn btn-lg white-tag'>Appliances</button>
-
-      		</div>
-      		<div class="tab-pane" id="tab-3" role="tabpanel">
-      			<h4 class="tab-title">One more</h4>
-            <p class="pb-2">Unit Priced Items. These codes must be printed on WHITE tags.</p>
-            <button class='btn btn-lg btn-primary'>Books</button>
-            <button class='btn btn-lg btn-primary'>Music</button>
-            <button class='btn btn-lg btn-primary'>Movies</button>
-            <button class='btn btn-lg btn-primary'>Building Materials</button>
-            <button class='btn btn-lg btn-primary'>Doors/Windows</button>
-            <button class='btn btn-lg btn-primary'>Lighting</button>
-            <button class='btn btn-lg btn-primary'>Tools</button>
-            <button class='btn btn-lg btn-primary'>Electronics</button>
-            <button class='btn btn-lg btn-primary'>Appliances</button>
-
       	</div>
-      </div>
-
-    </div>
-    </div>
-
-
+			</div>
+		</div>
 </div>
 </div>
-
-<!-- <div class="row">
-  <div class="card"><h1>GOOGLE</h1></div>
-</div> -->
-
 <div class="row">
-  <div class="col-12 col-lg-8">
+<form>
+  <div class="col-12">
     <div class="card">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Select Variant (Price Point) & Quantity:</h5>
+			</div>
+			<div class="card-body">
+        <div class="row">
+          <div class="col">
+      			<select class="form-control mb-3" name="variant" id="targetVariant">
+      				<option selected="">Please select a Tag above</option>
+      			</select>
+          </div>
+          <div class="col">
+            <select class="form-control mb-3" name="quantity" id="targetQuantity">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="15">15 - (BULK)</option>
+              <option value="20">20 - (BULK)</option>
+              <option value="25">25 - (BULK)</option>
+              <option value="30">30 - (BULK)</option>
+              <option value="35">35 - (BULK)</option>
+              <option value="40">40 - (BULK)</option>
+              <option value="45">45 - (BULK)</option>
+              <option value="50">50 - (BULK)</option>
+              <option value="60">60 - (BULK)</option>
+              <option value="70">70 - (BULK)</option>
+              <option value="80">80 - (BULK)</option>
+              <option value="100">100- (BULK)</option>
+            </select>
+          </div>
+          <div class="row mt-4">
+            <div class="col-3">
+              <input class="form-check-input" name="inventory" id="targetInventory" type="checkbox" value="inventory" checked><span class="ml-2 form-check-label">Add to Inventory</span>
+            </div>
+            <div class="col-3">
+              <input class="form-check-input" name="print" id="targetPrint" type="checkbox" value="print" checked><span class="ml-2 form-check-label">Print Labels</span>
+            </div>
+            <div class="col">
+              <button type="button" id="targetSubmit" class="btn btn-lg btn-primary form-control" disabled>SUBMIT</button>
+            </div>
+          </div>
 
-      <div class="row mt-5"><!-- THE THREE OPTION ROW -->
-        <div class="col form-group"><p>Price Point/Variant:</p><select class="form-control" id="targetBarcode"><option value="98900050">$0.5</option><option value="98900075">$0.75</option><option value="98900100">$1</option><option value="98900200">$2</option><option value="98900300">$3</option><option value="98900400">$4</option><option value="98900500">$5</option><option value="98900700">$7</option><option value="98901000">$10</option><option value="98901200">$12</option><option value="98901500">$15</option><option value="98902000">$20</option><option value="98902500">$25</option><option value="98903000">$30</option><option value="98903500">$35</option><option value="98904000">$40</option><option value="98904500">$45</option><option value="98905000">$50</option><option value="98905500">$55</option><option value="98906000">$60</option><option value="98906500">$65</option><option value="98907000">$70</option><option value="98907500">$75</option><option value="98908000">$80</option><option value="98908500">$85</option><option value="98909000">$90</option><option value="98909500">$95</option><option value="98910000">$100</option><option value="98911000">$110</option><option value="98912000">$120</option><option value="98913000">$130</option><option value="98914000">$140</option><option value="98915000">$150</option><option value="98917500">$175</option><option value="98920000">$200</option><option value="98922500">$225</option><option value="98925000">$250</option><option value="98927500">$275</option><option value="98930000">$300</option><option value="98932500">$325</option><option value="98935000">$350</option><option value="98937500">$375</option><option value="98940000">$400</option><option value="98942500">$425</option><option value="98945000">$450</option><option value="98947500">$475</option><option value="98950000">$500</option><option value="98975000">$750</option></select></div>
-        <div class="col form-group"><p>Select Quantity:</p>
-          <select name="quantity" id="targetQuantity" class="form-control">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="15">15 - (BULK)</option>
-            <option value="20">20 - (BULK)</option>
-            <option value="25">25 - (BULK)</option>
-            <option value="30">30 - (BULK)</option>
-            <option value="35">35 - (BULK)</option>
-            <option value="40">40 - (BULK)</option>
-            <option value="45">45 - (BULK)</option>
-            <option value="50">50 - (BULK)</option>
-            <option value="60">60 - (BULK)</option>
-            <option value="70">70 - (BULK)</option>
-            <option value="80">80 - (BULK)</option>
-            <option value="100">100- (BULK)</option>
-          </select>
+
         </div>
-        <div class="col form-group">
-          <div class="form-check row">
-            <div class="col">
-              <input class="form-check-input" type="checkbox" value="" id="targetAddtoInventory" checked="">
-              <label class="form-check-label" for="targetAddtoInventory">Add to Inventory</label>
-            </div>
-            <div class="col">
-              <input class="form-check-input" type="checkbox" value="" id="targetPrintTags" checked="">
-              <label class="form-check-label" for="targetPrintTags">Print Tag(s)</label>
-            </div>
-          </div><p></p>
-          <button type="button" onclick="toggleInventory()" class="btn border btn-secondary form-control" id="targetPrint">PRINT + ADD TO INVENTORY</button></div>
-      </div>
 
 
-    </div>
+			</div>
+		</div>
+  </div>
+
+
+
+</form>
+</div>
+
+<!-- THE TABLE -->
+<div class="row">
+  <div class="col-12">
+    <div class="card pt-2 mb-2">
+				<h3 class="text-center" id="message">(Select a Tag to get started)</h3>
+		</div>
   </div>
 </div>
 
+<!-- THE TABLE -->
+<div class="row mt-3"><div class="col-12"><div class="card pt-2 mb-2" id="targetTable"></div></div></div>
+
+
+{% endblock %}
+
+
+
+{% block javascript_end %}
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+
+<script type="text/javascript">
+// PULL OBJECTS FROM DJANGO
+let products_std = {{products_std | safe}}
+let products_unit = {{products_unit | safe}}
+let price_progression = [1,2,3,4,5,6,7,8,9,10,  12,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,   150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,  1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500]
+let color_reference = {'W':'White','U':'Unit Priced (White)', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
+//INITIALIZE THE targetOBJECT which holds values for submit check with DEFAULTS
+var targetOBJECT = {
+  "variant" : "satan",
+  "quantity" : "1",
+  "inventory" : "1",
+  "print" : "1",
+  "handle" : "",
+}
+
+
+
+function buttonStd(){
+
+  $('#targetVariant').html('')
+  for(i=0;i<price_progression.length;i++){
+    $('#targetVariant').append('<option value="'+ targetOBJECT['handle'] + price_progression[i] + '">$ ' + price_progression[i] + '</option>')
+  }
+
+  targetOBJECT['handle'] = $(this).prop('id')
+  $('#targetSubmit').removeAttr('disabled')
+
+  $(".selected-button").removeClass('selected-button')
+  $(this).addClass('selected-button')
+
+  color = color_reference[$(this).prop('id')[0]]
+  $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
+
+}
+
+function buttonUnit(){
+  targetOBJECT['handle'] = $(this).prop('id')
+  $('#targetSubmit').removeAttr('disabled')
+
+  $(".selected-button").removeClass('selected-button')
+  $(this).addClass('selected-button')
+
+  A = products_unit[$(this).prop('id')]
+  $('#targetVariant').html('')
+  for(i=0;i<A.length;i++){
+    $('#targetVariant').append('<option value="'+ A[i][0] + '">' + A[i][1] + '  -  [$ ' + A[i][2] + ']</option>')
+  }
+  color = color_reference[$(this).prop('id')[0]]
+  $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
+
+}
+
+
+
+function submitFunction(){
+  // DO THE CHECKS - inventory option
+  if($("#targetInventory").prop("checked") == true ){
+    targetOBJECT['inventory'] = "1"
+  }else{
+    targetOBJECT['inventory'] = "0"
+  }
+  //Check the Print option
+  if($("#targetPrint").prop("checked") == true ){
+    targetOBJECT['print'] = "1"
+  }else{
+    targetOBJECT['print'] = "0"
+  }
+  targetOBJECT['quantity'] = $('#targetQuantity').prop('value')
+  targetOBJECT['variant'] = $('#targetVariant').prop('value')
+
+  print_url = '/pricing/submit?' + jQuery.param(targetOBJECT)
+  printJS(print_url)
+}
+
+
+
+function generateProductsStd(){
+
+}
+
+
+
+function generateProductsUnit(HANDLE){
+
+}
+
+
+$(document).ready(function(){
+    $("#targetSubmit").on("click", submitFunction)
+
+    $(".unit-tag").on('click', buttonUnit)
+    $(".white-tag").on('click', buttonStd)
+    $(".lavender-tag").on('click', buttonStd)
+    $("#targetSubmit").prop('disabled','true')
+
+})
+
+</script>
 
 {% endblock %}

@@ -4,6 +4,10 @@ from django.http import HttpResponse, FileResponse
 
 from pricing.functions import barcode_reuse_1
 
+from pricing.models import *
+import json
+
+
 
 # Create your views here.
 def tester2(request, x=1):
@@ -32,6 +36,10 @@ def tester_submit(request):
 
 
 def pricing_portal(request, location):
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
     # LOCATION SLUG CHECK
     if location.upper() in ['TRMC', 'TRC', 'TRMC']:
         location = 'trmc'
@@ -39,34 +47,49 @@ def pricing_portal(request, location):
         return(redirect('/'))
 
     #MESSAGE CHECK
-    if 'message' in request.session and request.session['message'] == 'success':
-        message = 'SUCCESS'
-        request.session['message'] = ''
-    else:
-        request.session['message'] = ''
-        message=''
+    # if 'message' in request.session and request.session['message'] == 'success':
+    #     message = 'SUCCESS'
+    #     request.session['message'] = ''
+    # else:
+    #     request.session['message'] = ''
+    #     message='Glenn'
 
-    print(request.user.email)
+    products_std = [i.shopify_handle for i in Product.objects.filter(classifier__in=['W','R','G','B','Y','L','O'])]
+    products_unit = {}
+    V = Variant.objects.filter(product__classifier='U').values('variant','title','price')
 
-    return render(request, 'pricing/pricing_trmc.html',{'message': message})
-
-
-
-
-
-def pricing_submit(request, location):
-    # LOCATION SLUG CHECK
-    if location.upper() in ['TMRC', 'TRC', 'TRMC']:
-        location = 'trmc'
-    else:
-        return(redirect('/'))
-
-    #ANALYZE THE QUANTITY
+    for i in V:
+        try:
+            if i['variant'][0].upper() != 'K':
+                products_unit[i['variant'][0:5]].append([ i['variant'],i['title'],f"{i['price']:.2f}" ])
+        except:
+            products_unit[i['variant'][0:5]] = list()
 
 
-    #ANALYZE THE POST VARIABLES
+    return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit})
 
 
 
-    request.session['messsage'] = 'success'
-    return redirect(reverse('pricing:portal', kwargs={'location': location}))
+
+def pricing_submit(request):
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    try:
+        VARIANT = request.GET['variant']
+        PRINT = bool(int(request.GET['print']))
+        INVENTORY = bool(int(request.GET['inventory']))
+        QUANTITY = int(request.GET['quantity'])
+
+        # color_reference = {'W':'WHITE','U':'WHITE (UP)', 'R':'RED', 'B':'BLUE', 'Y':'YELLOW', 'G':'GREEN', 'O':'ORANGE', 'L':'LAVENDER'}
+
+        V = Variant.objects.get(variant=VARIANT)
+
+        X = barcode_reuse_1(VARIANT,V['price'], V['title'], 'G', 'GIJE', QUANTITY)
+        return FileResponse(X, as_attachment=False, filename="barcode.pdf")
+
+    except:
+        return HttpResponse('ERROR')
+
+    # barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY)

@@ -7,7 +7,7 @@ app_name='pricing'
 
 urlpatterns = [
     path('portal/<slug:location>/', pricing_portal, name='portal'),
-    path('portal/<slug:location>/submit/', pricing_submit, name='submit'),
+    path('submit/', pricing_submit, name='submit'),
 
     path('tester2/', tester2, name='tester2'),
     path('tester3/', tester3, name='tester3'),
