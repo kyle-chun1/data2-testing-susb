@@ -193,16 +193,16 @@ var targetOBJECT = {
 
 function buttonStd(){
 
-  $('#targetVariant').html('')
-  for(i=0;i<price_progression.length;i++){
-    $('#targetVariant').append('<option value="'+ targetOBJECT['handle'] + price_progression[i] + '">$ ' + price_progression[i] + '</option>')
-  }
-
   targetOBJECT['handle'] = $(this).prop('id')
   $('#targetSubmit').removeAttr('disabled')
 
   $(".selected-button").removeClass('selected-button')
   $(this).addClass('selected-button')
+
+  $('#targetVariant').html('')
+  for(i=0;i<price_progression.length;i++){
+    $('#targetVariant').append('<option id="OP' + i + '" value="'+ targetOBJECT['handle'] + price_progression[i] + '">$ ' + price_progression[i] + '</option>')
+  }
 
   color = color_reference[$(this).prop('id')[0]]
   $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
@@ -219,8 +219,9 @@ function buttonUnit(){
   A = products_unit[$(this).prop('id')]
   $('#targetVariant').html('')
   for(i=0;i<A.length;i++){
-    $('#targetVariant').append('<option value="'+ A[i][0] + '">' + A[i][1] + '  -  [$ ' + A[i][2] + ']</option>')
+    $('#targetVariant').append('<option id="OP' + i + '" value="'+ A[i][0] + '">' + A[i][1] + '  -  [$ ' + A[i][2] + ']</option>')
   }
+
   color = color_reference[$(this).prop('id')[0]]
   $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
 
@@ -229,7 +230,7 @@ function buttonUnit(){
 
 
 function submitFunction(){
-  // DO THE CHECKS - inventory option
+  // DO THE CHECKS - inventory option buttons
   if($("#targetInventory").prop("checked") == true ){
     targetOBJECT['inventory'] = "1"
   }else{
@@ -241,34 +242,74 @@ function submitFunction(){
   }else{
     targetOBJECT['print'] = "0"
   }
+  // Initialize those check box values
   targetOBJECT['quantity'] = $('#targetQuantity').prop('value')
   targetOBJECT['variant'] = $('#targetVariant').prop('value')
 
+
+  //Generate the Print URL
   print_url = '/pricing/submit?' + jQuery.param(targetOBJECT)
-  printJS(print_url)
+
+  //Get the current message on the Message label
+  current_message = $('#message').html()
+
+  //Decide if you want to print and then Submit Messages appropriately
+  if(targetOBJECT['print']=='1' && targetOBJECT['inventory']=='0'){
+    // alert('I selected to PRINT but NOT INVENTORY')
+    $('#message').html(current_message + ' Printed Sucessfully (Not Added to Inventory)')
+    printJS(print_url)
+  }
+
+  if(targetOBJECT['print']=='1' && targetOBJECT['inventory']=='1'){
+    // alert('I selected PRINT AND INVENTORY')
+    $('#message').html(current_message + ' >> SUCCESS: Added to Inventory & Printed')
+    printJS(print_url)
+  }
+
+  if(targetOBJECT['print']=='0' && targetOBJECT['inventory']=='1'){
+    $('#message').html(current_message + ' >> (Submitting to Inventory only)...not done yet')
+    /////////////////////////////
+    xhr = new XMLHttpRequest();
+    xhr.open('get', print_url)
+    xhr.send()
+
+    $("#targetMessage").html("")
+
+    xhr.onreadystatechange = function(){
+      if (xhr.readyState === 4){
+    $('#message').html(current_message + ' >> SUCCESS: has been added to Inventory!')
+        // renderTable()
+      }
+    }
+    //////////////////////////
+    //Disable the checkbox
+    $("#targetInventory").prop("checked", false)
+    $("#targetSubmit").prop('disabled', true)
+  }
+
+
+
+
+
 }
 
 
 
-function generateProductsStd(){
-
+function checkboxFunction(){
+  if($("#targetInventory").prop("checked") == false && $("#targetPrint").prop("checked") == false  ){
+    $('#targetSubmit').prop('disabled','true')
+  }else if($('#targetSubmit').prop('disabled')==true){
+    $('#targetSubmit').removeAttr('disabled')
+  }
 }
-
-
-
-function generateProductsUnit(HANDLE){
-
-}
-
 
 $(document).ready(function(){
-    $("#targetSubmit").on("click", submitFunction)
-
     $(".unit-tag").on('click', buttonUnit)
     $(".white-tag").on('click', buttonStd)
     $(".lavender-tag").on('click', buttonStd)
+    $("#targetSubmit").on("click", submitFunction)
     $("#targetSubmit").prop('disabled','true')
-
+    $('.form-check-input').on('click',checkboxFunction)
 })
 
 </script>

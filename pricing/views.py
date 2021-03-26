@@ -71,25 +71,30 @@ def pricing_portal(request, location):
 
 
 
+
+
 def pricing_submit(request):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    try:
+    if 1==1:
         VARIANT = request.GET['variant']
         PRINT = bool(int(request.GET['print']))
         INVENTORY = bool(int(request.GET['inventory']))
         QUANTITY = int(request.GET['quantity'])
 
-        # color_reference = {'W':'WHITE','U':'WHITE (UP)', 'R':'RED', 'B':'BLUE', 'Y':'YELLOW', 'G':'GREEN', 'O':'ORANGE', 'L':'LAVENDER'}
+        color_reference = {'W':'WHITE','U':'WHITE (Unit)', 'R':'RED', 'B':'BLUE', 'Y':'YELLOW', 'G':'GREEN', 'O':'ORANGE', 'L':'LAVENDER'}
 
         V = Variant.objects.get(variant=VARIANT)
 
-        X = barcode_reuse_1(VARIANT,V['price'], V['title'], 'G', 'GIJE', QUANTITY)
+        if V.title[0] == '$':
+            TITLE = V.product
+        else:
+            TITLE = V.title
+
+        X = barcode_reuse_1(VARIANT, V.price, V.title, color_reference[V.variant[0]], 'G I J E', QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
 
-    except:
-        return HttpResponse('ERROR')
 
     # barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY)

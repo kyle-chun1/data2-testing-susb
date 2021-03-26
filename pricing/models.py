@@ -22,8 +22,8 @@ class Product(models.Model):
     code = models.CharField(max_length=3)
     shopify_handle = models.CharField(max_length=5, unique=True)
     title = models.CharField(max_length=256, default='')
-    def __str__(self):
-        return self.shopify_handle
+    def __str__(self):############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
+        return self.title ############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
 
 class Variant(models.Model):   #PROXY FOR BARCODE / SKU (Can be referenced!)
     variant = models.CharField(max_length=16, unique=True)
