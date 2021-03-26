@@ -97,8 +97,6 @@ def pricing_submit(request):
         STAFF_ID = str(request.user.email).split('@fingerlakesreuse.org')[0]
         submission = Pricing.objects.create(variant=Variant.objects.get(variant=VARIANT), quantity=QUANTITY, staff_id=STAFF_ID, print=PRINT, inventory=INVENTORY)
 
-        for i in range(100): print(STAFF_ID)
-
         #GENERATE CODE
         X = barcode_reuse_1(VARIANT, V.price, TITLE, color_reference[V.variant[0]], ' '.join(VARIANT[:5]), QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
