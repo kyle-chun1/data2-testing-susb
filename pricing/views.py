@@ -78,7 +78,7 @@ def pricing_submit(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    if 1==1:
+    try:
         VARIANT = request.GET['variant']
         PRINT = bool(int(request.GET['print']))
         INVENTORY = bool(int(request.GET['inventory']))
@@ -89,12 +89,26 @@ def pricing_submit(request):
         V = Variant.objects.get(variant=VARIANT)
 
         if V.title[0] == '$':
-            TITLE = V.product
+            TITLE = str(V.product)
         else:
-            TITLE = V.title
+            TITLE = str(V.title)
 
-        X = barcode_reuse_1(VARIANT, V.price, V.title, color_reference[V.variant[0]], 'G I J E', QUANTITY)
+        #Submit to DB!!!
+        STAFF_ID = str(request.user.email).split('@fingerlakesreuse.org')[0]
+        submission = Pricing.objects.create(variant=Variant.objects.get(variant=VARIANT), quantity=QUANTITY, staff_id=STAFF_ID, print=PRINT, inventory=INVENTORY)
+
+        for i in range(100): print(STAFF_ID)
+
+        #GENERATE CODE
+        X = barcode_reuse_1(VARIANT, V.price, TITLE, color_reference[V.variant[0]], ' '.join(VARIANT[:5]), QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
 
+
+
+
+    except:
+
+        E = barcode_reuse_1('ERORR', 0, 'ERROR', 'ERROR', 'ERROR', 1)
+        return FileResponse(E, as_attachment=False, filename="barcode-ERROR.pdf")
 
     # barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY)

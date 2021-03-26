@@ -256,18 +256,18 @@ function submitFunction(){
   //Decide if you want to print and then Submit Messages appropriately
   if(targetOBJECT['print']=='1' && targetOBJECT['inventory']=='0'){
     // alert('I selected to PRINT but NOT INVENTORY')
-    $('#message').html(current_message + ' Printed Sucessfully (Not Added to Inventory)')
+    $('#message').html('Printed Sucessfully (NOT Added to Inventory)')
     printJS(print_url)
   }
 
   if(targetOBJECT['print']=='1' && targetOBJECT['inventory']=='1'){
     // alert('I selected PRINT AND INVENTORY')
-    $('#message').html(current_message + ' >> SUCCESS: Added to Inventory & Printed')
+    $('#message').html('>> SUCCESS: Added to Inventory & Printed')
     printJS(print_url)
   }
 
   if(targetOBJECT['print']=='0' && targetOBJECT['inventory']=='1'){
-    $('#message').html(current_message + ' >> (Submitting to Inventory only)...not done yet')
+    $('#message').html(' >> (Submitting to Inventory only)...in progress')
     /////////////////////////////
     xhr = new XMLHttpRequest();
     xhr.open('get', print_url)
@@ -277,7 +277,7 @@ function submitFunction(){
 
     xhr.onreadystatechange = function(){
       if (xhr.readyState === 4){
-    $('#message').html(current_message + ' >> SUCCESS: has been added to Inventory!')
+    $('#message').html(' >> SUCCESS: Item has been added to Inventory!')
         // renderTable()
       }
     }
