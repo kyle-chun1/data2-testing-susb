@@ -22,7 +22,7 @@
       		</ul>
       		<div class="tab-content">
       			<div class="tab-pane active" id="blue-tab" role="tabpanel">
-              <p>Lavender Tagged Items with standard prices...</p>
+              <p>BLUE Tagged Items with standard prices...</p>
               <button id="BTBKS" type="button" class="btn blue-tag btn-lg">Books</button>
               <button id="BTBMM" type="button" class="btn blue-tag btn-lg">Building Materials</button>
               <button id="BTLIT" type="button" class="btn blue-tag btn-lg">Lighting</button>
@@ -307,6 +307,7 @@ $(document).ready(function(){
     $(".unit-tag").on('click', buttonUnit)
     $(".white-tag").on('click', buttonStd)
     $(".lavender-tag").on('click', buttonStd)
+    $(".blue-tag").on('click',buttonStd)
     $("#targetSubmit").on("click", submitFunction)
     $("#targetSubmit").prop('disabled','true')
     $('.form-check-input').on('click',checkboxFunction)
