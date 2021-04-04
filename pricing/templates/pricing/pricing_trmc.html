@@ -6,13 +6,21 @@
 {% block header_title %}TRMC - Pricing Portal (BETA){% endblock %}
 
 
-{% block content %}
+{% block active_link %}
+<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+  <span class="align-middle">TRMC Pricing Portal</span>
+    <span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
+{% endblock %}
 
+
+
+{% block content %}
 
 <div class="row">
   <div class="col-12">
 		<div class="card" style="background:#eee;">
 
+      {% block TAGS_TEMP %}
 			<div class="card-body">
         <div class="tab">
       		<ul class="nav nav-tabs" role="tablist">
@@ -85,6 +93,8 @@
       		</div>
       	</div>
 			</div>
+      {% endblock %}
+
 		</div>
 </div>
 </div>

@@ -42,7 +42,9 @@ def pricing_portal(request, location):
 
     # LOCATION SLUG CHECK
     if location.upper() in ['TRMC', 'TRC', 'TRMC']:
-        location = 'trmc'
+        LOCATION = 'T'
+    elif location.upper() in ['IRC', 'IRMC']:
+        LOCATION = 'I'
     else:
         return(redirect('/'))
 
@@ -54,9 +56,9 @@ def pricing_portal(request, location):
     #     request.session['message'] = ''
     #     message='Glenn'
 
-    products_std = [i.shopify_handle for i in Product.objects.filter(classifier__in=['W','R','G','B','Y','L','O'])]
+    products_std = [i.shopify_handle for i in Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier__in=['W','R','G','B','Y','L','O'])]
     products_unit = {}
-    V = Variant.objects.filter(product__classifier='U').values('variant','title','price')
+    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U').values('variant','title','price')
 
     for i in V:
         try:
@@ -66,7 +68,10 @@ def pricing_portal(request, location):
             products_unit[i['variant'][0:5]] = list()
 
 
-    return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit})
+    if LOCATION=='T':
+        return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit})
+    elif LOCATION == 'I':
+        return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit})
 
 
 

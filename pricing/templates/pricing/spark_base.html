@@ -79,9 +79,11 @@
 				<!-- SIDEBAR OPTIONS -->
 				<ul class="sidebar-nav">
 					<li class="sidebar-item active">
-						<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
-							<span class="align-middle">PRICING PORTAL</span>
+						{% block active_link %}
+						<a class="sidebar-link" href="/"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+							<span class="align-middle">Home</span>
 								<span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
+						{% endblock %}
 					</li>
 					<!-- SINGULAR DIRECT LINK -->
 					<li class="sidebar-item"><a href="https://data1.ithacareuse.org/shopify/rchbarcodetest/" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i> <span class="align-middle">RCH Pricing (old)</span></a></li>
