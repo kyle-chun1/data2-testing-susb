@@ -41,7 +41,7 @@ def pricing_portal(request, location):
         return redirect('HOME')
 
     # LOCATION SLUG CHECK
-    if location.upper() in ['TRMC', 'TRC', 'TRMC']:
+    if location.upper() in ['TRMC', 'TRC', 'TRMC', 'RMC']:
         LOCATION = 'T'
     elif location.upper() in ['IRC', 'IRMC']:
         LOCATION = 'I'
