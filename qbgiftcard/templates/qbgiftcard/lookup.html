@@ -1,0 +1,117 @@
+{% extends 'pricing/spark_base.html' %}
+
+{% block title %}Quickbooks Gift Cards - LOOKUP{% endblock %}
+
+
+{% block header_title %}Quickbooks Gift Cards - LOOKUP{% endblock %}
+
+
+
+{% block active_link %}
+<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+  <span class="align-middle">TRMC Pricing Portal</span>
+    <span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row">
+	<div class="col-12 col-xl-6">
+
+    <div class="card">
+			<div class="card-header">
+				<h5 class="card-title">Select the Quickbooks POS customer's Temporaryu Code</h5>
+				<h6 class="pt-3 card-subtitle text-muted">Note: This is a temporary system to pull giftcard codes for customers in in Quickbooks POS. New giftcards will be issues directly to customers</h6>
+			</div>
+			<div class="card-body">
+				<form>
+					<div class="form-group">
+						<label class="form-label">Customer Name (Quikcbooks POS)</label><br>
+						<select name="XXX" id="XXX">
+              <option>Last Name, First Name, 607-279-8981</option>
+              <option>Last Name, First Name, 607-279-8981</option>
+              <option>Last Name, First Name, 607-279-8981</option>
+            </select>
+					</div>
+					<div class="form-group pt-3 pb-3">
+            <p class="pt-1">Staff ID: <strong>{{request.user.email}}</strong></p>
+						<label class="custom-control custom-checkbox">
+							<input type="checkbox" required="true" class="custom-control-input">
+							<span class="custom-control-label">I confirm the details and correct a log will be maintained of me viewing the giftcard</span>
+						</label>
+					</div>
+					<button type="submit" class="btn btn-primary">View Giftcard Code</button>
+				</form>
+			</div>
+    </div>
+
+
+    <div class="accordion" id="accordionExample">
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h5 class="card-title my-2">
+						<a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Manually Search the Whole List</a>
+					</h5>
+				</div>
+				<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
+					<div class="card-body">
+            <table class="table">
+							<thead>
+								<tr>
+									<th style="width:40%;">Name</th>
+									<th style="width:25%">Phone Number</th>
+									<th class="d-none d-md-table-cell" style="width:25%">Date of Birth</th>
+									<th>Select</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Michelle Bilodeau</td>
+									<td>864-348-0485</td>
+									<td class="d-none d-md-table-cell">June 21, 1961</td>
+									<td class="table-action">
+										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
+									</td>
+								</tr>
+								<tr>
+									<td>Alexander Groves</td>
+									<td>914-939-2458</td>
+									<td class="d-none d-md-table-cell">May 15, 1948</td>
+									<td class="table-action">
+										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
+									</td>
+								</tr>
+								<tr>
+									<td>Kathie Burton</td>
+									<td>704-993-5435</td>
+									<td class="d-none d-md-table-cell">September 14, 1965</td>
+									<td class="table-action">
+										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
+									</td>
+								</tr>
+								<tr>
+									<td>Daisy Seger</td>
+									<td>765-382-8195</td>
+									<td class="d-none d-md-table-cell">April 2, 1971</td>
+									<td class="table-action">
+										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
+									</td>
+								</tr>
+								<tr>
+									<td>Amanda Jones</td>
+									<td>202-672-1407</td>
+									<td class="d-none d-md-table-cell">October 12, 1966</td>
+									<td class="table-action">
+										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

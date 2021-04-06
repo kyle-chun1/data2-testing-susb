@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 
 def qbgiftcardhome(request):
-    return HttpResponse('working - qbgiftcardhome')
+    return render(request, 'qbgiftcard/lookup.html', {})
 
 def results(request):
     return HttpResponse('working - results')
