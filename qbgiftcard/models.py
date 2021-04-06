@@ -10,7 +10,7 @@ class GiftCard(models.Model):
     initial_balance = models.DecimalField(max_digits = 6, decimal_places = 2, default = '0.0')
 
     STATUS_CHOICES = (('i','initial'),('q','qbgiftcard'),('u','upgraded'),('r','remap'))
-    status = models.CharField(max_length = 1, choices = STATUS_CHOICES),
+    status = models.CharField(default = 'i', max_length = 1, choices = STATUS_CHOICES)
 
     timestamp_created = models.DateTimeField(auto_now_add = True)
     timestamp_updated = models.DateTimeField(auto_now = True)
