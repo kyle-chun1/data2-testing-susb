@@ -33,7 +33,7 @@ urlpatterns = [
     path('shopify/', include('shopify.urls')),
     path('visitors/',include('visitors.urls')),
     path('pricing/', include('pricing.urls')),
-
+    path('qbgiftcard/', include('qbgiftcard.urls')),
 
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='login/index.html'), name='HOME'),

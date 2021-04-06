@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     ################ ALLAUTH RELATED
     'django.contrib.sites',
     'login',  #APPLICATION MADE FOR THIS LOGIN
+    'qbgiftcard',
 
     'allauth',
     'allauth.account',
