@@ -21,26 +21,10 @@
 
     <div class="card">
 			<div class="card-header">
-				<h5 class="card-title">Select the Quickbooks POS customer's Temporary Code</h5>
-				<h6 class="pt-3 card-subtitle text-muted">Note: This is a temporary system to pull giftcard codes for customers in Quickbooks POS. New giftcards will be issued directly to customers and printable at the register</h6>
+				<h5 class="card-title">Please scan this in to the register</h5>
 			</div>
 			<div class="card-body">
-				<form action="/qbgiftcard/results/">
-					<div class="form-group">
-						<label class="form-label">Customer Name (Quikcbooks POS)</label><br>
-						<select name="customer_id" id="customer_id">
-              <option selected='true' disabled='true'>(Please select one)</option>
-            </select>
-					</div>
-					<div class="form-group pt-3 pb-3">
-            <p class="pt-1">Staff ID: <strong>{{request.user.email}}</strong></p>
-						<label class="custom-control custom-checkbox">
-							<input type="checkbox" required="true" class="custom-control-input">
-							<span class="custom-control-label">Confirm selection - Access of this giftcard will be logged.</span>
-						</label>
-					</div>
-					<button type="submit" class="btn btn-primary">View Giftcard Code</button>
-				</form>
+        <img height="60%" src="https://www.weber-marking.com/blog/wp-content/uploads/2019/01/Data-Matrix-Code_allein.jpg">
 			</div>
     </div>
 
@@ -49,7 +33,7 @@
 			<div class="card">
 				<div class="card-header" id="headingOne">
 					<h5 class="card-title my-2">
-						<a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Manually Select from list (SAMPLE)</a>
+						<a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Access Log (sample)</a>
 					</h5>
 				</div>
 				<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
@@ -57,7 +41,7 @@
             <table class="table">
 							<thead>
 								<tr>
-									<th style="width:40%;">Name</th>
+									<th style="width:40%;">Staff Name</th>
 									<th style="width:25%">Phone Number</th>
 									<th class="d-none d-md-table-cell" style="width:25%">Email</th>
 									<th>Select</th>
@@ -114,12 +98,12 @@
 
 <script type="text/javascript">
   let customer_dict = {{customer_dict | safe}}
-  for(i=0;i<customer_dict.length;i++){
-    $('#customer_id').append( '<option value="'  +   customer_dict[i][0]  +   '">'    +    customer_dict[i][2]  + ', ' +  customer_dict[i][1] + '  >  '  +  customer_dict[i][3] +  ' > '  +  customer_dict[i][4]    +  '</option>')
-
-    $('#customer_table').append('<tr><td>Amanda Jones</td><td>202-672-1407</td><td class="d-none d-md-table-cell">testemail@gmail.com</td><td class="table-action"><a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>')
-
-
-  }
+  // for(i=0;i<customer_dict.length;i++){
+  //   $('#customer_id').append( '<option value="'  +   customer_dict[i][0]  +   '">'    +    customer_dict[i][2]  + ', ' +  customer_dict[i][1] + '  >  '  +  customer_dict[i][3] +  ' > '  +  customer_dict[i][4]    +  '</option>')
+  //
+  //   $('#customer_table').append('<tr><td>Amanda Jones</td><td>202-672-1407</td><td class="d-none d-md-table-cell">testemail@gmail.com</td><td class="table-action"><a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>')
+  //
+  //
+  // }
 </script>
 {% endblock %}
