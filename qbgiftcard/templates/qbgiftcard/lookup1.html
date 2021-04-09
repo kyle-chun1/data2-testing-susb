@@ -25,8 +25,8 @@
         <h5 class="card-title"></h5>
         <h6 class="pt-3 card-subtitle text-muted">Please scan this code in at the time of checkout (Gift card payment type)</h6>
       </div>
-      <div class="card-body align-center">
-        <img width="65%" src="https://www.weber-marking.com/blog/wp-content/uploads/2019/01/Data-Matrix-Code_allein.jpg">
+      <div class="card-body align-center" id="datamatrix_target">
+
         <h6>Customer Name</h6>
       </div>
     </div>
@@ -83,15 +83,17 @@
 
 
 {% block javascript_end %}
+{% load static %}
+<script type="text/javascript" src="{% static 'qbgiftcard/datamatrix.min.js' %}"></script>
+
 
 <script type="text/javascript">
-  let customer_dict = {{customer_dict | safe}}
-  // for(i=0;i<customer_dict.length;i++){
-  //   $('#customer_id').append( '<option value="'  +   customer_dict[i][0]  +   '">'    +    customer_dict[i][2]  + ', ' +  customer_dict[i][1] + '  >  '  +  customer_dict[i][3] +  ' > '  +  customer_dict[i][4]    +  '</option>')
-  //
-  //   $('#customer_table').append('<tr><td>Amanda Jones</td><td>202-672-1407</td><td class="d-none d-md-table-cell">testemail@gmail.com</td><td class="table-action"><a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>')
-  //
-  //
-  // }
+  // let customer_dict = {{customer_dict | safe}}
+$('#datamatrix_target').html(DATAMatrix('shopify-giftcard-v1-' + '{{gift_card_code}}'))
 </script>
+
+
+
+
+
 {% endblock %}
