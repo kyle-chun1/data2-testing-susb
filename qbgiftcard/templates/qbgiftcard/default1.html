@@ -16,6 +16,9 @@
 
 
 {% block content %}
+
+
+
 <div class="row">
 	<div class="col-12 col-xl-6">
 
@@ -25,10 +28,10 @@
 				<h6 class="pt-3 card-subtitle text-muted">Note: This is a temporary system to pull giftcard codes for customers in Quickbooks POS. New giftcards will be issued directly to customers and printable at the register</h6>
 			</div>
 			<div class="card-body">
-				<form action="/qbgiftcard/results/">
+				<form action="{% url 'qbgiftcard:lookup' %}" method="POST"><!--COMMENT -->{% csrf_token %}<!--COMMENT -->
 					<div class="form-group">
 						<label class="form-label">Customer Name (Quikcbooks POS)</label><br>
-						<select name="customer_id" id="customer_id">
+						<select name="customer_id" id="customer_id" required>
               <option selected='true' disabled='true'>(Please select one)</option>
             </select>
 					</div>
@@ -39,7 +42,7 @@
 							<span class="custom-control-label">Confirm selection - Access of this giftcard will be logged.</span>
 						</label>
 					</div>
-					<button type="submit" class="btn btn-primary">View Giftcard Code</button>
+					<button id="submit_button" type="submit" class="btn btn-primary">View Giftcard Code</button>
 				</form>
 			</div>
     </div>
@@ -58,45 +61,12 @@
 							<thead>
 								<tr>
 									<th style="width:40%;">Name</th>
-									<th style="width:25%">Phone Number</th>
+									<th style="width:25%">Phone</th>
 									<th class="d-none d-md-table-cell" style="width:25%">Email</th>
 									<th>Select</th>
 								</tr>
 							</thead>
 							<tbody id='customer_table'>
-								<tr>
-									<td>Michelle Bilodeau</td>
-									<td>864-348-0485</td>
-									<td class="d-none d-md-table-cell">June 21, 1961</td>
-									<td class="table-action">
-										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Alexander Groves</td>
-									<td>914-939-2458</td>
-									<td class="d-none d-md-table-cell">May 15, 1948</td>
-									<td class="table-action">
-										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Kathie Burton</td>
-									<td>704-993-5435</td>
-									<td class="d-none d-md-table-cell">September 14, 1965</td>
-									<td class="table-action">
-										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Daisy Seger</td>
-									<td>765-382-8195</td>
-									<td class="d-none d-md-table-cell">April 2, 1971</td>
-									<td class="table-action">
-										<a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a>
-									</td>
-								</tr>
-								<tr><td>Amanda Jones</td><td>202-672-1407</td><td class="d-none d-md-table-cell">October 12, 1966</td><td class="table-action"><a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>
 							</tbody>
 						</table>
 					</div>
@@ -114,11 +84,17 @@
 
 <script type="text/javascript">
   let customer_dict = {{customer_dict | safe}}
+
+  // Rend the dropdown and table
   for(i=0;i<customer_dict.length;i++){
-    $('#customer_id').append( '<option value="'  +   customer_dict[i][0]  +   '">'    +    customer_dict[i][2]  + ', ' +  customer_dict[i][1] + '  >  '  +  customer_dict[i][3] +  ' > '  +  customer_dict[i][4]    +  '</option>')
+    c = customer_dict[i]
+    $('#customer_id').append( '<option value="'  +   c[0]  +   '">'    +    c[2]  + ', ' +  c[1] + '  >  '  +  c[3] +  ' > '  +  c[4]    +  '</option>')
+    $('#customer_table').append('<tr><td>' + c[1] + ' ' + c[2] + '</td><td>' + c[3] + '</td><td class="d-none d-md-table-cell">' + c[4] + '</td><td class="table-action"><a class="select-button" id="' + c[0] + '" href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>')
 
-    $('#customer_table').append('<tr><td>Amanda Jones</td><td>202-672-1407</td><td class="d-none d-md-table-cell">testemail@gmail.com</td><td class="table-action"><a href="#"><i class="align-middle fas fa-fw fa-arrow-circle-right"></i></a></td></tr>')
-
+    $('.select-button').on('click', function(){
+      t = $(this).prop('id')
+      $('#customer_id').prop('value', t)
+    })
 
   }
 </script>
