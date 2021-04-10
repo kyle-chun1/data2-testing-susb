@@ -29,7 +29,7 @@
     <div class="card">
 			<div class="card-header">
 				<h5 class="card-title">Select the Quickbooks POS customer's Temporary Code</h5>
-				<h6 class="pt-3 card-subtitle text-muted">Note: This is a temporary system to pull giftcard codes for customers in Quickbooks POS. New giftcards will be issued directly to customers and printable at the register</h6>
+				<h6 class="pt-3 card-subtitle text-muted">Note: This is a temporary system to pull giftcard codes for customers in Quickbooks POS. New giftcards will be issued directly to customers and are printable at the register</h6>
 			</div>
 			<div class="card-body">
 				<form action="{% url 'qbgiftcard:lookup' %}" method="POST"><!--COMMENT -->{% csrf_token %}<!--COMMENT -->
