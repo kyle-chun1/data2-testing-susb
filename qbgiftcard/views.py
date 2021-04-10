@@ -12,6 +12,8 @@ from json import dumps
 from datetime import datetime, timedelta
 import pytz
 
+from django.db.models.functions import Trunc
+
 def qbgiftcardhome(request):
     G = GiftCard.objects.all()
     customer_dict = []
@@ -40,13 +42,24 @@ def results(request):
         return redirect('HOME')
     try:
         staff_id = str(request.user.email).split('@fingerlakesreuse.org')[0]
-        last_record = AccessLog.objects.filter(staff_id=staff_id).reverse().order_by('timestamp')[0]
-        gift_card_code = GiftCard.objects.get(id=last_record.giftcard_id).giftcard
-        gift_card_code = gift_card_code.replace(' ','')
+        last_record = AccessLog.objects.filter(staff_id=staff_id).order_by('-timestamp')[0]
+        gift_card_record = GiftCard.objects.get(id=last_record.giftcard_id)
+        gift_card_code = gift_card_record.giftcard.replace(' ','')
+        gift_card_name = f'{gift_card_record.last_name}, {gift_card_record.first_name}'
+
+
+
+        access_log = AccessLog.objects.filter(giftcard_id=last_record.giftcard_id).order_by('-timestamp')[:100]\
+            .annotate(DATE_TIME = Trunc('timestamp', kind='second', tzinfo=pytz.timezone('US/Eastern')))\
+            .values('DATE_TIME','staff_id')
+
+        for i in access_log:
+            i['DATE_TIME'] = datetime.strftime(i['DATE_TIME'],'%b %d, %Y - %I:%M %p')
 
     except:
-        return redirect('qbgiftcard:qbgiftcardhome')
-    return render(request, 'qbgiftcard/lookup1.html', {'gift_card_code': gift_card_code})
+        print('ERROR')
+        pass
+    return render(request, 'qbgiftcard/lookup1.html', {'gift_card_code': gift_card_code, 'gift_card_name': gift_card_name, 'access_log':access_log})
 
 
 

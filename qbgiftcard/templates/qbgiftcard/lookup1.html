@@ -3,13 +3,15 @@
 {% block title %}Quickbooks Gift Cards - LOOKUP{% endblock %}
 
 
+
+
 {% block header_title %}Quickbooks Gift Cards - LOOKUP{% endblock %}
 
 
 
 {% block active_link %}
-<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
-  <span class="align-middle">TRMC Pricing Portal</span>
+<a class="sidebar-link" href="{% link 'qbgiftcard:qbgiftcardhome'}"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+  <span class="align-middle">Gift Card Portal</span>
     <span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
 {% endblock %}
 
@@ -19,7 +21,7 @@
 
 
 <div class="row">
-  <div class="col-4">
+  <div class="col-12 col-sm-4">
     <div class="card">
       <div class="card-header">
         <h5 class="card-title"></h5>
@@ -27,55 +29,33 @@
       </div>
       <div class="card-body align-center" id="datamatrix_target">
 
-        <h6>Customer Name</h6>
+        <h3>{{gift_card_name}}</h3>
       </div>
     </div>
   </div>
-</div>
 
-
-<div class="row">
-
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-sm-8">
     <div class="card">
       <div class="card-header"><h3 class="card-title">ACCESS LOG FOR THIS GIFTCARD</h3></div>
       <div class="card-body align-center">
         <table class="table">
           <thead>
             <tr>
-              <th style="width:40%;">Date / Time</th>
-              <th class="d-none d-md-table-cell" style="width:25%">Staff ID</th>
+              <th>Date / Time</th>
+              <th class="d-none d-md-table-cell" >Staff ID</th>
             </tr>
           </thead>
           <tbody id='giftcard_access_log'>
+            {% for i in access_log %}
+            <tr><td>{{i.DATE_TIME}}</td><td>{{i.staff_id}}@fingerlakesreuse.org</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <div class="col-12 col-md-6">
-    <div class="card">
-      <div class="card-header"><h3 class="card-title">ACCESS LOG FOR [STAFF MEMBER]</h3></div>
-      <div class="card-body align-center">
-        <table class="table">
-          <thead>
-            <tr>
-              <th style="width:40%;">Date / Time</th>
-              <th class="d-none d-md-table-cell" style="width:25%">Staff ID</th>
-            </tr>
-          </thead>
-          <tbody id='giftcard_access_log'>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-
+</div
 
 {% endblock %}
 
@@ -89,7 +69,7 @@
 
 <script type="text/javascript">
   // let customer_dict = {{customer_dict | safe}}
-$('#datamatrix_target').html(DATAMatrix('shopify-giftcard-v1-' + '{{gift_card_code}}'))
+$('#datamatrix_target').append(DATAMatrix('shopify-giftcard-v1-' + '{{gift_card_code}}'))
 </script>
 
 

@@ -2,10 +2,10 @@ from django.db import models
 
 # Create your models here.
 class GiftCard(models.Model):
-    first_name = models.CharField(max_length = 128, default='')
-    last_name = models.CharField(max_length = 128, default='')
-    phone = models.CharField(max_length = 16, default='')
-    email = models.CharField(max_length = 256, default='')
+    first_name = models.CharField(max_length = 128, default='', blank=True)
+    last_name = models.CharField(max_length = 128, default='', blank=True)
+    phone = models.CharField(max_length = 16, default='', blank=True)
+    email = models.CharField(max_length = 256, default='', blank=True)
     giftcard = models.CharField(max_length = 256, default='')
     initial_balance = models.DecimalField(max_digits = 6, decimal_places = 2, default = '0.0')
 

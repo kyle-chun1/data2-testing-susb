@@ -1,5 +1,9 @@
 {% extends 'pricing/spark_base.html' %}
 
+
+
+
+
 {% block title %}Quickbooks Gift Cards - LOOKUP{% endblock %}
 
 
@@ -8,8 +12,8 @@
 
 
 {% block active_link %}
-<a class="sidebar-link" href="/pricing/portal/trmc"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
-  <span class="align-middle">TRMC Pricing Portal</span>
+<a class="sidebar-link" href="{% link 'qbgiftcard:qbgiftcardhome'}"><i class="align-middle mr-2 fas fa-fw fa-home"></i>
+  <span class="align-middle">Gift Card Portal</span>
     <span class="sidebar-badge badge rounded-pill bg-primary">New</span></a>
 {% endblock %}
 
@@ -38,7 +42,7 @@
 					<div class="form-group pt-3 pb-3">
             <p class="pt-1">Staff ID: <strong>{{request.user.email}}</strong></p>
 						<label class="custom-control custom-checkbox">
-							<input type="checkbox" required="true" class="custom-control-input">
+							<input id="confirm_checkbox" type="checkbox" required="true" class="custom-control-input">
 							<span class="custom-control-label">Confirm selection - Access of this giftcard will be logged.</span>
 						</label>
 					</div>
@@ -93,6 +97,7 @@
 
     $('.select-button').on('click', function(){
       t = $(this).prop('id')
+      $('#confirm_checkbox').prop('checked', false)
       $('#customer_id').prop('value', t)
     })
 
