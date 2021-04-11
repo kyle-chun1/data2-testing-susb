@@ -87,7 +87,7 @@ def barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY):
         c.setFont("Helvetica-Bold", 16,)
         c.drawString(X*0.05,Y*0.72,f'{PRICE:>10}')
         #LINE
-        c.line(0,Y*0.635,X,Y*0.635)
+        c.line(X*0.2,Y*0.635,X*0.8,Y*0.635)
         #QR
         qr_code = qr.QrCode(VARIANT, height=X*0.43,width=X*0.43)
         qr_code.drawOn(c,X*0.0,Y*0.0)
