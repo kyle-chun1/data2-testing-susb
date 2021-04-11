@@ -21,11 +21,14 @@
     <div class="card">
       <div class="card-header">
         <h5 class="card-title"></h5>
-        <h6 class="pt-3 card-subtitle text-muted">Please scan this code in at the time of checkout (Gift card payment type)</h6>
+        <h6 class="pt-3 card-subtitle text-muted">Please scan this code in at checkout <br>(Select 'Gift card' as payment type)</h6>
       </div>
-      <div class="card-body align-center" id="datamatrix_target">
 
+      <div class="card-body align-center" id="print_target">
         <h3>{{gift_card_name}}</h3>
+        <div  id="datamatrix_target"></div>
+        <p>{{access_log.0.DATE_TIME}}</p>
+        <button id="print_button" class="btn btn-success">Print</button>
       </div>
     </div>
   </div>
@@ -44,6 +47,7 @@
           <tbody id='giftcard_access_log'>
             {% for i in access_log %}
             <tr><td>{{i.DATE_TIME}}</td><td>{{i.staff_id}}@fingerlakesreuse.org</td></tr>
+
             {% endfor %}
           </tbody>
         </table>
@@ -65,7 +69,14 @@
 
 <script type="text/javascript">
   // let customer_dict = {{customer_dict | safe}}
-$('#datamatrix_target').append(DATAMatrix('shopify-giftcard-v1-' + '{{gift_card_code}}'))
+$('#datamatrix_target').append(DATAMatrix({'dim':150,'msg':'shopify-giftcard-v1-' + '{{gift_card_code}}' }))
+
+$('#print_button').on('click', function(){
+  $('#print_button').remove()
+  $('body').html($('#print_target').html())
+  print()
+})
+
 </script>
 
 
