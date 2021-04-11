@@ -18,7 +18,7 @@
 
 <div class="row">
   <div class="col-12 col-sm-4">
-    <div class="card">
+    <div class="card" id="print_card">
       <div class="card-header">
         <h5 class="card-title"></h5>
         <h6 class="pt-3 card-subtitle text-muted">Please scan this code in at checkout <br>(Select 'Gift card' as payment type)</h6>
@@ -74,6 +74,7 @@ $('#datamatrix_target').append(DATAMatrix({'dim':150,'msg':'shopify-giftcard-v1-
 $('#print_button').on('click', function(){
   $('#print_button').remove()
   $('body').html($('#print_target').html())
+  $('#print_card').css('background','white')
   print()
 })
 
