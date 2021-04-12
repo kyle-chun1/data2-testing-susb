@@ -15,6 +15,10 @@ class GiftCard(models.Model):
     timestamp_created = models.DateTimeField(auto_now_add = True)
     timestamp_updated = models.DateTimeField(auto_now = True)
 
+    UID = models.IntegerField(default=-1)
+    LINK = models.CharField(max_length = 129, default='')
+
+
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
 
