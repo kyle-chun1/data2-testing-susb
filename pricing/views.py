@@ -1,12 +1,15 @@
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponse, FileResponse
-
+from django.db.models import Sum
+from django.db.models.functions import Trunc
 
 from pricing.functions import barcode_reuse_1
 
 from pricing.models import *
 import json
 
+from datetime import datetime, timedelta
+import pytz
 
 
 # Create your views here.
@@ -115,3 +118,37 @@ def pricing_submit(request):
         return FileResponse(E, as_attachment=False, filename="barcode-ERROR.pdf")
 
     # barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY)
+
+
+
+
+#########
+def my_pricing_table(request):
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    response_html = '<table style="background:red"><thead><tr><th>Date/Time</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
+
+    QUERY = Pricing.objects.filter(staff_id=request.user.email.split('@')[0])\
+        .order_by('-timestamp')[:10]\
+        .values('variant__title','timestamp','variant__product__title','variant__price', 'quantity')
+
+    for i in QUERY:
+        response_html += f"<tr><td>{ datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
+
+
+    response_html += f'</tbody></table>'
+    return HttpResponse(response_html)
+
+
+
+
+
+
+
+#################################
+# START
+#################################
+def today(request):
+    P = Pricing.objects.filter(timestamp__gte=yes, variant__product__location=Location.objects.get(location='T'), inventory=True)
+    return HttpResponse('response_html')

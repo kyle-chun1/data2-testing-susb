@@ -1,7 +1,7 @@
 from django.urls import path
 
 from pricing.views import pricing_portal, pricing_submit
-from pricing.views import tester2, tester3, tester_main, tester_submit
+from pricing.views import tester2, tester3, tester_main, tester_submit, my_pricing_table
 
 app_name='pricing'
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path('tester3/', tester3, name='tester3'),
     path('tester_main/', tester_main, name='tester_main'),
     path('tester_submit/', tester_submit, name='tester_submit'),
+    path('my_pricing_table/', my_pricing_table, name='my_pricing_table'),
 ]
