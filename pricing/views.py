@@ -109,9 +109,6 @@ def pricing_submit(request):
         X = barcode_reuse_1(VARIANT, V.price, TITLE, color_reference[V.variant[0]], ' '.join(VARIANT[:5]), QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
 
-
-
-
     except:
 
         E = barcode_reuse_1('ERORR', 0, 'ERROR', 'ERROR', 'ERROR', 1)
@@ -122,29 +119,33 @@ def pricing_submit(request):
 
 
 
-#########
+########
 def my_pricing_table(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    response_html = '<table style="background:red"><thead><tr><th>Date/Time</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
+    response_html = '<table class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
+    classifier_choices = {'U':'Unit','W':'White','Y':'Yellow','R':'Red','O':'Orange','B':'Blue','G':'Green','L':'Lavender'}
+
 
     QUERY = Pricing.objects.filter(staff_id=request.user.email.split('@')[0])\
-        .order_by('-timestamp')[:10]\
-        .values('variant__title','timestamp','variant__product__title','variant__price', 'quantity')
+        .order_by('-timestamp')[:20]\
+        .values('variant__product__classifier','variant__title','timestamp','variant__product__title','variant__price', 'quantity')
 
     for i in QUERY:
-        response_html += f"<tr><td>{ datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
+        response_html += f"<tr><td>{ datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
+        print()
 
 
     response_html += f'</tbody></table>'
     return HttpResponse(response_html)
 
 
-
-
-
-
+########## USE THIS FOR PRITING TAGS TEMPORARILY
+# def my_pricing_table(request):
+#     E = barcode_reuse_1('K04F10:UTBKS3.00ABOK',10.0,'Buy 4 for $10', 'BULK', 'BOOKS', 1)
+#     return FileResponse(E, as_attachment=False, filename="barcode-ERROR.pdf")
+#
 
 #################################
 # START

@@ -173,7 +173,19 @@
 </div>
 
 <!-- THE TABLE -->
-<div class="row mt-3"><div class="col-12"><div class="card pt-2 mb-2" id="targetTable"></div></div></div>
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="card pt-2 mb-2">
+      <div class="card-header">
+				<h5 class="card-title">My Pricing History ({{request.user.email}})</h5>
+				<h6 class="card-subtitle text-muted">List of your items submitted to the inventory. This feature is still being developed. You will soon have the ability to delete submissions made on the same day.</h6>
+			</div>
+      <div class="card-body">
+        <div id="targetTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}
@@ -295,12 +307,9 @@ function submitFunction(){
     //Disable the checkbox
     $("#targetInventory").prop("checked", false)
     $("#targetSubmit").prop('disabled', true)
+
   }
-
-
-
-
-
+window.setTimeout(renderTable, 1000);
 }
 
 
@@ -312,6 +321,21 @@ function checkboxFunction(){
     $('#targetSubmit').removeAttr('disabled')
   }
 }
+
+
+function renderTable(){
+  $('#targetTable').html('')
+  xhr1 = new XMLHttpRequest()
+  xhr1.open('get', "{% url 'pricing:my_pricing_table' %}")
+  xhr1.send()
+
+  xhr1.onreadystatechange = function(){
+    if (xhr1.readyState === 4){
+      $('#targetTable').html(xhr1.response)
+    }
+  }
+}
+
 
 $(document).ready(function(){
     $(".unit-tag").on('click', buttonUnit)
@@ -325,6 +349,8 @@ $(document).ready(function(){
     $("#targetSubmit").on("click", submitFunction)
     $("#targetSubmit").prop('disabled','true')
     $('.form-check-input').on('click',checkboxFunction)
+
+    renderTable()
 })
 
 </script>
