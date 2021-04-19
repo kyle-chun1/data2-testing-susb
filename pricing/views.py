@@ -128,7 +128,7 @@ def my_pricing_table(request):
     classifier_choices = {'U':'Unit','W':'White','Y':'Yellow','R':'Red','O':'Orange','B':'Blue','G':'Green','L':'Lavender'}
 
 
-    QUERY = Pricing.objects.filter(staff_id=request.user.email.split('@')[0])\
+    QUERY = Pricing.objects.filter(staff_id=request.user.email.split('@')[0], inventory=True, deleted=False)\
         .order_by('-timestamp')[:20]\
         .values('variant__product__classifier','variant__title','timestamp','variant__product__title','variant__price', 'quantity')
 
