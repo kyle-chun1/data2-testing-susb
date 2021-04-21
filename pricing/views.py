@@ -11,6 +11,7 @@ import json
 from datetime import datetime, timedelta
 import pytz
 
+from visitors.functions import *
 
 # Create your views here.
 def tester2(request, x=1):
@@ -124,7 +125,7 @@ def my_pricing_table(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    response_html = '<table class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
+    response_html = '<table id="mainTable" class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
     classifier_choices = {'U':'Unit','W':'White','Y':'Yellow','R':'Red','O':'Orange','B':'Blue','G':'Green','L':'Lavender'}
 
 
@@ -133,7 +134,7 @@ def my_pricing_table(request):
         .values('variant__product__classifier','variant__title','timestamp','variant__product__title','variant__price', 'quantity')
 
     for i in QUERY:
-        response_html += f"<tr><td>{ datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
+        response_html += f"<tr><td>{datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
         print()
 
 
@@ -150,6 +151,26 @@ def my_pricing_table(request):
 #################################
 # START
 #################################
-def today(request):
-    P = Pricing.objects.filter(timestamp__gte=yes, variant__product__location=Location.objects.get(location='T'), inventory=True)
-    return HttpResponse('response_html')
+def raw(request,location):
+    # P = Pricing.objects.filter(timestamp__gte=yes, variant__product__location=Location.objects.get(location='T'), inventory=True)
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    # LOCATION SLUG CHECK
+    if location.upper() in ['TRMC', 'TRC', 'TRMC', 'RMC']:
+        LOCATION = 'T'
+        location = 'TRMC'
+    elif location.upper() in ['IRC', 'IRMC']:
+        LOCATION = 'I'
+        location = 'IRC'
+    else:
+        return(redirect('/'))
+
+
+    P = Pricing.objects.filter(variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
+        .values('variant__product__title','variant__product__product_type__product_type','id','variant__product__classifier','variant__title','timestamp', 'variant__product__location__location','variant__product__title','variant__price', 'quantity').order_by('-timestamp')
+
+
+
+    return render(request, 'pricing/raw.html',{'location':location, 'P': P})
