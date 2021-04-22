@@ -66,6 +66,7 @@
 
         <table id="mainTable" class="table table-sm">
           <thead><tr>
+            <th>Barcode</th>
             <th>Product Type</th>
             <th>Tag</th>
             <th>Product</th>
@@ -78,6 +79,7 @@
             {% load tz %}
             {% for i in P %}
               <tr>
+                <td>{{i.variant__variant}}</td>
                 <td>{{i.variant__product__product_type__product_type}}</td>
                 <td>{{i.variant__product__classifier}}</td>
                 <td>{{i.variant__product__title}}</td>

@@ -174,7 +174,7 @@ def raw(request,location):
 
     P = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
     .values('variant__variant').annotate(TOTAL_QUANTITY=Sum('quantity'), TOTAL_VALUE=ExpressionWrapper(Sum('quantity')*F('variant__price'), output_field=DecimalField())   )\
-    .values('variant__product__product_type__product_type', 'variant__product__classifier', 'variant__product__title', 'variant__title', 'variant__price', 'TOTAL_QUANTITY', 'TOTAL_VALUE')
+    .values('variant__variant','variant__product__product_type__product_type', 'variant__product__classifier', 'variant__product__title', 'variant__title', 'variant__price', 'TOTAL_QUANTITY', 'TOTAL_VALUE')
 
     # .values('variant__product__title','variant__product__product_type__product_type','id','variant__product__classifier','variant__title','timestamp', 'variant__product__location__location','variant__product__title','variant__price', 'quantity').order_by('-timestamp')
     print(P)
