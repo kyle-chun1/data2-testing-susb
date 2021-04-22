@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponse, FileResponse
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Min, Max, ExpressionWrapper, F, DecimalField
 from django.db.models.functions import Trunc
 
 from pricing.functions import barcode_reuse_1
@@ -12,6 +12,9 @@ from datetime import datetime, timedelta
 import pytz
 
 from visitors.functions import *
+
+from visitors.functions import start_end_date
+
 
 # Create your views here.
 def tester2(request, x=1):
@@ -152,7 +155,6 @@ def my_pricing_table(request):
 # START
 #################################
 def raw(request,location):
-    # P = Pricing.objects.filter(timestamp__gte=yes, variant__product__location=Location.objects.get(location='T'), inventory=True)
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
@@ -167,10 +169,22 @@ def raw(request,location):
     else:
         return(redirect('/'))
 
+    #GET the GET values from the view or else generate them
+    start_date, end_date = start_end_date(request.GET)
 
-    P = Pricing.objects.filter(variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
-        .values('variant__product__title','variant__product__product_type__product_type','id','variant__product__classifier','variant__title','timestamp', 'variant__product__location__location','variant__product__title','variant__price', 'quantity').order_by('-timestamp')
+    P = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
+    .values('variant__variant').annotate(TOTAL_QUANTITY=Sum('quantity'), TOTAL_VALUE=ExpressionWrapper(Sum('quantity')*F('variant__price'), output_field=DecimalField())   )\
+    .values('variant__product__product_type__product_type', 'variant__product__classifier', 'variant__product__title', 'variant__title', 'variant__price', 'TOTAL_QUANTITY', 'TOTAL_VALUE')
+
+    # .values('variant__product__title','variant__product__product_type__product_type','id','variant__product__classifier','variant__title','timestamp', 'variant__product__location__location','variant__product__title','variant__price', 'quantity').order_by('-timestamp')
+    print(P)
 
 
 
-    return render(request, 'pricing/raw.html',{'location':location, 'P': P})
+
+    return render(request, 'pricing/raw.html',{
+        'location':location,
+        'P': P,
+        'start_date' : start_date.strftime('%Y-%m-%d'),
+        'end_date' : end_date.strftime('%Y-%m-%d'),
+    })
