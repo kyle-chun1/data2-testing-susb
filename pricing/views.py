@@ -138,7 +138,6 @@ def my_pricing_table(request):
 
     for i in QUERY:
         response_html += f"<tr><td>{datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
-        print()
 
 
     response_html += f'</tbody></table>'
@@ -167,7 +166,7 @@ def raw(request,location):
         LOCATION = 'I'
         location = 'IRC'
     else:
-        return(redirect('/'))
+        return(redirect('HOME'))
 
     #GET the GET values from the view or else generate them
     start_date, end_date = start_end_date(request.GET)
@@ -185,6 +184,36 @@ def raw(request,location):
     return render(request, 'pricing/raw.html',{
         'location':location,
         'P': P,
+        'start_date' : start_date.strftime('%Y-%m-%d'),
+        'end_date' : end_date.strftime('%Y-%m-%d'),
+    })
+
+
+
+
+######### STATS PAGE  ##################
+def stats(request, location=''):
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+    #GET the GET values from the view or else generate them
+    start_date, end_date = start_end_date(request.GET)
+    # LOCATION SLUG CHECK
+    if location.upper() in ['TRMC', 'TRC', 'TRMC', 'RMC']:
+        LOCATION = 'T'
+        location = 'TRMC'
+    elif location.upper() in ['IRC', 'IRMC']:
+        LOCATION = 'I'
+        location = 'IRC'
+    else:
+        return(redirect('HOME'))
+
+
+
+
+    return render(request, 'pricing/stats.html',{
+        'location' : location,
+        # 'P': P,
         'start_date' : start_date.strftime('%Y-%m-%d'),
         'end_date' : end_date.strftime('%Y-%m-%d'),
     })
