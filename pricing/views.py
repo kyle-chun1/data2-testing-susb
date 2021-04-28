@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponse, FileResponse
-from django.db.models import Sum, Avg, Min, Max, ExpressionWrapper, F, DecimalField
+from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField
 from django.db.models.functions import Trunc
 
 from pricing.functions import barcode_reuse_1
@@ -175,8 +175,7 @@ def raw(request,location):
     .values('variant__variant').annotate(TOTAL_QUANTITY=Sum('quantity'), TOTAL_VALUE=ExpressionWrapper(Sum('quantity')*F('variant__price'), output_field=DecimalField())   )\
     .values('variant__variant','variant__product__product_type__product_type', 'variant__product__classifier', 'variant__product__title', 'variant__title', 'variant__price', 'TOTAL_QUANTITY', 'TOTAL_VALUE')
 
-    # .values('variant__product__title','variant__product__product_type__product_type','id','variant__product__classifier','variant__title','timestamp', 'variant__product__location__location','variant__product__title','variant__price', 'quantity').order_by('-timestamp')
-    print(P)
+
 
 
 
@@ -210,10 +209,44 @@ def stats(request, location=''):
 
 
 
+    Q = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
+
+    total_items = Q.aggregate(total_items=Sum('quantity'))['total_items']
+    total_pricing_value = Q.aggregate(TOTAL_VALUE=Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())))['TOTAL_VALUE']
+    items_per_submission = Q.aggregate(items_per_submission=Avg('quantity'))['items_per_submission']
+
+    #Product Type Breakdown
+    PT = Q.values('variant__product__product_type__product_type').annotate(
+        PT = F('variant__product__product_type__product_type'),
+        PRICING_VALUE = Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())),
+        TOTAL_ITEMS = Sum('quantity'),
+        COUNT = Count('variant__product__product_type__product_type'),
+        ITEM_SUBMISSIONS = Avg('quantity'),
+        AVG = Avg('variant__price'),
+    )
+
+    #Product Type Breakdown
+    ST = Q.values('staff_id').annotate(
+        ST = F('staff_id'),
+        PRICING_VALUE = Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())),
+        TOTAL_ITEMS = Sum('quantity'),
+        COUNT = Count('variant__product__product_type__product_type'),
+        ITEM_SUBMISSIONS = Avg('quantity'),
+        AVG = Avg('variant__price'),
+    )
+
 
     return render(request, 'pricing/stats.html',{
         'location' : location,
         # 'P': P,
         'start_date' : start_date.strftime('%Y-%m-%d'),
         'end_date' : end_date.strftime('%Y-%m-%d'),
+        'total_items' :  total_items,
+        'total_pricing_value' : total_pricing_value,
+        'pricing_submissions' : Q.count(),
+        'avg_item_price' : total_pricing_value / total_items,
+        'items_per_submission' : items_per_submission,
+        'PT' : PT,
+        'ST' : ST,
+
     })

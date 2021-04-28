@@ -54,12 +54,12 @@
 
 
 <div class="row">
-  <div class="col-2">
+  <div class="col-md-4 col-lg-2 col-sm-12">
     <div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col mt-0">
-						<h5 class="card-title">Sales Today</h5>
+						<h5 class="card-title">Total Pricing ($)</h5>
 					</div>
 
 					<div class="col-auto">
@@ -70,20 +70,17 @@
 						</div>
 					</div>
 				</div>
-				<h1 class="display-5 mt-1 mb-3">2.562</h1>
-				<div class="mb-0">
-					<span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.65% </span>
-					Less sales than usual
-				</div>
+				<h1 class="display-5 mt-1 mb-3">${{total_pricing_value | floatformat:2}}</h1>
+				<div class="mb-0"><span class="text-danger"><i class="mdi mdi-arrow-bottom-right"></i></span>Total value of priced goods</div>
 			</div>
 		</div>
   </div>
-  <div class="col-2">
+  <div class="col-md-4 col-lg-2 col-sm-12">
     <div class="card">
       <div class="card-body">
         <div class="row">
           <div class="col mt-0">
-            <h5 class="card-title">Sales Today</h5>
+            <h5 class="card-title">Total Items</h5>
           </div>
 
           <div class="col-auto">
@@ -94,48 +91,124 @@
             </div>
           </div>
         </div>
-        <h1 class="display-5 mt-1 mb-3">2.562</h1>
-        <div class="mb-0">
-          <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.65% </span>
-          Less sales than usual
-        </div>
+        <h1 class="display-5 mt-1 mb-3">{{total_items}}</h1>
+        <div class="mb-0">Total # of items priced</div>
       </div>
     </div>
   </div>
+  <div class="col-md-4 col-lg-2 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">Total Submissions</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">{{pricing_submissions}}</h1>
+        <div class="mb-0">Total Pricing submissions</div>
+      </div>
+    </div>
   </div>
+  <div class="col-md-4 col-lg-2 col-sm-12">
+    <div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Avg Item Price</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="avatar">
+							<div class="avatar-title rounded-circle bg-primary-dark">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h1 class="display-5 mt-1 mb-3">${{avg_item_price | floatformat:2}}</h1>
+				<div class="mb-0">Average price of items</div>
+			</div>
+		</div>
+  </div>
+  <div class="col-md-4 col-lg-2 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">Items/Submission</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">{{items_per_submission | floatformat:2}}</h1>
+        <div class="mb-0">Avg Items per submission</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-2 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">TBD</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">TBD</h1>
+        <div class="mb-0">TBD Stat</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="row">
-  <div class="col-12">
+  <div class="col-sm-12 col-md-8">
     <div class="card">
     	<div class="card-header">
-    		<h5 class="card-title"></h5>
+    		<!-- <h5 class="card-title">TESTER</h5> -->
     	</div>
     	<div class="card-body">
-
+        <h2 class="pb-4">Breakdown by PRODUCT TYPE</h2>
         <table id="mainTable" class="table table-sm">
           <thead><tr>
-            <th>Barcode</th>
-            <th>Product Type</th>
-            <th>Tag</th>
-            <th>Product</th>
-            <th>Variant</th>
-            <th>Price ($)</th>
-            <th>Total Quantity</th>
-            <th>VALUE ($)</th>
+            <th>PRODUCT TYPE</th>
+            <th>Value</th>
+            <th>Items</th>
+            <th>Submissions</th>
+            <th>Avg. Price*</th>
+            <th>Items/Submission</th>
           </tr></thead>
           <tbody>
-            {% load tz %}
-            {% for i in P %}
+            {% for i in PT %}
               <tr>
-                <td>{{i.variant__variant}}</td>
-                <td>{{i.variant__product__product_type__product_type}}</td>
-                <td>{{i.variant__product__classifier}}</td>
-                <td>{{i.variant__product__title}}</td>
-                <td>{{i.variant__title}}</td>
-                <td>{{i.variant__price}}</td>
-                <td>{{i.TOTAL_QUANTITY}}</td>
-                <td>{{i.TOTAL_VALUE}}</td>
+                <td>{{i.PT}}</td>
+                <td>${{i.PRICING_VALUE | floatformat:2}}</td>
+                <td>{{i.TOTAL_ITEMS}}</td>
+                <td>{{i.COUNT}}</td>
+                <td>{{i.AVG | floatformat:2}}</td>
+                <td>{{i.ITEM_SUBMISSIONS | floatformat:2}}</td>
               </tr>
             {% endfor %}
           </tbody></table>
@@ -144,14 +217,50 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-8">
+    <div class="card">
+    	<div class="card-header">
+    		<!-- <h5 class="card-title">TESTER</h5> -->
+    	</div>
+    	<div class="card-body">
+        <h2 class="pb-4">Breakdown by STAFF ID</h2>
+        <table id="mainTable" class="table table-sm">
+          <thead><tr>
+            <th>Staff ID</th>
+            <th>Value</th>
+            <th>Items</th>
+            <th>Submissions</th>
+            <th>Avg. Price*</th>
+            <th>Items/Submission</th>
+          </tr></thead>
+          <tbody>
+            {% for i in ST %}
+              <tr>
+                <td>{{i.ST}}</td>
+                <td>${{i.PRICING_VALUE | floatformat:2}}</td>
+                <td>{{i.TOTAL_ITEMS}}</td>
+                <td>{{i.COUNT}}</td>
+                <td>{{i.AVG | floatformat:2}}</td>
+                <td>{{i.ITEM_SUBMISSIONS | floatformat:2}}</td>
+              </tr>
+            {% endfor %}
+          </tbody></table>
+
+    	</div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 
 
 {% block javascript_end %}
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $('#mainTable').DataTable({dom:'Bfrtip', 'pageLength': 50 ,buttons:['copy','csv','print']})
-</script>
+</script> -->
 
 {% endblock %}
