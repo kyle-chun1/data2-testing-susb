@@ -65,7 +65,7 @@ def pricing_portal(request, location):
 
     products_std = [i.shopify_handle for i in Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier__in=['W','R','G','B','Y','L','O'])]
     products_unit = {}
-    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U').values('variant','title','price')
+    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price')
 
     for i in V:
         try:

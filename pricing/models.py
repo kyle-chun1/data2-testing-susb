@@ -31,6 +31,7 @@ class Variant(models.Model):   #PROXY FOR BARCODE / SKU (Can be referenced!)
     price = models.DecimalField(max_digits=8,decimal_places=2)
     title = models.CharField(max_length=256, default='')
     code = models.CharField(max_length=4, default='')
+    visible = models.BooleanField(default=True)
     def __str__(self):
         return f'{self.product} - {self.variant}'
 
