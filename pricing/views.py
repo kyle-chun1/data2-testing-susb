@@ -55,28 +55,40 @@ def pricing_portal(request, location):
     else:
         return(redirect('/'))
 
-    #MESSAGE CHECK
-    # if 'message' in request.session and request.session['message'] == 'success':
-    #     message = 'SUCCESS'
-    #     request.session['message'] = ''
-    # else:
-    #     request.session['message'] = ''
-    #     message='Glenn'
+
 
     products_std = [i.shopify_handle for i in Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier__in=['W','R','G','B','Y','L','O'])]
     products_unit = {}
     V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price')
 
+
+########################### FOCUS / BACKUP
     for i in V:
         try:
             if i['variant'][0].upper() != 'K':
                 products_unit[i['variant'][0:5]].append([ i['variant'],i['title'],f"{i['price']:.2f}" ])
         except:
             products_unit[i['variant'][0:5]] = list()
+###########################
 
+    print(products_unit)
+    print()
+    # Create a SET of the unique IDS
+    products_ids = set([x['variant'][0:5] for x in V])
+    #Declare a blank Dict and Add the unique IDS to the dict with empty lists()
+    products_unit_test = {}
+    for i in products_ids:
+        products_unit_test[i] = list()
+
+    for i in V:
+        products_unit_test[ i['variant'][:5] ].append([  i['variant'],i['title'],f"{i['price']:.2f}"  ])
+
+    print(products_unit_test)
+    # print(temp)
+########################### TEST SEGMENT END
 
     if LOCATION=='T':
-        return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit})
+        return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit_test})  ###########FOLLOWUP : TESTING NEW FORMAT FOR DICT
     elif LOCATION == 'I':
         return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit})
 
