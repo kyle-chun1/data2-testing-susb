@@ -59,16 +59,16 @@ def pricing_portal(request, location):
 
     products_std = [i.shopify_handle for i in Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier__in=['W','R','G','B','Y','L','O'])]
     products_unit = {}
-    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price')
+    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price').order_by('title')
 
 
 ########################### FOCUS / BACKUP
-    for i in V:
-        try:
-            if i['variant'][0].upper() != 'K':
-                products_unit[i['variant'][0:5]].append([ i['variant'],i['title'],f"{i['price']:.2f}" ])
-        except:
-            products_unit[i['variant'][0:5]] = list()
+    # for i in V:
+    #     try:
+    #         if i['variant'][0].upper() != 'K':
+    #             products_unit[i['variant'][0:5]].append([ i['variant'],i['title'],f"{i['price']:.2f}" ])
+    #     except:
+    #         products_unit[i['variant'][0:5]] = list()
 ###########################
 
     print(products_unit)
@@ -90,7 +90,7 @@ def pricing_portal(request, location):
     if LOCATION=='T':
         return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit_test})  ###########FOLLOWUP : TESTING NEW FORMAT FOR DICT
     elif LOCATION == 'I':
-        return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit})
+        return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit_test})
 
 
 
