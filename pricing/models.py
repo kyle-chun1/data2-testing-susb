@@ -15,6 +15,12 @@ class ProductType(models.Model):
     def __str__(self):
         return self.product_type
 
+
+class Category(models.Model):
+    category = models.CharField(max_length=64, unique=True)
+    def __str__(self):
+        return self.category
+
 class Product(models.Model):
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     product_type = models.ForeignKey(ProductType, on_delete=models.PROTECT)
