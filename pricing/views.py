@@ -16,30 +16,6 @@ from visitors.functions import *
 from visitors.functions import start_end_date
 
 
-# Create your views here.
-def tester2(request, x=1):
-    for i in range(20): print(request.session.get('msg','DEFAULT'))
-    request.session['msg'] = None
-    return render(request,'pricing/pricing_trmc.html', {})
-
-
-##########
-def tester3(request):
-    Y = barcode_reuse_1('WTBMM1500',1500,'Building Materials', 'WHITE', 'WTBMM', 2)
-    request.session['message'] = 'success'
-    return FileResponse(Y, as_attachment=False, filename="barcode.pdf")
-
-def tester_main(request, yolo=1):
-    if 1==1:
-        request.session['msg'] = 'GOOOOOOGLE'
-        return redirect(reverse('pricing:tester2'))
-    return render(request, 'pricing/tester_main.html', {})
-
-def tester_submit(request):
-    HttpResponse('SUBMITTED')
-##########
-
-
 
 
 def pricing_portal(request, location):
@@ -156,11 +132,11 @@ def my_pricing_table(request):
     return HttpResponse(response_html)
 
 
-########## USE THIS FOR PRITING TAGS TEMPORARILY
-# def my_pricing_table(request):
-#     E = barcode_reuse_1('K04F10:UTBKS3.00ABOK',10.0,'Buy 4 for $10', 'BULK', 'BOOKS', 1)
+# ######### USE THIS FOR PRITING TAGS TEMPORARILY
+# def temp_barcode(request):
+#     E = barcode_reuse_1('K04F03:UTHOW1.00GE06',3.0,'Buy 4 for $3', 'BULK', 'HOUSEWARES', 1)
 #     return FileResponse(E, as_attachment=False, filename="barcode-ERROR.pdf")
-#
+
 
 #################################
 # START
