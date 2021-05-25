@@ -218,10 +218,36 @@
     	</div>
     </div>
   </div>
+
+
+  <div class="col-sm-12 col-md-4">
+    <div class="card">
+      <div class="card-header"><!-- <h5 class="card-title">TESTER</h5> --></div>
+        <div class="card-body">
+        <h2 class="pb-4">Category Reference</h2>
+        <table id="CategoryReference" class="table table-sm">
+          <thead>
+            <tr><th>Category</th><th>Product Type</th></tr>
+          </thead>
+          <tbody>
+            <tr><td rowspan="3">Books & Media</td><td>BOOKS</td></tr><tr><td>MOVIES</td></tr><tr><td>MUSIC</td></tr>
+            <tr><td rowspan="5">Building Materials & Tools</td><td>BUILDING MATERIALS</td></tr><tr><td>DOORS/WINDOWS</td></tr><tr><td>LIGHTING</td></tr><tr><td>LUMBER</td></tr><tr><td>TOOLS</td></tr>
+            <tr><td rowspan="7">Computer & Electronics</td><td>ELECTRONICS</td></tr><tr><td>DESKTOP</td></tr><tr><td>LAPTOP</td></tr><tr><td>PERIPHERALS</td></tr><tr><td>TABLET</td></tr><tr><td>SMARTPHONE</td></tr><tr><td>OTHER COMPUTER</td></tr>
+            <tr><td rowspan="2">Furniture & Appliances</td><td>APPLIANCES</td></tr><tr><td>FURNITURE</td></tr>
+            <tr><td rowspan="4">Housewares</td><td>HOUSEWARES</td></tr><tr><td>HOLIDAY</td></tr><tr><td>JEWELRY</td></tr><tr><td>SEASONAL</td></tr>
+            <tr><td rowspan="4">Textiles</td><td>ACCESSORIES</td></tr><tr><td>CLOTHING</td></tr><tr><td>LINENS</td></tr><tr><td>SHOES</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-md-8">
+  <div class="col-sm-12 col-md-9">
     <div class="card">
     	<div class="card-header">
     		<!-- <h5 class="card-title">TESTER</h5> -->
@@ -265,6 +291,7 @@
 
   $('#mainTable1').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
   $('#mainTable2').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
+
 
 </script>
 
