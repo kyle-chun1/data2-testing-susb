@@ -9,17 +9,17 @@ class Location(models.Model):
     def __str__(self):
         return self.location
 
-class ProductType(models.Model):
-    product_type = models.CharField(max_length=64, unique=True)
-    code = models.CharField(max_length=3, default='')
-    def __str__(self):
-        return self.product_type
-
-
 class Category(models.Model):
     category = models.CharField(max_length=64, unique=True)
     def __str__(self):
         return self.category
+
+class ProductType(models.Model):
+    product_type = models.CharField(max_length=64, unique=True)
+    code = models.CharField(max_length=3, default='')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
+    def __str__(self):
+        return self.product_type
 
 class Product(models.Model):
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
