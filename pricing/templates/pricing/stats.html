@@ -190,9 +190,10 @@
     		<!-- <h5 class="card-title">TESTER</h5> -->
     	</div>
     	<div class="card-body">
-        <h2 class="pb-4">Breakdown by PRODUCT TYPE</h2>
-        <table id="mainTable" class="table table-sm">
+        <h2 class="pb-4">Breakdown by Cateogry / Product Type</h2>
+        <table id="mainTable1" class="table table-sm">
           <thead><tr>
+            <th>Category</th>
             <th>PRODUCT TYPE</th>
             <th>Value</th>
             <th>Items</th>
@@ -203,6 +204,7 @@
           <tbody>
             {% for i in PT %}
               <tr>
+                <td>{{i.CAT}}</td>
                 <td>{{i.PT}}</td>
                 <td>${{i.PRICING_VALUE | floatformat:2}}</td>
                 <td>{{i.TOTAL_ITEMS}}</td>
@@ -226,7 +228,7 @@
     	</div>
     	<div class="card-body">
         <h2 class="pb-4">Breakdown by STAFF ID</h2>
-        <table id="mainTable" class="table table-sm">
+        <table id="mainTable2" class="table table-sm">
           <thead><tr>
             <th>Staff ID</th>
             <th>Value</th>
@@ -259,8 +261,13 @@
 
 {% block javascript_end %}
 
-<!-- <script type="text/javascript">
-  $('#mainTable').DataTable({dom:'Bfrtip', 'pageLength': 50 ,buttons:['copy','csv','print']})
-</script> -->
+<script type="text/javascript">
+
+  $('#mainTable1').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
+  $('#mainTable2').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
+
+</script>
+
+
 
 {% endblock %}

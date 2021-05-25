@@ -211,6 +211,7 @@ def stats(request, location=''):
         COUNT = Count('variant__product__product_type__product_type'),
         ITEM_SUBMISSIONS = Avg('quantity'),
         AVG = Avg('variant__price'),
+        CAT = F('variant__product__product_type__category__category'),
     )
 
     #Product Type Breakdown
@@ -224,6 +225,11 @@ def stats(request, location=''):
     )
 
 
+    try:
+        avg_item_price = total_pricing_value / total_items
+    except:
+        avg_item_price = ''
+
     return render(request, 'pricing/stats.html',{
         'location' : location,
         # 'P': P,
@@ -232,7 +238,7 @@ def stats(request, location=''):
         'total_items' :  total_items,
         'total_pricing_value' : total_pricing_value,
         'pricing_submissions' : Q.count(),
-        'avg_item_price' : total_pricing_value / total_items,
+        'avg_item_price' : avg_item_price,
         'items_per_submission' : items_per_submission,
         'PT' : PT,
         'ST' : ST,
