@@ -68,7 +68,7 @@ def VISITORS(request, location=''):
     else:
         location = location.upper()
     #HARDCODED
-    capacity = {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999, '700-CABOOSE': 35, 'TRC-DONATIONS' : 999,'700-WAREHOUSE' : 19}[location]
+    capacity = {'IRC':140,'TRC':183,'RCH':175,'DDO':999,'TEST':999, '700-CABOOSE': 35, 'TRC-DONATIONS' : 999,'700-WAREHOUSE' : 38}[location]
 
 
 
@@ -94,7 +94,7 @@ def VISITORS(request, location=''):
     ################# INFOSECTION GET HOURLY DATA
 
     render_dict = {
-        'capacity': {'IRC':70,'TRC':92,'RCH':88,'DDO':999,'TEST':999,'700-CABOOSE': 35,'TRC-DONATIONS':999 ,'700-WAREHOUSE': 19}[location],
+        'capacity': {'IRC':140,'TRC':183,'RCH':175,'DDO':999,'TEST':999,'700-CABOOSE': 35,'TRC-DONATIONS':999 ,'700-WAREHOUSE': 38}[location],
         'location' : location,
 
         'current' : Visitors_here_today.aggregate(Sum('count'))['count__sum'],
@@ -134,7 +134,7 @@ def capacity(request):
     p = figure(plot_width=1200, plot_height=600,x_axis_type="datetime")
 
     locations = {'IRC':'green','TRC':'blue','RCH':'red', '700-CABOOSE': 'black', '700-WAREHOUSE': 'yellow'}
-    capacities = {'IRC':70,'TRC':92,'RCH':88, '700-CABOOSE':35, '700-WAREHOUSE': 19}
+    capacities = {'IRC':140,'TRC':183,'RCH':175, '700-CABOOSE':35, '700-WAREHOUSE': 38}
     for location in locations:
         x = [useastern(x.timestamp) for x in V.filter(location=location)]
         y = [y.count for y in V.filter(location=location)]

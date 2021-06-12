@@ -11,7 +11,7 @@
 	<meta name="author" content="Bootlab">
 	<meta name="robots" content="noindex">
 	<meta name="AdsBot-Google" content="noindex">
-	<title>{% block title %}data1 - Internal Staff Portal{% endblock %}</title>
+	<title>{% block title %}ReUse data1 - Internal Staff {% endblock %}</title>
 
 	<!-- PICK ONE OF THE STYLES BELOW -->
 	<link href="{% static 'sp_src/css/classic.css' %}" rel="stylesheet">
@@ -107,39 +107,29 @@
 						{% endblock %}
 					</li>
 					<!-- SINGULAR DIRECT LINK -->
+					<li class="sidebar-item"><a href="/pricing/portal/trmc" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i> <span class="align-middle">TRMC Pricing (New)</span></a></li>
+					<li class="sidebar-item"><a href="/pricing/portal/irc" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i> <span class="align-middle">IRC Pricing (New)</span></a></li>
 
 
-
-					<li class="sidebar-item"><a href="{% url 'mm' %}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-boxes"></i><span class="align-middle">Material Movement Form</span></a></li>
+					<li class="sidebar-header">Other:</li>
 
 
 					<li class="sidebar-item">
-						<a data-target="#irc" data-toggle="collapse" class="sidebar-link collapsed" href="#">
-                <i class="align-middle mr-2 fas fa-fw fa-minus"></i> <span class="align-middle">MEGA CENTER</span>
-            </a>
-						<ul id="irc" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:portal' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>RMC PRICING PORTAL</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:stats' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'TRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-T</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'RCH' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-R</a></li>
+						<a data-target="#charts" data-toggle="collapse" class="sidebar-link collapsed" href="#">
+                <i class="align-middle mr-2 fab fa-fw fa-resolving"></i> <span class="align-middle">Visitor Counter</span>
+              </a>
+						<ul id="charts" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="https://data1.ithacareuse.org/visitors/irc/">IRC</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="https://data1.ithacareuse.org/visitors/trc/">TRC</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="https://data1.ithacareuse.org/visitors/rch/">RCH</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="https://data1.ithacareuse.org/visitors/700-caboose/">700-Caboose</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="https://data1.ithacareuse.org/visitors/700-warehouse/">700-Warehouse</a></li>
+
 						</ul>
 					</li>
 
-					<li class="sidebar-item">
-						<a data-target="#megacenter" data-toggle="collapse" class="sidebar-link collapsed" href="#">
-                <i class="align-middle mr-2 fas fa-fw fa-minus"></i> <span class="align-middle">IRC </span>
-            </a>
-						<ul id="megacenter" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:portal' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>IRC PRICING PORTAL</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:stats' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors IRC</a></li>
-						</ul>
-					</li>
+					<li class="sidebar-item"><a href="https://data1.ithacareuse.org/visitors/capacity/" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-expand"></i> <span class="align-middle">Capacity Tracker (all)</span></a></li>
 
-					<li class="sidebar-item"><a href="{% url 'visitors:capacity'%}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-expand"></i> <span class="align-middle">Capacity Tracker (all)</span></a></li>
-					<li class="sidebar-item"><a href="{% url 'qbgiftcard:qbgiftcardhome'%}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-credit-card"></i> <span class="align-middle">QB Gift Card Lookup</span></a></li>
-
-					<!-- <li class="sidebar-header">Other:</li> -->
 
 					<!-- <li class="sidebar-item">
 						<a data-target="#dashboards" data-toggle="collapse" class="sidebar-link collapsed">
@@ -188,7 +178,7 @@
 
 			<main class="content">
 				<div class="container-fluid">
-					<div class="header"><h1 class="header-title">{% block header_title %} data1 - Internal Staff Portal {% endblock %}</h1></div>
+					<div class="header"><h1 class="header-title">{% block header_title %} Retail Resources - Sample {% endblock %}</h1></div>
 
 					{% block content %}
 					<div class="row">
@@ -199,31 +189,44 @@
 
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Quick Links</h5>
+									<h5 class="card-title">News / Sales / Recent Info.</h5>
 								</div>
 								<div class="card-body">
 
 									<div class="dropdown-menu mb-2" style="position:static;display:block;">
-										<a class="dropdown-item" href="https://wheniwork.com" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-clock"></i>When I Work: clock in/out</a>
-										<a class="dropdown-item" href="https://gmail.com" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-envelope-open"></i>Work email login (www.gmail.com)</a>
-										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-pen"></i>Staff Forms</a>
-										<a class="dropdown-item" href="https://ithacavoice.com/2021/06/reuse-center-pausing-donations-due-to-high-volume-already-received/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-newspaper"></i>Ithaca Voice Article (06/08/2021)</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/1j18ovam2NE7N4S_BnW7hVOK49Mnhc_2q/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>New Employee Handbook - (Released Jan 2021)</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/blog/the-reuses-last-chance-saloon-sale-event-returns-wednesday/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Last Change Saloon - Wednesdays @ 700 </a>
 									</div>
-
 
 								</div>
 							</div>
 
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Communications</h5>
+									<h5 class="card-title">Daily Functions Gmail / WhenIWork</h5>
 								</div>
 								<div class="card-body">
 
 									<div class="dropdown-menu mb-2" style="position:static;display:block;">
-										<a class="dropdown-item" href="https://drive.google.com/file/d/13DZURWZDKso72bihyY_eHZzZLyMRvulK/view" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-phone"></i>Phone Extension List</a>
-										<a class="dropdown-item" href="https://docs.google.com/document/d/18GNZskTqY5JuEbl0LWhZo3SdRxFprzjFdUBnPXi8csA/view" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-list"></i>Staff/Supervisor List</a>
-										<a class="dropdown-item" href="https://docs.google.com/document/d/1lI-_UWnqEGcKH_IkiGuXVsa3dsdYs2er0MOZlrfJWV4/view" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-envelope-square"></i>Staff Email groups</a>
+										<a class="dropdown-item" href="https://login.wheniwork.com/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>Clock In / Clock Out on WHENIWORK</a>
+										<a class="dropdown-item" href="https://gmail.com" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Work Email Login</a>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Staff Forms</h5>
+								</div>
+								<div class="card-body">
+									<div class="dropdown-menu mb-2" style="position:static;display:block;">
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>Accident/Incident Report</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Daily Retail Log</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Facility/Maintenance request form</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>I.T. Service request form</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Electronics desk log</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/staff-forms/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Material Movement Form</a>
 									</div>
 
 								</div>
@@ -235,16 +238,15 @@
 
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Active Guides</h5>
+									<h5 class="card-title">Employee Guides</h5>
 								</div>
 								<div class="card-body">
 
 									<div class="dropdown-menu mb-2" style="position:static;display:block;">
-
-										<a class="dropdown-item" href="https://drive.google.com/file/d/0B0lpj4Mi6E6IdUJIU2tmSkNqM1dwSnMyd1F6TVpYZDJ4blRJ/view?usp=sharing&resourcekey=0-z-HCb4k0Vwhb-RLDgUhDcQ" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-book-open"></i>Master ReUse Center Handbook</a>
-										<a class="dropdown-item" href="https://drive.google.com/drive/folders/1TS18WvnvkpbDY4sgsMLiWKs5hUWsk7QD?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-hand-paper"></i>Shopify Training Guide</a>
-										<a class="dropdown-item" href="https://drive.google.com/file/d/1REh5JDvi-Ya25L0TjNjavKPUO23_qrkz/view" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-hand-paper"></i>ReUse Staff Policy Handbook</a>
-										<a class="dropdown-item" href="https://drive.google.com/file/d/13CsRKpFhqWlAuC8RQd0D1NB3KgcPyxzb/view" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-certificate"></i>ReUse COVID Safety Plan</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/1qGscRpqI3q0L_FTVACsv7YUKjtySzFFq/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>Master ReUse Handbook</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/1j18ovam2NE7N4S_BnW7hVOK49Mnhc_2q/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Employee Handbook</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/13CsRKpFhqWlAuC8RQd0D1NB3KgcPyxzb/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>ReUse COVID-19 Safety Plan</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/donategoods" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Donations: Website Guidelines</a>
 
 									</div>
 
@@ -253,22 +255,37 @@
 
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">External Resources</h5>
+									<h5 class="card-title">Communications</h5>
 								</div>
 								<div class="card-body">
+
 									<div class="dropdown-menu mb-2" style="position:static;display:block;">
-										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-store"></i>ReUse Website homepage</a>
-										<a class="dropdown-item" href="https://ithaca.craigslist.org/search/sss?userid=240694701" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-shopping-basket"></i>Craigslist</a>
-										<a class="dropdown-item" href="https://www.ebay.com/str/ithacareuse" target="_blank"><i class="align-middle mr-2 fab fa-fw fa-ebay"></i>eBay</a>
-										<a class="dropdown-item" href="https://www.facebook.com/ithacareuse/" target="_blank"><i class="align-middle mr-2 fab fa-fw fa-facebook"></i>Facebook (Finger Lakes ReUse)</a>
-										<a class="dropdown-item" href="https://www.instagram.com/ithacareuse/" target="_blank"><i class="align-middle mr-2 fab fa-fw fa-instagram"></i>Instagram</a>
-										<a class="dropdown-item" href="https://twitter.com/ithacareuse" target="_blank"><i class="align-middle mr-2 fab fa-fw fa-twitter"></i>Twitter</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/13DZURWZDKso72bihyY_eHZzZLyMRvulK/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>Phone Extentions List</a>
+										<a class="dropdown-item" href="https://docs.google.com/document/d/18GNZskTqY5JuEbl0LWhZo3SdRxFprzjFdUBnPXi8csA/edit?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Supervisor List</a>
+										<a class="dropdown-item" href="https://docs.google.com/document/d/1lI-_UWnqEGcKH_IkiGuXVsa3dsdYs2er0MOZlrfJWV4/edit?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Staff Groups and Lists (all-staff, retail, etc)</a>
+										<a class="dropdown-item" href="https://drive.google.com/file/d/1JvS2X5gKYEUjNpXu2NOQZD_VnFlGVBf9/view?usp=sharing" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Organization Functions Chart</a>
 
 									</div>
 
 								</div>
 							</div>
 
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Program Information</h5>
+								</div>
+								<div class="card-body">
+									<div class="dropdown-menu mb-2" style="position:static;display:block;">
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-key"></i>ReMAP Information</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Fixer's Collective</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>eCenter</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>ReSET</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Pickup & Delivery</a>
+										<a class="dropdown-item" href="https://ithacareuse.org/" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-sign"></i>Super ReUser Program (and Signup)</a>
+									</div>
+
+								</div>
+							</div>
 
 						</div>
 					</div>

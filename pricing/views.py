@@ -244,3 +244,11 @@ def stats(request, location=''):
         'ST' : ST,
 
     })
+
+
+
+#####################
+# TESTER FOR NEW RETAIL RESOURCES
+
+def tester(request):
+    return render(request,'pricing/tester.html')

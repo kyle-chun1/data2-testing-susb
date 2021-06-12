@@ -66,7 +66,7 @@ from django.db.models import Sum
 
 def capacity_generate(x):
 
-    capacities = {'IRC':70,'TRC':92,'RCH':88, '700-CABOOSE':35, '700-WAREHOUSE': 19, 'TEST':999, 'DDO':999, '700RNR': 35, 'TRC-DONATION': 999}
+    capacities = {'IRC':140,'TRC':183,'RCH':175, '700-CABOOSE':35, '700-WAREHOUSE': 38, 'TEST':999, 'DDO':999, '700RNR': 35, 'TRC-DONATION': 999}
 
     QUERY = Visitors.objects.filter(location=x.location, timestamp__range=(useastern_start(x.timestamp), useastern(x.timestamp))).aggregate(Running_total=Sum('count'))
     x.capacity = QUERY['Running_total'] / capacities[x.location]

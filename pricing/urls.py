@@ -1,6 +1,6 @@
 from django.urls import path
 
-from pricing.views import pricing_portal, pricing_submit, my_pricing_table, raw, stats
+from pricing.views import pricing_portal, pricing_submit, my_pricing_table, raw, stats, tester
 
 app_name='pricing'
 
@@ -13,4 +13,6 @@ urlpatterns = [
     path('my_pricing_table/', my_pricing_table, name='my_pricing_table'),
     # USED FOR RON / MANUALLY PRICING OUT BULK PRICED ITEMS
     # path('temp_barcode/', temp_barcode, name='temp_barcode'),
+    # TESTER FOR RETAIL RESOUCES
+    path('tester/', tester, name='tester'),
 ]
