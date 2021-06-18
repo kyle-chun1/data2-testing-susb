@@ -36,6 +36,6 @@ urlpatterns = [
     path('giftcardportal/', include('qbgiftcard.urls')),
 
     path('accounts/', include('allauth.urls')),
-    path('', TemplateView.as_view(template_name='login/index.html'), name='HOME'),
+    path('', TemplateView.as_view(template_name='pricing/spark_base.html'), name='HOME'),
     path('logout/', logout)
 ]
