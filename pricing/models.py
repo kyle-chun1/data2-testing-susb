@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Location(models.Model):
-    location_choices = [('I','IRC'),('T','TRMC')]
+    location_choices = [('I','IRC'),('T','TRMC'),('7','700')]
     location = models.CharField(max_length=1, choices=location_choices, unique=True)
     text = models.TextField(default='')
     shopify_location_id = models.CharField(max_length=16)

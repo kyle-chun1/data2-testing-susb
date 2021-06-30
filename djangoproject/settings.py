@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'login',  #APPLICATION MADE FOR THIS LOGIN
     'qbgiftcard',
+    'material',
 
     'allauth',
     'allauth.account',
