@@ -97,7 +97,8 @@
 				<div class="sidebar-user">
 					<img src="{{user.socialaccount_set.all.0.get_avatar_url}}" class="img-fluid rounded-circle mb-2" alt="ReUse Staffer" />
 					<div class="font-weight-bold">{{request.user.email}}</div>
-					<small><a target="_blank" href="https://accounts.google.com/logout">Logout / Switch Account</a></small>
+					<form id="logoutform" method="post" action="/accounts/logout/">{% csrf_token %}</form>
+					<small><a target="_blank" onClick=logoutform() href="#">Logout / Switch Account</a></small>
 				</div>
 
 				<!-- SIDEBAR OPTIONS -->
@@ -178,7 +179,7 @@
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item dropdown active">
-							<a class="nav-link dropdown-toggle position-relative" href="https://accounts.google.com/logout" id="messagesDropdown" title="Logout / Switch Account">
+							<a class="nav-link dropdown-toggle position-relative" href="#" onClick=logoutform() id="messagesDropdown" title="Logout / Switch Account">
                 <i class="align-middle fas fa-sign-out-alt"></i>
               </a>
 						</li>
@@ -328,6 +329,11 @@
 
 
 	<script src="{% static 'sp_src/js/app.js' %}"></script>
+	<script type="text/javascript">
+	function logoutform(){
+		$('#logoutform').submit()
+	}
+	</script>
 {% block javascript_end %} {% endblock %}
 </body>
 
@@ -339,4 +345,7 @@
   {% else %}
   <h1>Please Login to Access the Portal</h1>
   <a href="{% provider_login_url 'google' %}"><button>Login with Google</button></a>
+	<br>
+	<br>
+	<a href="https://accounts.google.com/logout" target="_new">Logout / Switch your Google work account</a>
   {% endif %}
