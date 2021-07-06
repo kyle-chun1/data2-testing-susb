@@ -45,7 +45,6 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
             count = -10
     except:
         return redirect('/visitors/test')
-
     ##############################
     if count != 0 :
         RECORD = Visitors(timestamp=timezone.now(),flr_email=flr_email,count=count,location=location)
@@ -63,10 +62,12 @@ def VISITORS(request, location=''):
     if not request.user.is_authenticated:
         return redirect('HOME')
     # HARDCODED STUFF - LOCATION
+
     if location.strip() == '' or location.upper() not in ['IRC','TRC','RCH','DDO','TEST', '700-CABOOSE','TRC-DONATIONS','700-WAREHOUSE']:
         return redirect('HOME')
     else:
         location = location.upper()
+
     #HARDCODED
     capacity = {'IRC':140,'TRC':183,'RCH':175,'DDO':999,'TEST':999, '700-CABOOSE': 35, 'TRC-DONATIONS' : 999,'700-WAREHOUSE' : 38}[location]
 
