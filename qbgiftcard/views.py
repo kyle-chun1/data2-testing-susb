@@ -14,6 +14,12 @@ import pytz
 
 from django.db.models.functions import Trunc
 
+
+
+
+
+
+
 def qbgiftcardhome(request):
     G = GiftCard.objects.all()
     customer_dict = []
@@ -60,20 +66,3 @@ def results(request):
         print('ERROR')
         pass
     return render(request, 'qbgiftcard/lookup1.html', {'gift_card_code': gift_card_code, 'gift_card_name': gift_card_name, 'access_log':access_log})
-
-
-
-
-def giftcard(request):
-    return HttpResponse('working - giftcard')
-
-def log(request):
-    return HttpResponse('working - log')
-
-
-
-def tester1(request, a=10):
-    return HttpResponse(a)
-
-def tester2(request):
-    return redirect('qbgiftcard:tester1', a=20)

@@ -11,8 +11,6 @@ urlpatterns = [
 
     path('lookup/', lookup, name='lookup'),
 
-    path('giftcard/', giftcard, name='giftcard'),
-
-    path('log/', log, name='log'),
+    # path('printlabel', printlabel, name='printlabel')
 
 ]
