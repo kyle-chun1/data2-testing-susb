@@ -50,3 +50,30 @@ class ExpandedMaterialMovement(models.Model):
         # REMOVED rMaterial :)
         # REMOVED rHidden :)
         # ADDED : ePallets + eMaterial + eTripID(SHA256 HASH)
+
+
+
+
+
+###################################################
+#  2021 UPGRADE
+###################################################
+
+# First : The locations table
+
+# Second : The simple movement table
+
+
+class Movement(models.Model):
+    location_choices = [('I','IRC'),('T','TRMC'),('7','700')]  # COPIED + HARCODED FROM PRICING
+    type_choices = [('D','Donations'),('O','Overflow'),('P','Processing'),('S','Salesfloor')]
+
+    origin_type = models.CharField(max_length=1, choices=type_choices)
+    origin_location = models.CharField(max_length=1, choices=location_choices)
+    destination_type = models.CharField(max_length=1, choices=type_choices)
+    destination_location = models.CharField(max_length=1, choices=location_choices)
+
+    product_type = models.ForeignKey('pricing.ProductType', on_delete=models.PROTECT)
+    quantity = models.DecimalField(max_digits=5,decimal_places=2)
+    staff_id = models.CharField(max_length=32)
+    timestamp = models.DateTimeField(auto_now_add=True)
