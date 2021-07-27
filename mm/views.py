@@ -7,6 +7,11 @@ import json
 from .functions import ExpansionFunction
 
 
+# 2021 Extention
+from mm.models import Pallet,Movement
+from pricing.models import ProductType
+
+
 def mm(request):
 
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
@@ -103,3 +108,63 @@ def rawdata(request):
             print(temp[j], end=',')
         print()
     return HttpResponse('WORKING')
+
+
+
+
+
+
+################################################################
+# 2021 REDO OF MATERIAL Movement
+################################################################
+
+
+def movement(request):
+
+    return_dict = {
+        'product_type_list' : [i.product_type for i in ProductType.objects.all()]
+    }
+
+    return render(request,'mm/movement.html', return_dict)
+
+def overflow(request):
+    return_dict = {
+        # 'product_type_list' : [i.product_type for i in ProductType.objects.all()]
+    }
+    return render(request,'mm/overflow.html', return_dict)
+
+
+def overflow_submit(request):
+    origin_location = request.POST.get('origin_location')
+    origin_type = request.POST.get('origin_type')
+    destination_location = request.POST.get('destination_location')
+    destination_type = request.POST.get('destination_type')
+    material_list = request.POST.get('pallets')
+    pallets_raw = json.loads(material_list)
+
+    # FLATTEN LIST
+    pallets = dict()
+    for i in pallets_raw:
+        if i[0] in pallets:
+            pallets[i[0]] += float(i[1])
+        else:
+            pallets[i[0]] = float(i[1])
+
+    print(pallets_raw)
+    print()
+    print(pallets)
+    staff_id = str(request.user.email).split('@fingerlakesreuse.org')[0]
+
+    # FIRST SUBMIT TO MOVEMENT # DB
+    movement_id = Movement.objects.create(
+        origin_type=origin_type, origin_location=origin_location, destination_type=destination_type, destination_location=destination_location, staff_id=staff_id
+    )
+
+    # SUBMIT THE FLATTEN LIST ONE BY ONE TO THE # DB:
+    pallet_db = Pallet.objects
+    for i in pallets:
+        pallet_db.create(movement=movement_id, product_type=ProductType.objects.all()[0]   ,quantity=pallets[i])
+
+
+
+    return HttpResponse( f'{origin_type}, {origin_location}, {destination_type}, {destination_location}, {pallets}')

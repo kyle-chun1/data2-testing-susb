@@ -10,6 +10,9 @@ from reportlab.graphics.barcode import qr
 from reportlab.lib.units import inch
 import io
 
+#Color tag rotation functions
+from datetime import datetime, timedelta
+from pytz import timezone
 
 
 def fill_variants_color(handle):
@@ -108,3 +111,10 @@ def barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY):
     c.save()
     buffer.seek(0)
     return buffer
+
+
+def color_wheel_2021(d=datetime.now(tz=timezone('US/Eastern'))):
+    color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
+    colors = ('B','Y','O','R','G','L' )
+    print( 'TIME DELTA VALUE:', (d-color_ref).days  )
+    return colors[ (d - color_ref).days // 7 % 6 ]

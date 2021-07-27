@@ -3,7 +3,7 @@ from django.http import HttpResponse, FileResponse
 from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField
 from django.db.models.functions import Trunc
 
-from pricing.functions import barcode_reuse_1
+from pricing.functions import barcode_reuse_1, color_wheel_2021
 
 from pricing.models import *
 import json
@@ -14,6 +14,7 @@ import pytz
 from visitors.functions import *
 
 from visitors.functions import start_end_date
+
 
 
 
@@ -47,8 +48,6 @@ def pricing_portal(request, location):
     #         products_unit[i['variant'][0:5]] = list()
 ###########################
 
-    print(products_unit)
-    print()
     # Create a SET of the unique IDS
     products_ids = set([x['variant'][0:5] for x in V])
     #Declare a blank Dict and Add the unique IDS to the dict with empty lists()
@@ -59,14 +58,16 @@ def pricing_portal(request, location):
     for i in V:
         products_unit_test[ i['variant'][:5] ].append([  i['variant'],i['title'],f"{i['price']:.2f}"  ])
 
-    print(products_unit_test)
-    # print(temp)
 ########################### TEST SEGMENT END
 
+    color_reference = {'W':'White', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
+    CC = color_wheel_2021()
+    CColor = color_reference[CC]
+
     if LOCATION=='T':
-        return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit_test})  ###########FOLLOWUP : TESTING NEW FORMAT FOR DICT
+        return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit_test, 'CColor' : CColor, 'CC': CC })  ###########FOLLOWUP : TESTING NEW FORMAT FOR DICT
     elif LOCATION == 'I':
-        return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit_test})
+        return render(request, 'pricing/pricing_irc.html',{'products_std': products_std, 'products_unit':products_unit_test, 'CColor' : CColor, 'CC': CC })
 
 
 
