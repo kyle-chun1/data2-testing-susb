@@ -5,6 +5,7 @@
 
 {% block header_title %}Material Movement Form - v2 (2021){% endblock %}
 
+{% block header_subtitle %}{{ header_subtitle }}{% endblock %}
 
 {% block active_link %}
 {% endblock %}
@@ -12,7 +13,6 @@
 
 
 {% block content %}
-
 <div class="row">
   <div class="col-md-6 col-sm-12">
     <div class="card pt-3">
@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="row">
-        <form id="target_form" action="{% url 'mm:overflow_submit' %}"  method="POST">
+        <form id="target_form" action="{% url 'mm:movement_submit' %}"  method="POST">
         {% csrf_token %}
         <input type="hidden" id="origin_type" name="origin_type" value="">
         <input type="hidden" id="origin_location" name="origin_location" value="">
@@ -98,6 +98,24 @@
 </div>
 
 
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="card pt-2 mb-2">
+      <div class="card-header">
+				<h5 class="card-title">Material Movement Submission History for {{request.user.email}}</h5>
+				<!-- <h6 class="card-subtitle text-muted">List of your last 20 items submitted to the inventory. This feature is still being developed. You will soon have the ability to delete submissions made on the same day.</h6> -->
+			</div>
+      <div class="card-body">
+        <div id="targetTable">
+          <table id="mainTable" class="table table-sm"><thead><tr><th>Record ID</th><th>Date/Time</th><th>Origin Type</th><th>Origin Location</th><th>Destination Type</th><th>Destination Location</th><th>Pallets</th></tr></thead><tbody>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 {% endblock %}
 
@@ -106,7 +124,12 @@
 {% block javascript_end %}
 <script type="text/javascript">
 
+// RENDER THE LIST OF PRODUCT TYPES WITH THEIR IDS
 product_type_list = {{product_type_list | safe}}
+$('.target_row_material').html('')
+for(i=0;i<product_type_list.length;i++){
+  $('.target_row_material').append('<option value="' + product_type_list[i][1] +'">' + product_type_list[i][0] + '</option>')
+}
 
 function function_origin_type(){
   $('.target_origin_type').removeClass('btn-outline-dark')
@@ -195,6 +218,7 @@ $('#target_submit').on('click', function(){
   // SUBMIT THE FORM
   $("#target_form").submit()
 })
+
 
 
 </script>

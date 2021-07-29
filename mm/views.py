@@ -122,19 +122,21 @@ def rawdata(request):
 def movement(request):
 
     return_dict = {
-        'product_type_list' : [i.product_type for i in ProductType.objects.all()]
+        'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all()],
+        'header_subtitle': '',
     }
+    # IF THERE WAS A RECENT TRANSACTION, THEN PLEASE ADD IN A RECORD FOR THAT
 
     return render(request,'mm/movement.html', return_dict)
 
-def overflow(request):
-    return_dict = {
-        # 'product_type_list' : [i.product_type for i in ProductType.objects.all()]
-    }
-    return render(request,'mm/overflow.html', return_dict)
 
 
-def overflow_submit(request):
+
+####################################
+# MOVEMENT SUBMISSION Form
+####################################
+
+def movement_submit(request):
     origin_location = request.POST.get('origin_location')
     origin_type = request.POST.get('origin_type')
     destination_location = request.POST.get('destination_location')
@@ -163,8 +165,9 @@ def overflow_submit(request):
     # SUBMIT THE FLATTEN LIST ONE BY ONE TO THE # DB:
     pallet_db = Pallet.objects
     for i in pallets:
-        pallet_db.create(movement=movement_id, product_type=ProductType.objects.all()[0]   ,quantity=pallets[i])
+        pallet_db.create(movement=movement_id, product_type=ProductType.objects.get(id=int(i))   ,quantity=pallets[i])
 
 
 
-    return HttpResponse( f'{origin_type}, {origin_location}, {destination_type}, {destination_location}, {pallets}')
+    # return HttpResponse( f'{origin_type}, {origin_location}, {destination_type}, {destination_location}, {pallets}')
+    return redirect('mm:movement')

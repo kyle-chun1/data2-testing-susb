@@ -194,8 +194,10 @@
 
 			<main class="content">
 				<div class="container-fluid">
-					<div class="header"><h1 class="header-title">{% block header_title %} data1 - Internal Staff Portal {% endblock %}</h1></div>
-
+					<div class="header">
+						<h1 class="header-title">{% block header_title %} data1 - Internal Staff Portal {% endblock %}</h1>
+						<p class="header-subtitle">{% block header_subtitle %}{% endblock %}</p>
+					</div>
 					{% block content %}
 					<div class="row">
 
@@ -334,6 +336,11 @@
 	<script type="text/javascript">
 	function logoutform(){
 		$('#logoutform').submit()
+	}
+
+	//IMPORTANT:  SUBTITLE AUTOMATION:  IF SUBTITLE IS EMPTY PLEASE REMOVE IT TO SAVE SPACE
+	if( $('.header-subtitle').html().length == 0) {
+		$('.header-subtitle').remove()
 	}
 	</script>
 {% block javascript_end %} {% endblock %}

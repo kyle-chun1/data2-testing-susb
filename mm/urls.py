@@ -11,6 +11,5 @@ urlpatterns = [
     path('submit/', views.mmsubmit,name='mmsubmit'),
     path('rawdata/', views.rawdata, name='rawdata'),
     path('movement/', views.movement, name='movement'),
-    path('overflow/', views.overflow, name='overflow'),
-    path('overflow_submit/', views.overflow_submit, name='overflow_submit'),
+    path('movement_submit/', views.movement_submit, name='movement_submit'),
 ]
