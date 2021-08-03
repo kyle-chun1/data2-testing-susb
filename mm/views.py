@@ -10,7 +10,7 @@ from .functions import ExpansionFunction
 # 2021 Extention
 from mm.models import Pallet,Movement
 from pricing.models import ProductType
-
+from visitors.functions import start_end_date
 
 def mm(request):
 
@@ -160,9 +160,6 @@ def movement_submit(request):
         else:
             pallets[i[0]] = float(i[1])
 
-    print(pallets_raw)
-    print()
-    print(pallets)
     staff_id = str(request.user.email).split('@fingerlakesreuse.org')[0]
 
     # FIRST SUBMIT TO MOVEMENT # DB
@@ -175,7 +172,19 @@ def movement_submit(request):
     for i in pallets:
         pallet_db.create(movement=movement_id, product_type=ProductType.objects.get(id=int(i))   ,quantity=pallets[i])
 
-
-
     # return HttpResponse( f'{origin_type}, {origin_location}, {destination_type}, {destination_location}, {pallets}')
     return redirect('mm:movement')
+
+
+
+
+####################################
+# STATS - INITIAL
+####################################
+def stats(request):
+    start_date, end_date = start_end_date(request.GET)
+    return_dict = {
+        'start_date': start_date.strftime('%Y-%m-%d'),
+        'end_date': end_date.strftime('%Y-%m-%d'),
+    }
+    return render(request, 'mm/stats.html', return_dict)
