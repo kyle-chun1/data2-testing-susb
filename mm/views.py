@@ -124,7 +124,8 @@ def movement(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    RECORDS = Movement.objects.filter(staff_id = str(request.user.email).split('@')[0]).order_by('-timestamp')[0:10]
+    RECORDS = Movement.objects.filter(staff_id = str(request.user.email).split('@')[0])\
+        .order_by('-timestamp')[0:20]
 
     return_dict = {
         'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all().order_by('product_type')],
@@ -133,7 +134,7 @@ def movement(request):
 
     }
     # IF THERE WAS A RECENT TRANSACTION, THEN PLEASE ADD IN A RECORD FOR THAT
-    print(len(return_dict['RECORDS']))
+
     return render(request,'mm/movement.html', return_dict)
 
 

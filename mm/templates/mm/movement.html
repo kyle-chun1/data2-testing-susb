@@ -9,6 +9,7 @@
 
 {% block active_link %}
 {% endblock %}
+{% load tz %}
 
 
 
@@ -102,7 +103,7 @@
   <div class="col-12">
     <div class="card pt-2 mb-2">
       <div class="card-header">
-				<h5 class="card-title">Material Movement Submission History for {{request.user.email}}</h5>
+				<h5 class="card-title">Material Movement Submission History (Recent 20 records) for <strong>{{request.user.email}}</strong></h5>
 				<!-- <h6 class="card-subtitle text-muted">List of your last 20 items submitted to the inventory. This feature is still being developed. You will soon have the ability to delete submissions made on the same day.</h6> -->
 			</div>
       <div class="card-body">
@@ -111,13 +112,13 @@
             <tbody>
               {% for i in RECORDS %}
                 <tr>
-                  <td>i</td>
-                  <td>i</td>
-                  <td>i</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
+                  <td>{{i.id}}</td>
+                  <td>{% timezone "US/Eastern" %}{{i.timestamp}}{% endtimezone %}</td>
+                  <td>{{i.origin_type}}</td>
+                  <td>{{i.origin_location}}</td>
+                  <td>{{i.destination_type}}</td>
+                  <td>{{i.destination_location}}</td>
+                  <td>##</td>
                 </tr>
               {% endfor %}
             </tbody>
