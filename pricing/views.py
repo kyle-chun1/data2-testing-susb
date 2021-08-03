@@ -9,6 +9,7 @@ from pricing.models import *
 import json
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 import pytz
 
 from visitors.functions import *
@@ -61,8 +62,9 @@ def pricing_portal(request, location):
 ########################### TEST SEGMENT END
 
     color_reference = {'W':'White', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
-    CC = color_wheel_2021()
+    CC = color_wheel_2021(timezone.now())
     CColor = color_reference[CC]
+    print(CC,CColor)
 
     if LOCATION=='T':
         return render(request, 'pricing/pricing_trmc.html',{'products_std': products_std, 'products_unit':products_unit_test, 'CColor' : CColor, 'CC': CC })  ###########FOLLOWUP : TESTING NEW FORMAT FOR DICT

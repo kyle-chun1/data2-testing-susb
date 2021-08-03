@@ -120,13 +120,20 @@ def rawdata(request):
 
 
 def movement(request):
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    RECORDS = Movement.objects.filter(staff_id = str(request.user.email).split('@')[0]).order_by('-timestamp')[0:10]
 
     return_dict = {
-        'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all()],
+        'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all().order_by('product_type')],
         'header_subtitle': '',
+        'RECORDS' : RECORDS,
+
     }
     # IF THERE WAS A RECENT TRANSACTION, THEN PLEASE ADD IN A RECORD FOR THAT
-
+    print(len(return_dict['RECORDS']))
     return render(request,'mm/movement.html', return_dict)
 
 

@@ -107,8 +107,21 @@
 			</div>
       <div class="card-body">
         <div id="targetTable">
-          <table id="mainTable" class="table table-sm"><thead><tr><th>Record ID</th><th>Date/Time</th><th>Origin Type</th><th>Origin Location</th><th>Destination Type</th><th>Destination Location</th><th>Pallets</th></tr></thead><tbody>
-          </tbody></table>
+          <table id="mainTable" class="table table-sm"><thead><tr><th>Record ID</th><th>Date/Time</th><th>Origin Type</th><th>Origin Location</th><th>Destination Type</th><th>Destination Location</th><th>Pallets</th></tr></thead>
+            <tbody>
+              {% for i in RECORDS %}
+                <tr>
+                  <td>i</td>
+                  <td>i</td>
+                  <td>i</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

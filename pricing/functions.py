@@ -113,7 +113,11 @@ def barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY):
     return buffer
 
 
-def color_wheel_2021(d=datetime.now(tz=timezone('US/Eastern'))):
+def color_wheel_2021(d=''):
+    #INTENTIONALLY SETTING D TO BLANK, SINCE THIE DECLARATION HAPPENS ONE TIME! AND STATS THAT WAY TILL GUNICORN IS REBOOTED@!!!!!
+    # NEVER KEEP PYTHONG FUNCTIONS WITH DEFAULT VALUES IN THE DECLATION SEGMENT.
+    if d=='':
+        d = datetime.now(tz=timezone('US/Eastern'))
     color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
     colors = ('B','Y','O','R','G','L' )
     print( 'TIME DELTA VALUE:', (d-color_ref).days  )
