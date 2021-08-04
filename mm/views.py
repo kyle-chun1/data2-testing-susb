@@ -13,7 +13,7 @@ from pricing.models import ProductType
 from visitors.functions import start_end_date
 
 def mm(request):
-
+    return redirect('mm:movement')
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
     if not request.user.is_authenticated:
         return redirect('HOME')
