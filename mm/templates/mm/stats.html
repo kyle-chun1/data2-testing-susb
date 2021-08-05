@@ -36,10 +36,7 @@
   </div>
 </div>
 
-
-
-
-<div class="row">
+<div class="row mt-3">
   <div class="col-md-3 col-lg-3 col-sm-12">
     <div class="card">
       <div class="card-body">
@@ -124,7 +121,31 @@
       </div>
     </div>
   </div>
+</div>
 
+
+
+<div class="row mt-3">
+  <div class="col">
+    <div class="card pt-2 mb-2 text-center">
+      <div class="card-header"><h3 class="card-title">Material Movement Between Sites</h3><h6 class="card-subtitle text-muted"></h6></div>
+      <div class="card-body">
+        <div id="targetTable">
+          <table id="mainTable2" class="table table-striped table-hover">
+            <thead>
+              <tr><th rowspan="2">ORIGIN</th><th colspan="3">DESTINATION</th></tr>
+              <tr><th>IRC</th><th>TRMC</th><th>700</th></tr>
+            </thead>
+            <tbody class="table-hover">
+              <tr><td>IRC</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>TRMC</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>700</td><td>-</td><td>-</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -134,48 +155,62 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<div class="row mt-3">
-  <div class="col-12">
+<div class="row mt-2">
+  <div class="col-md-8 col-sm-12">
     <div class="card pt-2 mb-2">
-      <div class="card-header">
-				<h5 class="card-title">List of Material Submissions</h5>
-				<h6 class="card-subtitle text-muted"></h6>
-			</div>
+      <div class="card-header"><h5 class="card-title">Donations Volume by CATEGORY</h5><h6 class="card-subtitle text-muted">Estimated by aggregating palles originating from Donations (origin_type=Donations)</h6></div>
       <div class="card-body">
         <div id="targetTable">
-          <table id="mainTable" class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead>
+          <table id="mainTable2" class="table table-sm"><thead><tr><th>Category</th><th>PRODUCT TYPE</th><th>Pallets</th></tr></thead>
             <tbody>
             </tbody>
-          </table><div>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-12">
+    <div class="card pt-2 mb-2">
+      <div class="card-header"><h5 class="card-title">Donations Volume by SITE</h5><h6 class="card-subtitle text-muted"></h6></div>
+      <div class="card-body">
+        <div id="targetTable">
+          <table id="mainTable2" class="table table-striped table-hover"><thead><tr><th>SITE</th><th>Pallets</th></tr></thead>
+            <tbody>
+              <tr><td>IRC</td><td>-</td></tr>
+              <tr><td>TRMC</td><td>-</td></tr>
+              <tr><td>700</td><td>-</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row mt-3">
-  <div class="col-12">
+<div class="row mt-5">
+  <div class="col-md-6 col-sm-12">
     <div class="card pt-2 mb-2">
-      <div class="card-header">
-				<h5 class="card-title">List of Material Submissions</h5>
-				<h6 class="card-subtitle text-muted"></h6>
-			</div>
+      <div class="card-header"><h5 class="card-title">Pallets SENT to Overflow</h5><h6 class="card-subtitle text-muted">Estimated by aggregating palles sent to Overflow (destination_type=Overflow)</h6></div>
       <div class="card-body">
         <div id="targetTable">
-          <table id="mainTable" class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead>
+          <table id="mainTable2" class="table table-sm"><thead><tr><th>Category</th><th>PRODUCT TYPE</th><th>Pallets</th></tr></thead>
             <tbody>
             </tbody>
-          </table><div>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <div class="card pt-2 mb-2">
+      <div class="card-header"><h5 class="card-title">Pallets EXITING Overflow</h5><h6 class="card-subtitle text-muted">Estimated by aggregating pallets Originating from Overflow (origin_type=Overflow)</h6></div>
+      <div class="card-body">
+        <div id="targetTable">
+          <table id="mainTable2" class="table table-sm"><thead><tr><th>Category</th><th>PRODUCT TYPE</th><th>Pallets</th></tr></thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
