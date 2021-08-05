@@ -14,4 +14,5 @@ urlpatterns = [
     path('movement_submit/', movement_submit, name='movement_submit'),
 
     path('stats/', stats, name='stats' ),
+    path('raw/', raw, name='raw'),
 ]

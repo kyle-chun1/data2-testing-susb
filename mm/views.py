@@ -133,7 +133,7 @@ def movement(request):
     RECORDS = Pallet.objects.filter(\
         movement__staff_id = str(request.user.email).split('@')[0],
         movement__timestamp__range=( timezone.now()-timedelta(days=7) ,  timezone.now()  )   )\
-        .values('id','movement__timestamp','movement__origin_type','movement__origin_location','movement__destination_type','movement__destination_location','quantity')
+        .values('id','movement__timestamp','movement__origin_type','movement__origin_location','movement__destination_type','movement__destination_location','product_type__product_type','quantity')
 
     return_dict = {
         'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all().order_by('product_type')],
@@ -190,9 +190,37 @@ def movement_submit(request):
 # STATS - INITIAL
 ####################################
 def stats(request):
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
     start_date, end_date = start_end_date(request.GET)
+
     return_dict = {
         'start_date': start_date.strftime('%Y-%m-%d'),
         'end_date': end_date.strftime('%Y-%m-%d'),
     }
     return render(request, 'mm/stats.html', return_dict)
+
+
+
+def raw(request):
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    start_date, end_date = start_end_date(request.GET)
+
+    RECORDS = Pallet.objects.filter(\
+        movement__staff_id = str(request.user.email).split('@')[0],
+        movement__timestamp__range=( timezone.now()-timedelta(days=7) ,  timezone.now()  )   )\
+        .values('movement__staff_id','movement__timestamp','movement__origin_type','movement__origin_location','movement__destination_type','movement__destination_location','product_type__product_type','quantity')
+
+
+    return_dict = {
+        'start_date': start_date.strftime('%Y-%m-%d'),
+        'end_date': end_date.strftime('%Y-%m-%d'),
+        'RECORDS' : RECORDS,
+    }
+
+    return render(request,'mm/raw.html', return_dict)

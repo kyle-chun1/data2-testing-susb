@@ -108,7 +108,7 @@
 			</div>
       <div class="card-body">
         <div id="targetTable">
-          <table id="mainTable" class="table table-sm"><thead><tr><th>Record ID</th><th>Date/Time</th><th>Origin Type</th><th>Origin Location</th><th>Destination Type</th><th>Destination Location</th><th>Pallets</th></tr></thead>
+          <table id="mainTable" class="table table-sm"><thead><tr><th>Record ID</th><th>Date/Time</th><th>Origin Type</th><th>Origin Location</th><th>Destination Type</th><th>Destination Location</th><th>PRODUCT TYPE</th><th>Pallets</th></tr></thead>
             <tbody>
               {% for i in RECORDS %}
                 <tr>
@@ -118,6 +118,7 @@
                   <td>{{i.movement__origin_location}}</td>
                   <td>{{i.movement__destination_type}}</td>
                   <td>{{i.movement__destination_location}}</td>
+                  <td>{{i.product_type__product_type}}</td>
                   <td>{{i.quantity}}</td>
                 </tr>
               {% endfor %}
