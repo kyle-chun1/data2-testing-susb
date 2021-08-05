@@ -12,6 +12,10 @@ from mm.models import Pallet,Movement
 from pricing.models import ProductType
 from visitors.functions import start_end_date
 
+from datetime import timedelta
+from django.utils import timezone
+from django.db.models import Sum
+
 def mm(request):
     return redirect('mm:movement')
     #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
@@ -124,8 +128,12 @@ def movement(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    RECORDS = Movement.objects.filter(staff_id = str(request.user.email).split('@')[0])\
-        .order_by('-timestamp')[0:20]
+    # RECORDS = Movement.objects.filter(staff_id = str(request.user.email).split('@')[0])\
+        # .order_by('-timestamp')[0:20]
+    RECORDS = Pallet.objects.filter(\
+        movement__staff_id = str(request.user.email).split('@')[0],
+        movement__timestamp__range=( timezone.now()-timedelta(days=7) ,  timezone.now()  )   )\
+        .values('id','movement__timestamp','movement__origin_type','movement__origin_location','movement__destination_type','movement__destination_location','quantity')
 
     return_dict = {
         'product_type_list' : [[i.product_type,i.id] for i in ProductType.objects.all().order_by('product_type')],

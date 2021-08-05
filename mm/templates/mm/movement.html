@@ -103,8 +103,8 @@
   <div class="col-12">
     <div class="card pt-2 mb-2">
       <div class="card-header">
-				<h5 class="card-title">Material Movement Submission History (Recent 20 records) for <strong>{{request.user.email}}</strong></h5>
-				<h6 class="card-subtitle text-muted">This section is still being developed and will be more descriptive in a few days!</h6>
+				<h5 class="card-title">My Material Movement Submission History (Last 7 days) for <strong>{{request.user.email}}</strong></h5>
+				<!-- <h6 class="card-subtitle text-muted">This section is still being developed and will be more descriptive in a few days!</h6> -->
 			</div>
       <div class="card-body">
         <div id="targetTable">
@@ -113,12 +113,12 @@
               {% for i in RECORDS %}
                 <tr>
                   <td>{{i.id}}</td>
-                  <td>{% timezone "US/Eastern" %}{{i.timestamp}}{% endtimezone %}</td>
-                  <td>{{i.origin_type}}</td>
-                  <td>{{i.origin_location}}</td>
-                  <td>{{i.destination_type}}</td>
-                  <td>{{i.destination_location}}</td>
-                  <td>##</td>
+                  <td>{% timezone "US/Eastern" %}{{i.movement__timestamp}}{% endtimezone %}</td>
+                  <td>{{i.movement__origin_type}}</td>
+                  <td>{{i.movement__origin_location}}</td>
+                  <td>{{i.movement__destination_type}}</td>
+                  <td>{{i.movement__destination_location}}</td>
+                  <td>{{i.quantity}}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -231,7 +231,16 @@ $('#target_submit').on('click', function(){
   // REMEMBER TO DO CHECKING HERE)
   // SUBMIT THE FORM
   $("#target_form").submit()
+
 })
+
+
+// TEXT EXPANSION AND CHECK FOR LATEST ONLY IF THE RECORD COUNT IS MORE THAN 1 - indicating a recent record
+text_expansion = { 'D':'Donation', 'O': 'Overflow', 'P': 'Processing', 'S':'Salesfloor' ,'I':'IRC','T':'TRMC','7':'700' }
+records_count = $('#mainTable tbody tr').length
+if(records_count >= 1){
+
+}
 
 
 
