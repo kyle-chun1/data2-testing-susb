@@ -48,7 +48,7 @@
               {% for i in RECORDS %}
                 <tr>
                   <td>{{i.movement__staff_id}}</td>
-                  <td>{% timezone "US/Eastern" %}{{i.movement__timestamp}}{% endtimezone %}</td>
+                  <td>{% timezone "US/Eastern" %}{{i.movement__timestamp | date:"SHORT_DATETIME_FORMAT"}}{% endtimezone %}</td>
                   <td>{{i.movement__origin_type}}</td>
                   <td>{{i.movement__origin_location}}</td>
                   <td>{{i.movement__destination_type}}</td>
@@ -68,5 +68,15 @@
 </div>
 
 
+
+{% endblock %}
+
+
+
+{% block javascript_end %}
+
+<script type="text/javascript">
+  $('#mainTable').DataTable({dom:'Bfrtip', 'pageLength': 50 ,buttons:['copy','csv','print']})
+</script>
 
 {% endblock %}

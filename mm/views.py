@@ -211,7 +211,7 @@ def raw(request):
 
     start_date, end_date = start_end_date(request.GET)
 
-    RECORDS = Pallet.objects.filter(movement__timestamp__range=( timezone.now()-timedelta(days=7) ,  timezone.now()  )   )\
+    RECORDS = Pallet.objects.filter(movement__timestamp__range=( start_date ,  end_date  )   )\
         .values('movement__staff_id','movement__timestamp','movement__origin_type','movement__origin_location','movement__destination_type','movement__destination_location','product_type__product_type','quantity')
 
 
