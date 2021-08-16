@@ -119,21 +119,60 @@ def my_pricing_table(request):
     if not request.user.is_authenticated:
         return redirect('HOME')
 
-    response_html = '<table id="mainTable" class="table table-sm"><thead><tr><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th></tr></thead><tbody>'
+    response_html = '<table id="mainTable" class="table table-sm"><thead><tr><th>ID</th><th>Date/Time</th><th>Tag</th><th>Product</th><th>Variant</th><th>Price</th><th>Quantity</th><th>DELETE</th></tr></thead><tbody>'
     classifier_choices = {'U':'Unit','W':'White','Y':'Yellow','R':'Red','O':'Orange','B':'Blue','G':'Green','L':'Lavender'}
 
 
     QUERY = Pricing.objects.filter(staff_id=request.user.email.split('@')[0], inventory=True, deleted=False)\
         .order_by('-timestamp')[:20]\
-        .values('variant__product__classifier','variant__title','timestamp','variant__product__title','variant__price', 'quantity')
+        .values('variant__product__classifier','variant__title','timestamp','variant__product__title','variant__price', 'quantity', 'id')
 
     for i in QUERY:
-        response_html += f"<tr><td>{datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %b %d, %Y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td>"
-
+        # IF the timestamp is not less than a day old, render the delete button > so that folks can delete it if needed.
+        if i['timestamp'] > timezone.now()-timedelta(days=1):
+            delete_button_html = f'<a target="_new" href="{reverse("pricing:delete_record", kwargs={"record":i["id"]})}" class="btn btn-success btn-sm" role="button" aria-pressed="true">DEL</a>'
+        else:
+            delete_button_html = '-'
+        response_html += f"<tr><td>{i['id']}</td><td>{datetime.strftime(i['timestamp'].astimezone(tz=pytz.timezone('US/Eastern')),'%a %d/%m/%y - %I:%M %p') }</td><td>{classifier_choices[i['variant__product__classifier']]}</td><td>{i['variant__product__title']}</td><td>{i['variant__title']}</td><td>{i['variant__price']}</td><td>{i['quantity']}</td><td>{delete_button_html}</td>"
 
     response_html += f'</tbody></table>'
     return HttpResponse(response_html)
 
+
+
+
+def delete_record(request, record):
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    R = Pricing.objects.filter(id=record)\
+        .values('deleted','id','staff_id','timestamp','variant__variant', 'variant__product__product_type__product_type','quantity')[0]
+
+    if R['staff_id'] != request.user.email.split('@')[0]:
+        return HttpResponse('NOT YOUR USER ACCOUNT')
+
+    if R['timestamp'] < timezone.now()-timedelta(days=1):
+        return HttpResponse('THIS RECORD IS TOO OLD TO DELETE')
+
+
+    return_dict = {'R':R}
+    return render(request, 'pricing/delete_record.html', return_dict)
+
+
+
+
+def delete_submit(request):
+    try:
+        record = int(request.POST.get('id'))
+        print(record)
+
+        R = Pricing.objects.filter(id=record)[0]
+        print(vars(R))
+        R.deleted = True
+        R.save()
+        return redirect( reverse('pricing:delete_record',kwargs={"record":record }) )
+    except:
+        return HttpResponse('ERROR OCCURED')
 
 # ######### USE THIS FOR PRITING TAGS TEMPORARILY
 # def temp_barcode(request):

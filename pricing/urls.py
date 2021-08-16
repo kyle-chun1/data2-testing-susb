@@ -1,6 +1,6 @@
 from django.urls import path
 
-from pricing.views import pricing_portal, pricing_submit, my_pricing_table, raw, stats, tester
+from pricing.views import *
 
 app_name='pricing'
 
@@ -11,6 +11,9 @@ urlpatterns = [
     path('submit/', pricing_submit, name='submit'),
 
     path('my_pricing_table/', my_pricing_table, name='my_pricing_table'),
+    path('delete/<int:record>/', delete_record, name='delete_record'),
+    path('delete_submit/', delete_submit, name='delete_submit'),
+
     # USED FOR RON / MANUALLY PRICING OUT BULK PRICED ITEMS
     # path('temp_barcode/', temp_barcode, name='temp_barcode'),
     # TESTER FOR RETAIL RESOUCES
