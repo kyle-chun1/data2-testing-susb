@@ -116,7 +116,7 @@
 
 
 
-					<li class="sidebar-item"><a href="{% url 'mm:mm' %}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-boxes"></i><span class="align-middle">Material Movement Form</span></a></li>
+					<li class="sidebar-item"><a href="{% url 'mm:mm' %}" class="sidebar-link"><i class="align-middle mr-2 fas fa-fw fa-boxes"></i><span class="align-middle">Material Movement Form</span></a></li>
 
 
 					<li class="sidebar-item">
@@ -124,10 +124,11 @@
                 <i class="align-middle mr-2 fas fa-fw fa-minus"></i> <span class="align-middle">MEGA CENTER</span>
             </a>
 						<ul id="irc" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:portal' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>RMC PRICING PORTAL</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:stats' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'TRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-T</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'RCH' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-R</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'visitors:VISITORS' 'TRC-DONATIONS' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Donations Tracker</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'pricing:portal' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>RMC PRICING PORTAL</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'pricing:stats' 'RMC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'visitors:VISITORS' 'TRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-T</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'visitors:VISITORS' 'RCH' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors MEGA-R</a></li>
 						</ul>
 					</li>
 
@@ -136,14 +137,15 @@
                 <i class="align-middle mr-2 fas fa-fw fa-minus"></i> <span class="align-middle">IRC </span>
             </a>
 						<ul id="megacenter" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:portal' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>IRC PRICING PORTAL</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'pricing:stats' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" target="_blank" href="{% url 'visitors:VISITORS' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors IRC</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'visitors:VISITORS' 'DDO' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Donations Tracker</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'pricing:portal' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-qrcode"></i>IRC PRICING PORTAL</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'pricing:stats' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-chart-bar"></i>Pricing Stats</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'visitors:VISITORS' 'IRC' %}"><i class="align-middle mr-2 fas fa-fw fa-user-plus"></i>Visitors IRC</a></li>
 						</ul>
 					</li>
 
-					<li class="sidebar-item"><a href="{% url 'visitors:capacity'%}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-expand"></i> <span class="align-middle">Capacity Tracker (all)</span></a></li>
-					<li class="sidebar-item"><a href="{% url 'qbgiftcard:qbgiftcardhome'%}" class="sidebar-link" target="_blank"><i class="align-middle mr-2 fas fa-fw fa-credit-card"></i> <span class="align-middle">QB Gift Card Lookup</span></a></li>
+					<li class="sidebar-item"><a href="{% url 'visitors:capacity'%}" class="sidebar-link"><i class="align-middle mr-2 fas fa-fw fa-expand"></i> <span class="align-middle">Capacity Tracker (all)</span></a></li>
+					<li class="sidebar-item"><a href="{% url 'qbgiftcard:qbgiftcardhome'%}" class="sidebar-link"><i class="align-middle mr-2 fas fa-fw fa-credit-card"></i> <span class="align-middle">QB Gift Card Lookup</span></a></li>
 
 					<!-- <li class="sidebar-header">Other:</li> -->
 
