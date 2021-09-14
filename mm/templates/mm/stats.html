@@ -36,92 +36,7 @@
   </div>
 </div>
 
-<div class="row mt-3">
-  <div class="col-md-3 col-lg-3 col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col mt-0">
-            <h5 class="card-title">TBD</h5>
-          </div>
 
-          <div class="col-auto">
-            <div class="avatar">
-              <div class="avatar-title rounded-circle bg-primary-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h1 class="display-5 mt-1 mb-3">TBD</h1>
-        <div class="mb-0">TBD Stat</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 col-lg-3 col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col mt-0">
-            <h5 class="card-title">TBD</h5>
-          </div>
-
-          <div class="col-auto">
-            <div class="avatar">
-              <div class="avatar-title rounded-circle bg-primary-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h1 class="display-5 mt-1 mb-3">TBD</h1>
-        <div class="mb-0">TBD Stat</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 col-lg-3 col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col mt-0">
-            <h5 class="card-title">TBD</h5>
-          </div>
-
-          <div class="col-auto">
-            <div class="avatar">
-              <div class="avatar-title rounded-circle bg-primary-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h1 class="display-5 mt-1 mb-3">TBD</h1>
-        <div class="mb-0">TBD Stat</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 col-lg-3 col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col mt-0">
-            <h5 class="card-title">TBD</h5>
-          </div>
-
-          <div class="col-auto">
-            <div class="avatar">
-              <div class="avatar-title rounded-circle bg-primary-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h1 class="display-5 mt-1 mb-3">TBD</h1>
-        <div class="mb-0">TBD Stat</div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -137,9 +52,9 @@
               <tr><th>IRC</th><th>TRMC</th><th>700</th></tr>
             </thead>
             <tbody class="table-hover">
-              <tr><td>IRC</td><td>-</td><td>-</td><td>-</td></tr>
-              <tr><td>TRMC</td><td>-</td><td>-</td><td>-</td></tr>
-              <tr><td>700</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>IRC</td><td>{{irc_irc}}</td><td>{{irc_trmc}}</td><td>{{irc_700}}</td></tr>
+              <tr><td>TRMC</td><td>{{trmc_irc}}</td><td>{{trmc_trmc}}</td><td>{{trmc_700}}</td></tr>
+              <tr><td>700</td><td>{{700_irc}}</td><td>{{700_trmc}}</td><td>{{700_700XXX}}</td></tr>
             </tbody>
           </table>
         </div>
@@ -149,7 +64,92 @@
 </div>
 
 
+<div class="row mt-3">
+  <div class="col-md-3 col-lg-3 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">TBD</h5>
+          </div>
 
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">TBD</h1>
+        <div class="mb-0">TBD Stat</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-lg-3 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">TBD</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">TBD</h1>
+        <div class="mb-0">TBD Stat</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-lg-3 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">TBD</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">TBD</h1>
+        <div class="mb-0">TBD Stat</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-lg-3 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col mt-0">
+            <h5 class="card-title">TBD</h5>
+          </div>
+
+          <div class="col-auto">
+            <div class="avatar">
+              <div class="avatar-title rounded-circle bg-primary-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck align-middle"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="display-5 mt-1 mb-3">TBD</h1>
+        <div class="mb-0">TBD Stat</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -215,6 +215,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 
 

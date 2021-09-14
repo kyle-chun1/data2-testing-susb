@@ -14,7 +14,7 @@ from visitors.functions import start_end_date
 
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 def mm(request):
     return redirect('mm:movement')
@@ -186,6 +186,10 @@ def movement_submit(request):
 
 
 
+
+
+
+
 ####################################
 # STATS - INITIAL
 ####################################
@@ -196,11 +200,34 @@ def stats(request):
 
     start_date, end_date = start_end_date(request.GET)
 
+    # P = Pallet.objects.filter(movement__timestamp__range=(start_date,end_date)).filter(movement__origin_location='I').values('quantity').annotate(total=Sum('movement__destination_location'), origin=F('movement__origin_location'), destination=F('movement__destination_location'))
+    P = Pallet.objects.filter(movement__timestamp__range=(start_date,end_date))
+
+
+
     return_dict = {
         'start_date': start_date.strftime('%Y-%m-%d'),
         'end_date': end_date.strftime('%Y-%m-%d'),
+
+        'irc_irc': P.filter(movement__origin_location='I', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
+        'irc_trmc': P.filter(movement__origin_location='I', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
+        'irc_700': P.filter(movement__origin_location='I', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
+        'trmc_irc': P.filter(movement__origin_location='T', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
+        'trmc_trmc': P.filter(movement__origin_location='T', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
+        'trmc_700': P.filter(movement__origin_location='T', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
+        '700_irc': P.filter(movement__origin_location='7', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
+        '700_trmc': P.filter(movement__origin_location='7', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
+        '700_700XXX': P.filter(movement__origin_location='7', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
+
+
     }
     return render(request, 'mm/stats.html', return_dict)
+
+
+
+
+
+
 
 
 
