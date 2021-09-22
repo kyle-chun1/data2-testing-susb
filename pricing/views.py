@@ -314,7 +314,6 @@ def template_home(request):
         'L_C' : L.filter(category='C').order_by('order'),
         'L_E' : L.filter(category='E').order_by('order'),
     }
-    print(return_dict)
     return render(request, 'pricing/spark_base.html', return_dict)
 
 
