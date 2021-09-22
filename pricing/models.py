@@ -56,3 +56,17 @@ class Pricing(models.Model):
 
     def __str__(self):
         return self.staff_id
+
+
+
+
+class Link(models.Model):
+    order = models.IntegerField()
+    text = models.CharField(max_length=128)
+    url = models.CharField(max_length=256)
+    category_choices = [('Q', 'Quick Links'), ('A','Active Guides'), ('C','Communications'), ('E','External Resources')]
+    category =  models.CharField(max_length=1, choices=category_choices)
+    link_style = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.text} - {self.category}'

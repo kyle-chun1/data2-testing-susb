@@ -9,3 +9,10 @@ admin.site.register(Product)
 admin.site.register(Variant)
 admin.site.register(Pricing)
 admin.site.register(Category)
+
+
+class LinkAdmin(admin.ModelAdmin):
+    # fields = ['url','category']
+    list_display = ('category','order','text')
+
+admin.site.register(Link, LinkAdmin)

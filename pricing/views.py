@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponse, FileResponse
-from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField
-from django.db.models.functions import Trunc
+from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField, DateTimeField
+from django.db.models.functions import Trunc, Extract
 
 from pricing.functions import barcode_reuse_1, color_wheel_2021
 
@@ -16,8 +16,7 @@ from visitors.functions import *
 
 from visitors.functions import start_end_date
 
-
-
+import pandas as pd
 
 
 def pricing_portal(request, location):
@@ -239,14 +238,14 @@ def stats(request, location=''):
 
 
 
-    Q = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
+    Qu = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
 
-    total_items = Q.aggregate(total_items=Sum('quantity'))['total_items']
-    total_pricing_value = Q.aggregate(TOTAL_VALUE=Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())))['TOTAL_VALUE']
-    items_per_submission = Q.aggregate(items_per_submission=Avg('quantity'))['items_per_submission']
+    total_items = Qu.aggregate(total_items=Sum('quantity'))['total_items']
+    total_pricing_value = Qu.aggregate(TOTAL_VALUE=Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())))['TOTAL_VALUE']
+    items_per_submission = Qu.aggregate(items_per_submission=Avg('quantity'))['items_per_submission']
 
     #Product Type Breakdown
-    PT = Q.values('variant__product__product_type__product_type').annotate(
+    PT = Qu.values('variant__product__product_type__product_type').annotate(
         PT = F('variant__product__product_type__product_type'),
         PRICING_VALUE = Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())),
         TOTAL_ITEMS = Sum('quantity'),
@@ -257,7 +256,7 @@ def stats(request, location=''):
     )
 
     #Product Type Breakdown
-    ST = Q.values('staff_id').annotate(
+    ST = Qu.values('staff_id').annotate(
         ST = F('staff_id'),
         PRICING_VALUE = Sum(ExpressionWrapper(F('quantity')*F('variant__price'), output_field=DecimalField())),
         TOTAL_ITEMS = Sum('quantity'),
@@ -265,6 +264,22 @@ def stats(request, location=''):
         ITEM_SUBMISSIONS = Avg('quantity'),
         AVG = Avg('variant__price'),
     )
+######################
+# TRIED TO DO IT THE DJANGO-PIVOT WAY BUT FAILED, REVERTING TO PANDAS
+    # DT = Qu.annotate(date=Trunc('timestamp', 'day', tzinfo=pytz.timezone('US/Eastern')),
+    #     product_type=F('variant__product__product_type__product_type')).values('date','product_type').annotate(quantity_sum=Sum('quantity')).order_by('date')
+
+    DT = Qu.annotate(date=Trunc('timestamp', 'day', tzinfo=pytz.timezone('US/Eastern')),
+        product_type=F('variant__product__product_type__product_type')).values('date','product_type', 'quantity')
+
+    for i in DT: print(i)
+    ## PARSE IN TO PANDAS
+    #
+    # df = pd.DataFrame(DT, columns=['quantity','product_type','date'])
+
+
+
+####################
 
 
     try:
@@ -279,13 +294,32 @@ def stats(request, location=''):
         'end_date' : end_date.strftime('%Y-%m-%d'),
         'total_items' :  total_items,
         'total_pricing_value' : total_pricing_value,
-        'pricing_submissions' : Q.count(),
+        'pricing_submissions' : Qu.count(),
         'avg_item_price' : avg_item_price,
         'items_per_submission' : items_per_submission,
         'PT' : PT,
         'ST' : ST,
+        'DT' : DT,
 
     })
+
+######################
+# NEW HOME > RENDERS THE LINKS FOR HOME  #TOVA
+
+def template_home(request):
+    L = Link.objects
+    return_dict = {
+        'L_Q' : L.filter(category='Q').order_by('order'),
+        'L_A' : L.filter(category='A').order_by('order'),
+        'L_C' : L.filter(category='C').order_by('order'),
+        'L_E' : L.filter(category='E').order_by('order'),
+    }
+    print(return_dict)
+    return render(request, 'pricing/spark_base.html', return_dict)
+
+
+
+
 
 
 

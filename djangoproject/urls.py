@@ -22,6 +22,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 from login.views import logout
+from pricing.views import template_home
 
 
 
@@ -36,6 +37,8 @@ urlpatterns = [
     path('giftcardportal/', include('qbgiftcard.urls')),
 
     path('accounts/', include('allauth.urls')),
-    path('', TemplateView.as_view(template_name='pricing/spark_base.html'), name='HOME'),
+
+    path('', template_home, name='HOME'),
+    # ORIGINAL BEFORE LINKS: path('', TemplateView.as_view(template_name='pricing/spark_base.html'), name='HOME'),
     path('logout/', logout)
 ]
