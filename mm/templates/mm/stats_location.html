@@ -222,8 +222,8 @@
         <div>
           <table id="processing_volume_table" class="table table-sm"><thead><tr><th>Category</th><th>Prodcuct Type</th><th>Pallets</th><th>Percentage</th></tr></thead>
             <tbody>
-              {% for i in processing_volume_table %}
-              <tr><td>{{i.Category}}</td><td>{{i.product_type__product_type}}</td><td>{{i.Pallets}}</td><td>{{i.Percentage | floatformat:0}}%</td></tr>
+              {% for l in processing_volume_table %}
+              <tr><td>{{l.Category}}</td><td>{{l.product_type__product_type}}</td><td>{{l.Pallets}}</td><td>{{l.Percentage | floatformat:2}}%</td></tr>
               {% endfor %}
             </tbody>
           </table>

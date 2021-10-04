@@ -156,7 +156,23 @@ def RebuildMM():
     RawMaterialMovement.objects.all().delete()
 
     for i in text_records:
-        with open('raw_log/' + i) as temp:  
+        with open('raw_log/' + i) as temp:
             RawMaterialMovement.objects.create(**(json.loads(temp.read())))
 
     AddAll()
+
+
+
+def expand_locations_in_order(query, classifier):
+    ############### HARDCODED LOCATION LIST I,T,7
+    return_dict = {'IRC': 0.0, 'TRMC': 0.0, '700': 0.0}
+    return_map = {'I':'IRC', 'T': 'TRMC', '7': '700'}
+    query_zip = dict()
+    for i in query:
+        query_zip[return_map[i[classifier]]] = i['Pallets']
+
+    for i in query_zip:
+        return_dict[i] = query_zip[i]
+
+    print(return_dict)
+    return return_dict

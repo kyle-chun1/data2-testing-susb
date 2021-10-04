@@ -4,7 +4,7 @@ from django.utils.timezone import datetime
 from .models import RawMaterialMovement, ExpandedMaterialMovement
 import requests
 import json
-from .functions import ExpansionFunction
+from .functions import ExpansionFunction, expand_locations_in_order
 
 
 # 2021 Extention
@@ -200,15 +200,44 @@ def stats(request):
 
     start_date, end_date = start_end_date(request.GET)
 
-    # P = Pallet.objects.filter(movement__timestamp__range=(start_date,end_date)).filter(movement__origin_location='I').values('quantity').annotate(total=Sum('movement__destination_location'), origin=F('movement__origin_location'), destination=F('movement__destination_location'))
     P = Pallet.objects.filter(movement__timestamp__range=(start_date,end_date))
 
+    #Initial Breakdowns
+    P_donations_received = P.filter(movement__origin_type='D')
+    P_donations_received_breakdown = expand_locations_in_order( P.values('movement__origin_location').annotate(Pallets=Sum('quantity', output_field=FloatField())) ,'movement__origin_location' )
+    P_donations_received_total = P_donations_received.aggregate(donations_received=Sum('quantity'))['donations_received']
+    if P_donations_received_total == None: P_donations_received_total = 0
+
+
+    P_sent_to_overflow = P.filter( movement__destination_type='O')
+    P_sent_to_overflow_breakdown = expand_locations_in_order( P.values('movement__destination_location').annotate(Pallets=Sum('quantity', output_field=FloatField()))  ,'movement__destination_location')
+    P_sent_to_overflow_total = P_sent_to_overflow.aggregate(sent_to_overflow=Sum('quantity'))['sent_to_overflow']
+    if P_sent_to_overflow_total == None: P_sent_to_overflow_total = 0
+
+    P_pulled_from_overflow = P.filter(movement__origin_type='O')
+    P_pulled_from_overflow_total = P_pulled_from_overflow.aggregate(pulled_from_overflow=Sum('quantity'))['pulled_from_overflow']
+    if P_pulled_from_overflow_total == None: P_pulled_from_overflow_total = 0
+
+    P_processing_volume = P.filter(movement__destination_type__in=['P','S']).exclude(movement__origin_type='P') ######### NOTE: ADDING ORIGIN EXCLUSION TO AVOID PROCESSING>>>>SALESFLOOR DOUBLE REPORTING!!!!!!!!!!!!!!
+    P_processing_volume_total = P_processing_volume.aggregate(processing_volume=Sum('quantity'))['processing_volume']
+    if P_processing_volume_total == None: P_processing_volume_total = 0
 
 
     return_dict = {
         'start_date': start_date.strftime('%Y-%m-%d'),
         'end_date': end_date.strftime('%Y-%m-%d'),
 
+        #Crunch Totals
+        'donations_received' : P_donations_received_total,
+        'sent_to_overflow' : P_sent_to_overflow_total,
+        'pulled_from_overflow' : P_pulled_from_overflow_total,
+        'processing_volume' : P_processing_volume_total,
+
+        #Breakdown Tables
+        'donations_received_breakdown' : P_donations_received_breakdown,
+        'sent_to_overflow_breakdown' : P_sent_to_overflow_breakdown,
+
+        #Matrix Diagram! - Not effecient
         'irc_irc': P.filter(movement__origin_location='I', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
         'irc_trmc': P.filter(movement__origin_location='I', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
         'irc_700': P.filter(movement__origin_location='I', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
@@ -253,6 +282,8 @@ def raw(request):
 
 
 
+
+
 ###################################################
 # 2021 - Oct - New STATS LOCATION PAGE
 def stats_location(request, location):
@@ -264,7 +295,7 @@ def stats_location(request, location):
         LOCATION = 'T'
     elif location.upper() in ['IRC', 'IRMC']:
         LOCATION = 'I'
-    elif location == '7':
+    elif str(location.strip()) in ['7','700']:
         LOCATION = '7'
     else:
         return(redirect('/'))
