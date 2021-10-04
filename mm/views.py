@@ -14,7 +14,7 @@ from visitors.functions import start_end_date
 
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Sum, F
+from django.db.models import Sum, F, FloatField, ExpressionWrapper
 
 def mm(request):
     return redirect('mm:movement')
@@ -249,3 +249,93 @@ def raw(request):
     }
 
     return render(request,'mm/raw.html', return_dict)
+
+
+
+
+###################################################
+# 2021 - Oct - New STATS LOCATION PAGE
+def stats_location(request, location):
+    #IF USER IS NOT AUTHENTICATED SEND THEM HOME!
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+    # LOCATION SLUG CHECK
+    if location.upper() in ['TRMC', 'TRC', 'TRMC', 'RMC']:
+        LOCATION = 'T'
+    elif location.upper() in ['IRC', 'IRMC']:
+        LOCATION = 'I'
+    elif location == '7':
+        LOCATION = '7'
+    else:
+        return(redirect('/'))
+
+    start_date, end_date = start_end_date(request.GET)
+
+    #Pallets in Date Range (Main Crunch)
+    P = Pallet.objects.filter(movement__timestamp__range=(start_date,end_date))
+    # ALL THE AGGREGATED SEGMENTS OFF P
+
+
+    # 1. Donations Volume
+    P_donations_received = P.filter(movement__origin_location=LOCATION, movement__origin_type='D')
+    P_donations_received_total = P_donations_received.aggregate(donations_received=Sum('quantity'))['donations_received']
+    if P_donations_received_total == None: P_donations_received_total = 0
+    P_donations_received_table = P_donations_received.values('product_type__product_type').annotate(Pallets=Sum('quantity'), Category=F('product_type__category__category'), Percentage=ExpressionWrapper(Sum('quantity') / P_donations_received_total * 100, output_field=FloatField()))
+    P_donations_received_dict = list(   P_donations_received.values('product_type__category__category').annotate(Pallets=Sum('quantity', output_field=FloatField()))   )
+
+    # 2. Sent to Overflow
+    P_sent_to_overflow = P.filter(movement__destination_location=LOCATION, movement__destination_type='O')
+    P_sent_to_overflow_total = P_sent_to_overflow.aggregate(sent_to_overflow=Sum('quantity'))['sent_to_overflow']
+    if P_sent_to_overflow_total == None: P_sent_to_overflow_total = 0
+    P_sent_to_overflow_table = P_sent_to_overflow.values('product_type__product_type').annotate(Pallets=Sum('quantity'), Category=F('product_type__category__category'), Percentage=ExpressionWrapper(Sum('quantity') / P_sent_to_overflow_total * 100, output_field=FloatField()))
+    P_sent_to_overflow_dict = list( P_sent_to_overflow.values('product_type__category__category').annotate(Pallets=Sum('quantity', output_field=FloatField()))  )
+
+    # 3. Pulled from Overflow
+    P_pulled_from_overflow = P.filter(movement__origin_location=LOCATION, movement__origin_type='O')
+    P_pulled_from_overflow_total = P_pulled_from_overflow.aggregate(pulled_from_overflow=Sum('quantity'))['pulled_from_overflow']
+    if P_pulled_from_overflow_total == None: P_pulled_from_overflow_total = 0
+    P_pulled_from_overflow_table = P_pulled_from_overflow.values('product_type__product_type').annotate(Pallets=Sum('quantity'), Category=F('product_type__category__category'), Percentage=ExpressionWrapper(Sum('quantity') / P_pulled_from_overflow_total * 100, output_field=FloatField()))
+    P_pulled_from_overflow_dict = list( P_pulled_from_overflow.values('product_type__category__category').annotate(Pallets=Sum('quantity', output_field=FloatField()))  )
+
+    # 4. Processing Volume
+    P_processing_volume = P.filter(movement__destination_location=LOCATION, movement__destination_type__in=['P','S']).exclude(movement__origin_location=LOCATION, movement__origin_type='P') ######### NOTE: ADDING ORIGIN EXCLUSION TO AVOID PROCESSING>>>>SALESFLOOR DOUBLE REPORTING!!!!!!!!!!!!!!
+    P_processing_volume_total = P_processing_volume.aggregate(processing_volume=Sum('quantity'))['processing_volume']
+    if P_processing_volume_total == None: P_processing_volume_total = 0
+    P_processing_volume_table = P_processing_volume.values('product_type__product_type').annotate(Pallets=Sum('quantity'), Category=F('product_type__category__category'), Percentage=ExpressionWrapper(Sum('quantity') / P_processing_volume_total * 100, output_field=FloatField()))
+    P_processing_volume_dict = list( P_processing_volume.values('product_type__category__category').annotate(Pallets=Sum('quantity', output_field=FloatField()))  )
+
+
+    return_dict = {
+        'location':location,
+        'start_date': start_date.strftime('%Y-%m-%d'),
+        'end_date': end_date.strftime('%Y-%m-%d'),
+
+        # 1. Donations Volume
+        'donations_received': P_donations_received_total,
+        'donations_received_table' : P_donations_received_table,
+        'donations_received_vals' : json.dumps([x['Pallets'] for x in P_donations_received_dict]),
+        'donations_received_labels' : json.dumps([x['product_type__category__category'] for x in P_donations_received_dict]),
+
+        # 2. Sent to Overflow
+        'sent_to_overflow' : P_sent_to_overflow_total,
+        'sent_to_overflow_table' : P_sent_to_overflow_table,
+        'sent_to_overflow_vals' : json.dumps([x['Pallets'] for x in P_sent_to_overflow_dict]),
+        'sent_to_overflow_labels' : json.dumps([x['product_type__category__category'] for x in P_sent_to_overflow_dict]),
+
+        # 3. Pulled from Overflow
+        'pulled_from_overflow' : P_pulled_from_overflow_total,
+        'pulled_from_overflow_table' : P_pulled_from_overflow_table,
+        'pulled_from_overflow_vals' : json.dumps([x['Pallets'] for x in P_pulled_from_overflow_dict]),
+        'pulled_from_overflow_labels' : json.dumps([x['product_type__category__category'] for x in P_pulled_from_overflow_dict]),
+
+        # 4. Processing Volume
+        'processing_volume' : P_processing_volume_total,
+        'processing_volume_table' : P_processing_volume_table,
+        'processing_volume_vals' : json.dumps([x['Pallets'] for x in P_processing_volume_dict]),
+        'processing_volume_labels' : json.dumps([x['product_type__category__category'] for x in P_processing_volume_dict]),
+
+    }
+
+    # for i in return_dict['donations_received_table']: print(i)
+
+    return render(request, 'mm/stats_location.html', return_dict)

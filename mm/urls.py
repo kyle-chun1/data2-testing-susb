@@ -13,6 +13,12 @@ urlpatterns = [
     path('movement/', movement, name='movement'),
     path('movement_submit/', movement_submit, name='movement_submit'),
 
+    path('stats/<slug:location>/', stats_location, name='stats_location'),
+
     path('stats/', stats, name='stats' ),
     path('raw/', raw, name='raw'),
+
+
+
+
 ]
