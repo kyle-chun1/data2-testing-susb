@@ -19,6 +19,9 @@ from visitors.functions import start_end_date
 import pandas as pd
 
 
+from collections import defaultdict
+
+
 def pricing_portal(request, location):
     #authentication
     if not request.user.is_authenticated:
@@ -236,7 +239,7 @@ def stats(request, location=''):
     else:
         return(redirect('HOME'))
 
-
+    pricing = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)
 
     Qu = Pricing.objects.filter(timestamp__gte=start_date, timestamp__lte=end_date ,variant__product__location=Location.objects.get(location=LOCATION), inventory=True, deleted=False)\
 
@@ -265,21 +268,31 @@ def stats(request, location=''):
         AVG = Avg('variant__price'),
     )
 ######################
+# OCT 2021 - BIG BREAKTHROUGH   - - - NEEDS POSSIBLY MORE ATTENTION
 # TRIED TO DO IT THE DJANGO-PIVOT WAY BUT FAILED, REVERTING TO PANDAS
     # DT = Qu.annotate(date=Trunc('timestamp', 'day', tzinfo=pytz.timezone('US/Eastern')),
     #     product_type=F('variant__product__product_type__product_type')).values('date','product_type').annotate(quantity_sum=Sum('quantity')).order_by('date')
-
-    DT = Qu.annotate(date=Trunc('timestamp', 'day', tzinfo=pytz.timezone('US/Eastern')),
-        product_type=F('variant__product__product_type__product_type')).values('date','product_type', 'quantity')
-
-    for i in DT: print(i)
-    ## PARSE IN TO PANDAS
     #
-    # df = pd.DataFrame(DT, columns=['quantity','product_type','date'])
+    # DT = Qu.annotate(date=Trunc('timestamp', 'day', tzinfo=pytz.timezone('US/Eastern')),
+    #     product_type=F('variant__product__product_type__product_type')).values('date','product_type', 'quantity')
 
 
+    x = pricing.annotate(date=Trunc('timestamp','day', output_field=DateTimeField())).values('date').annotate(quantity=Sum('quantity'), product_type=F('variant__product__product_type__product_type')).order_by('date')
 
-####################
+    cats = [i['product_type'] for i in ProductType.objects.all().order_by('category__category').values('product_type')  ]
+    print(cats)
+    tupdict = defaultdict(int)
+    for i in x: tupdict[(    i['date'], i['product_type']   )] = i['quantity']
+
+    DT_table=[]
+    for i,date in enumerate( sorted(  list( set( i['date'] for i in x )  )   )   ):
+        DT_table.append({'date': date})
+        for j in cats: DT_table[i][j] = tupdict[(date , j)]
+
+#     for i in DT_table: print(i)
+# ####################
+#
+#     print(['cats'] + cats)
 
 
     try:
@@ -299,8 +312,8 @@ def stats(request, location=''):
         'items_per_submission' : items_per_submission,
         'PT' : PT,
         'ST' : ST,
-        'DT' : DT,
-
+        'DT' : DT_table,
+        'cats' : ['date'] + cats,   # HAVE TO APPEND THE DATE BEFORE RENDERING THE FIELDS
     })
 
 ######################

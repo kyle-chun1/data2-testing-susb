@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- QueryBox -->
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -44,6 +45,7 @@
 </div>
 
 
+<!-- stats toolbar -->
 <div class="row">
   <div class="col-md-4 col-lg-2 col-sm-12">
     <div class="card">
@@ -174,6 +176,8 @@
 
 </div>
 
+
+
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <div class="card">
@@ -226,7 +230,7 @@
             <tr><td rowspan="1">Electronics</td><td>ELECTRONICS</td></tr>
             <tr><td rowspan="6">Computers & Peripherals</td><td>DESKTOP</td></tr><tr><td>LAPTOP</td></tr><tr><td>PERIPHERALS</td></tr><tr><td>TABLET</td></tr><tr><td>SMARTPHONE</td></tr><tr><td>OTHER COMPUTER</td></tr>
             <tr><td rowspan="2">Furniture & Appliances</td><td>APPLIANCES</td></tr><tr><td>FURNITURE</td></tr>
-            <tr><td rowspan="4">Housewares</td><td>HOUSEWARES</td></tr><tr><td>HOLIDAY</td></tr><tr><td>JEWELRY</td></tr><tr><td>SEASONAL</td></tr>
+            <tr><td rowspan="6">Housewares</td><td>HOUSEWARES</td></tr><tr><td>HOLIDAY</td></tr><tr><td>JEWELRY</td></tr><tr><td>SEASONAL</td></tr><tr><td>BICYCLE</td></tr><tr><td>BICYCLE PARTS</td></tr>
             <tr><td rowspan="4">Textiles</td><td>ACCESSORIES</td></tr><tr><td>CLOTHING</td></tr><tr><td>LINENS</td></tr><tr><td>SHOES</td></tr>
           </tbody>
         </table>
@@ -237,7 +241,7 @@
 
 
 </div>
-
+<!-- STAFF BREADKLDOWN -->
 <div class="row">
   <div class="col-sm-12 col-md-9">
     <div class="card">
@@ -273,6 +277,36 @@
   </div>
 </div>
 
+<!-- BY DATE -->
+<div class="row">
+  <div class="col">
+    <div class="card">
+    	<div class="card-header">
+    		<!-- <h5 class="card-title">TESTER</h5> -->
+    	</div>
+    	<div class="card-body">
+        <h2 class="pb-4">Datewise Breadkwon by PRODUCT_TYPE (TESTING / WORK IN PROGRESS)</h2>
+        <table id="dateTable" class="table table-sm">
+          <thead><tr>
+            {% for i in cats%}
+            <th>{{i}}</th>
+            {% endfor %}
+          </tr></thead>
+          <tbody>
+            {% for i in DT %}
+              <tr>
+                  {% for j in i.values %}
+                    <td>{{j}}</td>
+                  {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    	</div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 
@@ -283,7 +317,7 @@
 
   $('#mainTable1').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
   $('#mainTable2').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
-
+  $('#dateTable').DataTable({dom:'Bfrtip','pageLength': 50, buttons:['copy','csv','print']})
 
 </script>
 
