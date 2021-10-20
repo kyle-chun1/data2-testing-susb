@@ -26,7 +26,7 @@ class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.PROTECT)
     classifier_choices = [('U','Unit'),('W','White'),('Y','Yellow'),('R','Red'),('O','Orange'),('B','Blue'),('G','Green'),('L','Lavender')]
     classifier = models.CharField(max_length=1, choices = classifier_choices)
-    shopify_handle = models.CharField(max_length=5, unique=True)
+    shopify_handle = models.CharField(max_length=12, unique=True)
     title = models.CharField(max_length=256, default='')
     def __str__(self):############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
         return self.title ############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
