@@ -21,9 +21,9 @@
 			<div class="card-body">
         <div class="tab">
       		<ul class="nav nav-tabs" role="tablist">
-      			<li class="nav-item"><a class="nav-link active" href="#current-tab" data-toggle="tab" role="tab" aria-selected="true">{{CColor}}</a></li>
-      			<li class="nav-item"><a class="nav-link" href="#white-tab" data-toggle="tab" role="tab" aria-selected="false">White</a></li>
-      			<li class="nav-item"><a class="nav-link" href="#unit-tab" data-toggle="tab" role="tab" aria-selected="false">Unit Priced(White)</a></li>
+      			<li class="nav-item"><a class="targetTabChange nav-link active" href="#current-tab" data-toggle="tab" role="tab" aria-selected="true">{{CColor}}</a></li>
+      			<li class="nav-item"><a class="targetTabChange nav-link" href="#white-tab" data-toggle="tab" role="tab" aria-selected="false">White</a></li>
+      			<li class="nav-item"><a class="targetTabChange nav-link" href="#unit-tab" data-toggle="tab" role="tab" aria-selected="false">Unit Priced(White)</a></li>
       		</ul>
       		<div class="tab-content">
       			<div class="tab-pane active" id="current-tab" role="tabpanel">
@@ -170,14 +170,14 @@
 </form>
 </div>
 
-<!-- THE TABLE -->
-<div class="row">
+<!-- THE CONSOLE PROMPT-->
+<!-- <div class="row">
   <div class="col-12">
     <div class="card pt-2 mb-2">
 				<h3 class="text-center" id="message">(Select a Tag to get started)</h3>
 		</div>
   </div>
-</div>
+</div> -->
 
 <!-- THE TABLE -->
 <div class="row mt-3">
@@ -236,6 +236,9 @@ function buttonStd(){
   color = color_reference[$(this).prop('id')[0]]
   $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
 
+  $("#targetInventory").prop("checked", true)
+  $("#targetPrint").prop('checked', true)
+  checkboxFunction()
 }
 
 function buttonUnit(){
@@ -254,6 +257,9 @@ function buttonUnit(){
   color = color_reference[$(this).prop('id')[0]]
   $('#message').html('SELECTED: ' + color + ' > ' + $(this).html())
 
+  $("#targetInventory").prop("checked", true)
+  $("#targetPrint").prop('checked', true)
+  checkboxFunction()
 }
 
 
@@ -312,24 +318,64 @@ function submitFunction(){
     }
     //////////////////////////
     //Disable the checkbox
-    $("#targetInventory").prop("checked", false)
-    $("#targetSubmit").prop('disabled', true)
+    // $("#targetInventory").prop("checked", false)
+    // $("#targetSubmit").prop('disabled', true)
+
+
+
 
   }
 
 window.setTimeout(renderTable, 1000);
 $('#targetQuantity').prop('value',1)
 
+$("#targetInventory").prop("checked", true)
+checkboxFunction()
+
 }
 
 
-
+// IMPORTRANT CHECK FUNCTION - rendering checkboxes
 function checkboxFunction(){
-  if($("#targetInventory").prop("checked") == false && $("#targetPrint").prop("checked") == false  ){
-    $('#targetSubmit').prop('disabled','true')
-  }else if($('#targetSubmit').prop('disabled')==true){
+
+
+// 4 conditions to check
+  if($("#targetInventory").prop("checked") == true){
     $('#targetSubmit').removeAttr('disabled')
+    $('#targetSubmit').removeClass('btn-danger')
+    $('#targetSubmit').addClass('btn-primary')
+
+    if($('#targetPrint').prop('checked') == true){
+        $('#targetSubmit').html('Add to Inventory + PRINT')
+    }
+    else {
+      $('#targetSubmit').html('Add to Inventory ONLY')
+    }
+
   }
+  else {
+
+    if($('#targetPrint').prop('checked') == true){
+      $('#targetSubmit').html("PRINT ONLY (Will not be added to inventory)")
+      $('#targetSubmit').removeAttr('disabled')
+      $('#targetSubmit').removeClass('btn-primary')
+      $('#targetSubmit').addClass('btn-danger')
+    }
+    else {
+      $('#targetSubmit').html('Please select Inventory/Print options')
+      $('#targetSubmit').prop('disabled','true')
+      $('#targetSubmit').removeClass('btn-danger')
+      $('#targetSubmit').addClass('btn-primary')
+    }
+  }
+
+  // alert(targetOBJECT['handle'].length)
+  if(targetOBJECT['handle'].length == 0){
+    $('#targetSubmit').prop('disabled','true')
+    $('#targetSubmit').html('Please select an Item to continue')
+  }
+
+
 }
 
 
@@ -346,6 +392,12 @@ function renderTable(){
   }
 }
 
+function tabChange(){
+  $('.selected-button').removeClass('selected-button')
+  targetOBJECT['handle'] = ''
+  checkboxFunction()
+}
+
 
 $(document).ready(function(){
     $(".Unit-tag").on('click', buttonUnit)
@@ -356,12 +408,19 @@ $(document).ready(function(){
     $(".Orange-tag").on('click',buttonStd)
     $(".Green-tag").on('click',buttonStd)
     $(".Red-tag").on('click',buttonStd)
-
     $("#targetSubmit").on("click", submitFunction)
     $("#targetSubmit").prop('disabled','true')
     $('.form-check-input').on('click',checkboxFunction)
 
+    $("#targetInventory").prop("checked",'true')
+    $("#targetPrint").prop("checked",'true')
+
+    $('.targetTabChange').on('click', tabChange)
+
+
     renderTable()
+    checkboxFunction()
+
 })
 
 </script>
