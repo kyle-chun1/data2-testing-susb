@@ -65,7 +65,7 @@ class ExpandedMaterialMovement(models.Model):
 
 
 class Movement(models.Model):
-    location_choices = [('I','IRC'),('T','TRMC'),('7','700')]  # COPIED + HARCODED FROM PRICING
+    location_choices = [('I','IRC'),('T','TRMC'),('7','700'),('D','DOT')]  # COPIED + HARCODED FROM PRICING
     type_choices = [('D','Donations'),('O','Overflow'),('P','Processing'),('S','Salesfloor')]
 
     origin_type = models.CharField(max_length=1, choices=type_choices)

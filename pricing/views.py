@@ -103,6 +103,7 @@ def pricing_submit(request):
         submission = Pricing.objects.create(variant=Variant.objects.get(variant=VARIANT), quantity=QUANTITY, staff_id=STAFF_ID, print=PRINT, inventory=INVENTORY)
 
         #GENERATE CODE
+	# HARDCODE EMERGENCY #JAN27 2022
         X = barcode_reuse_1(VARIANT, V.price, TITLE, color_reference[V.variant[0]], ' '.join(VARIANT[:5]), QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
 
