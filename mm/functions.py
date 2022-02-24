@@ -165,8 +165,8 @@ def RebuildMM():
 
 def expand_locations_in_order(query, classifier):
     ############### HARDCODED LOCATION LIST I,T,7
-    return_dict = {'IRC': 0.0, 'TRMC': 0.0, '700': 0.0}
-    return_map = {'I':'IRC', 'T': 'TRMC', '7': '700'}
+    return_dict = {'IRC': 0.0, 'TRMC': 0.0, '700': 0.0, 'D': 0.0}
+    return_map = {'I':'IRC', 'T': 'TRMC', '7': '700', 'D': 'DOT'}
     query_zip = dict()
     for i in query:
         query_zip[return_map[i[classifier]]] = i['Pallets']
