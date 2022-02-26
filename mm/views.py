@@ -240,13 +240,13 @@ def stats(request):
         #Matrix Diagram! - Not effecient
         'irc_irc': P.filter(movement__origin_location='I', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
         'irc_trmc': P.filter(movement__origin_location='I', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
-        'irc_700': P.filter(movement__origin_location='I', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
+        'irc_dot': P.filter(movement__origin_location='I', movement__destination_location='D').aggregate(Total=Sum('quantity'))['Total'],
         'trmc_irc': P.filter(movement__origin_location='T', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
         'trmc_trmc': P.filter(movement__origin_location='T', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
-        'trmc_700': P.filter(movement__origin_location='T', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
-        '700_irc': P.filter(movement__origin_location='7', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
-        '700_trmc': P.filter(movement__origin_location='7', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
-        '700_700XXX': P.filter(movement__origin_location='7', movement__destination_location='7').aggregate(Total=Sum('quantity'))['Total'],
+        'trmc_dot': P.filter(movement__origin_location='T', movement__destination_location='D').aggregate(Total=Sum('quantity'))['Total'],
+        'dot_irc': P.filter(movement__origin_location='D', movement__destination_location='I').aggregate(Total=Sum('quantity'))['Total'],
+        'dot_trmc': P.filter(movement__origin_location='D', movement__destination_location='T').aggregate(Total=Sum('quantity'))['Total'],
+        'dot_dot': P.filter(movement__origin_location='D', movement__destination_location='D').aggregate(Total=Sum('quantity'))['Total'],
 
 
     }
