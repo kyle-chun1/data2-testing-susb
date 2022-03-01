@@ -332,12 +332,20 @@ def template_home(request):
 
 
 
-
-
-
-
 #####################
 # TESTER FOR NEW RETAIL RESOURCES
 
 def tester(request):
     return render(request,'pricing/tester.html')
+
+
+
+
+def update_pos(request):
+
+    return_dict = {
+        'disount':{1:'ONE',2:'TWO',3:'THREEEEE',4:'F40R', 5:'FIVE',0:'ZERO'},
+        'all_products': Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category')
+    }
+
+    return render(request, 'pricing/update_pos.html', return_dict)

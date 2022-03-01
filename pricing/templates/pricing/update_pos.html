@@ -1,0 +1,165 @@
+{% extends 'pricing/spark_base.html' %}
+
+
+{% block title %}Update POS Prices{% endblock %}
+
+{% block header_title %}Update POS Prices - PLEASE USE CAUTION!{% endblock %}
+
+
+
+{% block content %}
+<div class="row">
+  <div class="col">
+
+    <div class="card p-3 my-2">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Current Color Tag Rotation Format</h5>
+			</div>
+			<div class="card-body">
+				<p class="card-text">Here is the active color tag Rotation. Note: The next day starts at 6pm so that you can drop prices for each Tuesday, starting on Monday at 6pm.</p>
+
+        <div class="table-responsive">
+					<table class="table mb-0">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">BLUE</th>
+								<th scope="col">YELLOW</th>
+								<th scope="col">ORANGE</th>
+								<th scope="col">RED</th>
+								<th scope="col">GREEN</th>
+								<th scope="col">LAVENDER</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">Discount %</th>
+								<td class="Green-tag">{{disount.0}}</td>
+								<td>{{disount.1}}</td>
+								<td>{{disount.2}}</td>
+								<td>{{disount.3}}</td>
+								<td>{{disount.4}}</td>
+								<td>{{disount.5}}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="">Add to Discount Queue</th>
+								<td><button disabled="True" class=" Green-tag btn">ADD ME</button></td>
+								<td><button class="btn btn-danger">ADD ME</button></td>
+								<td><button class="btn btn-danger">ADD ME</button></td>
+								<td><button class="btn btn-danger">ADD ME</button></td>
+								<td><button class="btn btn-danger">ADD ME</button></td>
+								<td><button class="btn btn-danger">ADD ME</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+
+			</div>
+		</div>
+
+    <div class="card p-3 my-2">
+			<div class="card-header">
+				<h5 class="card-title mb-0 h1">QUEUE</h5>
+			</div>
+			<div class="card-body">
+				<p class="card-text">This is queue of product prices to be dropped</p>
+        <div class="row mb-3">
+          <div class="col">
+            <label>Discount Percentage: </label>
+            <input class="mx-3" type="number" min=1 max=100 step=1 value=100>
+            <button class="btn btn-primary">DROP ALL PRICES IN QUEUE</button>
+            <button class="btn btn-success">RESET QUEUE</button>
+          </div>
+        </div>
+
+        <div class="table-sm">
+					<table class="table mb-0">
+						<thead>
+              <tr>
+								<th>Queue Order</th>
+								<th>PRODUCT</th>
+								<th>SRU Eligible?</th>
+								<th>STATUS</th>
+							</tr>
+						</thead>
+						<tbody>
+
+              <tr>
+								<td><button type="button" class="btn-sm btn btn-success target_row_del">DEL</button></td>
+								<td>{{disount.0}}</td>
+                <td><input class="form-check-input" type="checkbox" value="option2"></td>
+								<td>200 - OK</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+
+
+
+			</div>
+		</div>
+
+
+
+
+
+    <div class="card p-3 my-4">
+			<div class="card-header">
+				<h5 class="card-title mb-0 h1">ALL THE PRODUCTS</h5>
+			</div>
+			<div class="card-body">
+				<p class="card-text">Use this menu to find products and ADD THEM TO THE QUEUE.</p>
+
+
+        <div class="table-sm">
+					<table id="allProductsTable" class="table mb-0">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Handle</th>
+								<th>Location</th>
+								<th>Color</th>
+                <th>Product_Type</th>
+								<th>Category</th>
+								<th>ADD TO QUEUE</th>
+							</tr>
+						</thead>
+						<tbody>
+              {% for i in all_products %}
+              <tr>
+								<td>{{i.id}}</td>
+								<td>{{i.shopify_handle}}</td>
+                <td>{{i.location__location}}</td>
+								<td>{{i.classifier}}</td>
+                <td>{{i.product_type__product_type}}</td>
+								<td>{{i.product_type__category__category}}</td>
+                <td><button type="button" class="btn-sm btn btn-primary target_row_del">ADD</button></td>
+							</tr>
+              {% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+
+
+			</div>
+		</div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block javascript_end %}
+<script type="text/javascript">
+
+  $('#allProductsTable').DataTable({'pageLength': 50})
+
+</script>
+
+{% endblock %}

@@ -18,4 +18,7 @@ urlpatterns = [
     # path('temp_barcode/', temp_barcode, name='temp_barcode'),
     # TESTER FOR RETAIL RESOUCES
     path('tester/', tester, name='tester'),
+
+    path('update_pos/', update_pos, name='update_pos'),
+
 ]
