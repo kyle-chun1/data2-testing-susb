@@ -321,13 +321,18 @@ def stats(request, location=''):
 # NEW HOME > RENDERS THE LINKS FOR HOME  #TOVA
 
 def template_home(request):
-    L = Link.objects
-    return_dict = {
-        'L_Q' : L.filter(category='Q').order_by('order'),
-        'L_A' : L.filter(category='A').order_by('order'),
-        'L_C' : L.filter(category='C').order_by('order'),
-        'L_E' : L.filter(category='E').order_by('order'),
-    }
+    #authentication
+    if not request.user.is_authenticated:
+        return_dict = dict()
+    else:
+        L = Link.objects
+        return_dict = {
+            'L_Q' : L.filter(category='Q').order_by('order'),
+            'L_A' : L.filter(category='A').order_by('order'),
+            'L_C' : L.filter(category='C').order_by('order'),
+            'L_E' : L.filter(category='E').order_by('order'),
+        }
+
     return render(request, 'pricing/spark_base.html', return_dict)
 
 
@@ -342,6 +347,9 @@ def tester(request):
 
 
 def update_pos(request):
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
 
     return_dict = {
         'disount':{1:'ONE',2:'TWO',3:'THREEEEE',4:'F40R', 5:'FIVE',0:'ZERO'},
