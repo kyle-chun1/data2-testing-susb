@@ -8,56 +8,102 @@
 
 
 {% block content %}
+
+
+<div class="row">
+
+  <div class="col">
+    <div class="card">
+			<h2 class="card-title p-2 text-center">PRICING</h2>
+			<div class="card-body {{color_rotations.pricing}}-color">
+				<div class="row">
+					<div class="col-auto">
+					</div>
+				</div>
+				<h1 class="text-center display-5 my-2">{{color_rotations.pricing}}</h1>
+			</div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+		</div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+			<h2 class="card-title p-2 text-center">-</h2>
+			<div class="card-body {{color_rotations.hold}}-color">
+				<div class="row">
+					<div class="col-auto">
+					</div>
+				</div>
+				<h1 class="text-center display-5 my-2">{{color_rotations.hold}}</h1>
+			</div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+		</div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+			<h2 class="card-title p-2 text-center">25% Off</h2>
+			<div class="card-body {{color_rotations.25}}-color">
+				<div class="row">
+					<div class="col-auto">
+					</div>
+				</div>
+				<h1 class="text-center display-5 my-2">{{color_rotations.25}}</h1>
+			</div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+		</div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+			<h2 class="card-title p-2 text-center">50% Off</h2>
+			<div class="card-body {{color_rotations.50}}-color">
+				<div class="row">
+					<div class="col-auto">
+					</div>
+				</div>
+				<h1 class="text-center display-5 my-2">{{color_rotations.50}}</h1>
+			</div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+		</div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+			<h2 class="card-title p-2 text-center">75% Off</h2>
+			<div class="card-body {{color_rotations.75}}-color">
+				<div class="row">
+					<div class="col-auto">
+					</div>
+				</div>
+				<h1 class="text-center display-5 my-2">{{color_rotations.75}}</h1>
+			</div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+		</div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <h2 class="card-title p-2 text-center text-danger ">RESET to 0%</h2>
+      <div class="card-body {{color_rotations.reset}}-color">
+        <div class="row">
+          <div class="col-auto">
+          </div>
+        </div>
+        <h1 class="text-center display-5 my-2">{{color_rotations.reset}}</h1>
+      </div>
+      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
 <div class="row">
   <div class="col">
-
-    <div class="card p-3 my-2">
-			<div class="card-header">
-				<h5 class="card-title mb-0">Current Color Tag Rotation Format</h5>
-			</div>
-			<div class="card-body">
-				<p class="card-text">Here is the active color tag Rotation. Note: The next day starts at 6pm so that you can drop prices for each Tuesday, starting on Monday at 6pm.</p>
-
-        <div class="table-responsive">
-					<table class="table mb-0">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">BLUE</th>
-								<th scope="col">YELLOW</th>
-								<th scope="col">ORANGE</th>
-								<th scope="col">RED</th>
-								<th scope="col">GREEN</th>
-								<th scope="col">LAVENDER</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Discount %</th>
-								<td class="Green-tag">{{disount.0}}</td>
-								<td>{{disount.1}}</td>
-								<td>{{disount.2}}</td>
-								<td>{{disount.3}}</td>
-								<td>{{disount.4}}</td>
-								<td>{{disount.5}}</td>
-							</tr>
-							<tr>
-								<th scope="row" class="">Add to Discount Queue</th>
-								<td><button disabled="True" class=" Green-tag btn">ADD ME</button></td>
-								<td><button class="btn btn-danger">ADD ME</button></td>
-								<td><button class="btn btn-danger">ADD ME</button></td>
-								<td><button class="btn btn-danger">ADD ME</button></td>
-								<td><button class="btn btn-danger">ADD ME</button></td>
-								<td><button class="btn btn-danger">ADD ME</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-
-
-
-			</div>
-		</div>
 
     <div class="card p-3 my-2">
 			<div class="card-header">
@@ -68,7 +114,7 @@
         <div class="row mb-3">
           <div class="col">
             <label>Discount Percentage: </label>
-            <input class="mx-3" type="number" min=1 max=100 step=1 value=100>
+            <input class="mx-3" type="number" min=0 max=100 step=1 value=100>
             <button class="btn btn-primary">DROP ALL PRICES IN QUEUE</button>
             <button class="btn btn-success">RESET QUEUE</button>
           </div>

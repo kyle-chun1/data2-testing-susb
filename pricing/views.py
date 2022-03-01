@@ -345,15 +345,16 @@ def tester(request):
 
 
 
-
 def update_pos(request):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
-
     return_dict = {
-        'disount':{1:'ONE',2:'TWO',3:'THREEEEE',4:'F40R', 5:'FIVE',0:'ZERO'},
-        'all_products': Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category')
+
+        'all_products': Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category'),
+        'color_rotations' : {'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'}
+
+
     }
 
     return render(request, 'pricing/update_pos.html', return_dict)
