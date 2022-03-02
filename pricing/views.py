@@ -349,11 +349,16 @@ def update_pos(request):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
+
+    all_products_query = Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category')
+    all_products = dict()
+    #Create HASH TABLE OF Query for JS LOOKUP DB
+    for i in all_products_query:
+        all_products[i['shopify_handle']] = i
     return_dict = {
 
-        'all_products': Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category'),
-        'color_rotations' : {'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'}
-
+        'all_products':  all_products,
+        'color_rotations' : {'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
 
     }
 

@@ -22,7 +22,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.pricing}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.pricing}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -36,7 +36,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.hold}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.hold}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -50,7 +50,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.25}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.25}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -64,7 +64,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.50}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.50}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -78,7 +78,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.75}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.75}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -92,7 +92,7 @@
         </div>
         <h1 class="text-center display-5 my-2">{{color_rotations.reset}}</h1>
       </div>
-      <button class="btn btn-sm btn-dark">ADD TO QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.reset}}">FILL QUEUE</button>
     </div>
   </div>
 
@@ -104,7 +104,6 @@
 
 <div class="row">
   <div class="col">
-
     <div class="card p-3 my-2">
 			<div class="card-header">
 				<h5 class="card-title mb-0 h1">QUEUE</h5>
@@ -112,11 +111,12 @@
 			<div class="card-body">
 				<p class="card-text">This is queue of product prices to be dropped</p>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-auto">
             <label>Discount Percentage: </label>
             <input class="mx-3" type="number" min=0 max=100 step=1 value=100>
-            <button class="btn btn-primary">DROP ALL PRICES IN QUEUE</button>
-            <button class="btn btn-success">RESET QUEUE</button>
+            <input class="form-check-input mt-1" type="checkbox" value="option2"><label for="" class="px-2">SRU Eligible</label>
+            <button class="btn btn-primary" id="dropPricesButton">DROP ALL PRICES IN QUEUE</button>
+            <button class="btn btn-success" id="resetQueueButton">RESET QUEUE</button>
           </div>
         </div>
 
@@ -126,19 +126,10 @@
               <tr>
 								<th>Queue Order</th>
 								<th>PRODUCT</th>
-								<th>SRU Eligible?</th>
 								<th>STATUS</th>
 							</tr>
 						</thead>
-						<tbody>
-
-              <tr>
-								<td><button type="button" class="btn-sm btn btn-success target_row_del">DEL</button></td>
-								<td>{{disount.0}}</td>
-                <td><input class="form-check-input" type="checkbox" value="option2"></td>
-								<td>200 - OK</td>
-							</tr>
-
+						<tbody id="targetQueue">
 						</tbody>
 					</table>
 				</div>
@@ -174,15 +165,15 @@
 							</tr>
 						</thead>
 						<tbody>
-              {% for i in all_products %}
-              <tr>
+              {% for i in all_products.values %}
+              <tr class="dbProducts">
 								<td>{{i.id}}</td>
 								<td>{{i.shopify_handle}}</td>
                 <td>{{i.location__location}}</td>
 								<td>{{i.classifier}}</td>
                 <td>{{i.product_type__product_type}}</td>
 								<td>{{i.product_type__category__category}}</td>
-                <td><button type="button" class="btn-sm btn btn-primary target_row_del">ADD</button></td>
+                <td><button type="button" id="{{i.shopify_handle}}" class="btn-sm btn btn-primary targetAdd">ADD</button></td>
 							</tr>
               {% endfor %}
 						</tbody>
@@ -205,6 +196,114 @@
 <script type="text/javascript">
 
   $('#allProductsTable').DataTable({'pageLength': 50})
+
+  let all_products = {{all_products | safe}}
+  let add_button_html = '<button type="button" class="btn-sm btn btn-success targetDelete">DEL</button>'
+  // ATTACH LISTNER FOR PRODUCT BUTTONS (targetAdd)
+
+  function addRow(HANDLE){
+    $('#targetQueue').append('<tr class="targetRow"><td>' + add_button_html  + '</td><td class="targetHandle">' + HANDLE + '</td><td class="targetStatus">ADDED</td></tr>')
+    $('button.targetDelete').off()
+    $('button.targetDelete').on('click', delRowFunction)
+    $('#' + HANDLE).prop('disabled','true')
+  }
+
+
+  function delRow(HANDLE){
+
+  }
+
+  function delRowFunction(){
+    // DIRECTLY REMOVE THE ROW BASED ON INDEX
+    index_to_delete = $(this).index('.targetDelete')
+    button_to_reenable = $('.targetHandle').eq(index_to_delete).html()
+    $('#'+button_to_reenable).removeAttr('disabled')
+    $('.targetRow').eq(index_to_delete).remove()
+
+  }
+
+  function addButtonFunction(){
+    selected_handle = $(this).prop('id')
+    addRow(selected_handle)
+  }
+
+
+  function resetRows(){
+    $('.targetAdd').removeAttr('disabled')
+    $('.targetRow').remove()
+  }
+
+  function addColorButtonFunction(){
+    // 0. First CLEAR OUT THE QUEUE!
+    resetRows()
+
+    // 1. Get selected color
+    selected_color = $(this).prop('id')
+    holder = []
+    // 2. Find all products matching that color and dump it in the holder array
+    for (const [key, value] of Object.entries(all_products)) {
+      if(selected_color==value['classifier']){
+          holder.push(key)
+      }
+    }
+    // 3. For each element in the holder array, add that 'handle' to the Queue
+    for (i=0;i<holder.length;i++){
+      addRow(holder[i])
+    }
+
+
+
+  }
+
+////////////////////////////////////////////
+// IMPORTANT > XHR FUNCTION!
+  function dropPriceAtRow(ID){
+    $('.targetStatus').eq(ID).html('WORKING.................')
+  }
+
+
+////////////////////////////////////////////
+  function dorpPricesFunction(){
+    // Step 1: Diable all other button so folks cant F***k around
+    $('button.targetAdd').prop('disabled','true')
+    $('button.targetDelete').prop('disabled','true')
+    $('button.targetColorButton').prop('disabled','true')
+    $('#dropPricesButton').prop('disabled','true')
+    $('#resetQueueButton').prop('disabled','true')
+
+    // Step 2: Turn status' to pending!
+    $('.targetStatus').html('WORKING..........')
+
+    // Step 3. Iterate Through Each of the ROW!
+
+    window.setTimeout(function(){
+        $('.targetStatus').html('<span class="text-primary">DONE - 200</span>')
+      }, 4000)
+
+
+
+
+    // Step 4 RE-Enable all the buttons!
+    window.setTimeout(function(){
+
+      $('button.targetAdd').removeAttr('disabled')
+      $('button.targetDelete').removeAttr('disabled')
+      $('button.targetColorButton').removeAttr('disabled')
+      $('#dropPricesButton').removeAttr('disabled')
+      $('#resetQueueButton').removeAttr('disabled')
+    }, 4000);
+  }
+////////////////////////////////////////////
+
+
+
+  // LISTNERS
+  $('button.targetAdd').on('click', addButtonFunction)
+  $('button.targetColorButton').on('click', addColorButtonFunction)
+  $('#resetQueueButton').on('click', resetRows)
+  $('#dropPricesButton').on('click', dorpPricesFunction)
+
+
 
 </script>
 
