@@ -20,5 +20,8 @@ urlpatterns = [
     path('tester/', tester, name='tester'),
 
     path('update_pos/', update_pos, name='update_pos'),
+    path('update_pos_item/', update_pos_item, name='update_pos_item'),
+
+
 
 ]

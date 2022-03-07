@@ -3,7 +3,7 @@ from django.http import HttpResponse, FileResponse
 from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField, DateTimeField
 from django.db.models.functions import Trunc, Extract
 
-from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022
+from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022, drop_price
 
 from pricing.models import *
 import json
@@ -378,3 +378,32 @@ def update_pos(request):
 
 
     return render(request, 'pricing/update_pos.html', return_dict)
+
+
+
+def update_pos_item(request):
+
+    try:
+        sru = bool(int(float(request.GET.get('sru',0))))
+    except:
+        sru = False
+    try:
+        handle = request.GET['handle']
+    except:
+        return HttpResponse('400 - Problem with HANDLE')
+    try:
+        discount = int(float(request.GET.get('discount', 0)))
+        if discount > 100:
+            discount = 100
+        elif discount < 0:
+            discount = 0
+    except:
+        discount = 0
+
+    new_ratio = 1 - discount/100
+
+    tags = datetime.now(pytz.timezone('US/Eastern')).strftime("P-%Y-%m-%d-%H-%M-%S")
+    if sru==True:
+        tags+=',SRUE'
+
+    return HttpResponse(drop_price(handle,new_ratio,tags))
