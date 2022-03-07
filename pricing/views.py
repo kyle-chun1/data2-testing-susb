@@ -3,7 +3,7 @@ from django.http import HttpResponse, FileResponse
 from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField, DateTimeField
 from django.db.models.functions import Trunc, Extract
 
-from pricing.functions import barcode_reuse_1, color_wheel_2021
+from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022
 
 from pricing.models import *
 import json
@@ -355,11 +355,26 @@ def update_pos(request):
     #Create HASH TABLE OF Query for JS LOOKUP DB
     for i in all_products_query:
         all_products[i['shopify_handle']] = i
+
+
+    try:
+        print('GOOGLE')
+        correction = int(float(request.GET['correction']))
+    except:
+        correction = 0
+
+
+    date_query = timezone.now() + timedelta(days=correction)
+
     return_dict = {
 
         'all_products':  all_products,
-        'color_rotations' : {'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
-
+        'color_rotations' : color_wheel_2022(date_query),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
+        'correction': correction,
     }
+
+
+    print(color_wheel_2022())
+
 
     return render(request, 'pricing/update_pos.html', return_dict)
