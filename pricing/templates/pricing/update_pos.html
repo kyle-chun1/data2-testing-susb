@@ -293,7 +293,6 @@
   function dropNextInQueue(){
     t = $('.targetStatus').length
     l =  $('.targetStatusPending').length
-    console.log(l,t,((t-l)/t)*100)
     $('#targetProgress').css('width',String(((t-l)/t)*100)+"%")
     $('#targetProgress').html(String(Math.round(((t-l)/t)*100))+"%")
 
@@ -320,13 +319,13 @@
       $('.targetStatus').eq(temp_index).html('IN PROGRESS')
 
       var oReq = new XMLHttpRequest()
-      oReq.timeout = 10000
+      oReq.timeout = 20000
       oReq.ontimeout = reqTimeout
       oReq.addEventListener("load", reqListener)
 
       oReq.open("GET", "{% url "pricing:update_pos_item" %}?"+  jQuery.param(temp_obj))
       oReq.send()
-      console.log("{% url "pricing:update_pos_item" %}?"+  jQuery.param(temp_obj))
+      console.log("HERE > {% url "pricing:update_pos_item" %}?"+  jQuery.param(temp_obj))
 
     }
   }
@@ -339,7 +338,7 @@
     temp_url = new URL(this.responseURL)
     temp_params = new URLSearchParams(temp_url.searchParams)
     temp_handle = temp_params.get('handle')
-
+    console.log('RECEIVED RESPONSE!', temp_url, temp_handle)
     for(i=0;i<$('.targetHandle').length;i++){
       if($('.targetHandle').eq(i).html()==temp_handle){
         $('.targetStatus').eq(i).html('<strong>'+ this.responseText +'</strong>')
