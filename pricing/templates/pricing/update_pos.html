@@ -22,7 +22,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.pricing}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.pricing}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton targetPricing" id="{{color_rotations.pricing}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -36,7 +36,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.hold}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.hold}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton targetHold" id="{{color_rotations.hold}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -50,7 +50,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.25}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.25}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton target25" id="{{color_rotations.25}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -64,7 +64,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.50}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.50}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton target50" id="{{color_rotations.50}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -78,7 +78,7 @@
 				</div>
 				<h1 class="text-center display-5 my-2">{{color_rotations.75}}</h1>
 			</div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.75}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton target75" id="{{color_rotations.75}}">FILL QUEUE</button>
 		</div>
   </div>
 
@@ -92,7 +92,7 @@
         </div>
         <h1 class="text-center display-5 my-2">{{color_rotations.reset}}</h1>
       </div>
-      <button class="btn btn-sm btn-dark targetColorButton" id="{{color_rotations.reset}}">FILL QUEUE</button>
+      <button class="btn btn-sm btn-dark targetColorButton targetReset" id="{{color_rotations.reset}}">FILL QUEUE</button>
     </div>
   </div>
 
@@ -109,14 +109,18 @@
 				<h5 class="card-title mb-0 h1">QUEUE</h5>
 			</div>
 			<div class="card-body">
-				<p class="card-text">This is queue of product prices to be dropped</p>
+				<p class="card-text">This is queue of product prices to be dropped. STATUS CODE 200=SUCCESS; STATUS CODE 422 usually means that you are dropping the price and SRU status to what is already is. To force the change, it would be best to drop the prices to a different number first, then do the process again with your desired discount value.</p>
         <div class="row mb-3">
           <div class="col-auto">
             <label>Discount Percentage: </label>
-            <input class="mx-3" type="number" min=0 max=100 step=1 value=100>
-            <input class="form-check-input mt-1" type="checkbox" value="option2"><label for="" class="px-2">SRU Eligible</label>
+            <input class="mx-3" type="number" min=0 max=100 step=1 value=0 id="targetDiscount">
+            <input class="form-check-input mt-1" id="targetSRU" type="checkbox" value="option2"><label for="" class="px-2">SRU Eligible</label>
             <button class="btn btn-primary" id="dropPricesButton">DROP ALL PRICES IN QUEUE</button>
             <button class="btn btn-success" id="resetQueueButton">RESET QUEUE</button>
+            <div class="progress mt-3">
+              <div id="targetProgress" class="progress-bar bg-danger" role="progressbar" style="width: 0;" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+            <!-- <div class="row progress-bar bg-primary-dark" role="progressbar" style="width: 43%;" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100">43%</div> -->
           </div>
         </div>
 
@@ -231,7 +235,13 @@
   function resetRows(){
     $('.targetAdd').removeAttr('disabled')
     $('.targetRow').remove()
-  }
+    $('.targetColorButton').removeAttr('disabled')
+    $('#dropPricesButton').removeAttr('disabled')
+    $('#targetSRU').removeAttr('disabled')
+    $('#targetDiscount').removeAttr('disabled')
+    $('#targetProgress').css('width',"0%")
+    $('#targetProgress').addClass('bg-danger')
+    }
 
   function addColorButtonFunction(){
     // 0. First CLEAR OUT THE QUEUE!
@@ -257,9 +267,11 @@
 
 ////////////////////////////////////////////
 // IMPORTANT > XHR FUNCTION!
-  function dropPriceAtRow(ID){
-    $('.targetStatus').eq(ID).html('WORKING.................')
-  }
+  // function dropPriceAtRow(ID){
+  //   $('.targetStatus').eq(ID).html('WORKING.................')
+  // }
+///////////////////////////////////////////////
+
 
 
 ////////////////////////////////////////////
@@ -270,31 +282,72 @@
     $('button.targetColorButton').prop('disabled','true')
     $('#dropPricesButton').prop('disabled','true')
     $('#resetQueueButton').prop('disabled','true')
-
-    // Step 2: Turn status' to pending!
-    $('.targetStatus').html('WORKING..........')
-
-    // Step 3. Iterate Through Each of the ROW!
-
-    window.setTimeout(function(){
-        $('.targetStatus').html('<span class="text-primary">DONE - 200</span>')
-      }, 4000)
-
-
-
-
-    // Step 4 RE-Enable all the buttons!
-    window.setTimeout(function(){
-
-      $('button.targetAdd').removeAttr('disabled')
-      $('button.targetDelete').removeAttr('disabled')
-      $('button.targetColorButton').removeAttr('disabled')
-      $('#dropPricesButton').removeAttr('disabled')
-      $('#resetQueueButton').removeAttr('disabled')
-    }, 4000);
+    $('.targetStatus').html('pending....')
+    $('.targetStatus').addClass('targetStatusPending')
+    $('#targetDiscount').prop('disabled','true')
+    $('#targetSRU').prop('disabled','true')
+    dropNextInQueue()
   }
-////////////////////////////////////////////
 
+
+  function dropNextInQueue(){
+    t = $('.targetStatus').length
+    l =  $('.targetStatusPending').length
+    console.log(l,t,((t-l)/t)*100)
+    $('#targetProgress').css('width',String(((t-l)/t)*100)+"%")
+    $('#targetProgress').html(String(Math.round(((t-l)/t)*100))+"%")
+
+    if(l<1){
+      console.log('END')
+      $('#targetProgress').removeClass('bg-danger')
+      $('#resetQueueButton').removeAttr('disabled')
+
+
+    }else{
+      temp_index = $('.targetStatus').index( $('.targetStatusPending').eq(0)  )
+      temp_obj = {}
+      temp_obj['handle'] = $('.targetHandle').eq(temp_index).html()
+
+      //SET SRU Status
+      if($('#targetSRU').prop('checked')){
+        temp_obj['sru'] = 1
+      }else{
+        temp_obj['sru'] = 0
+      }
+      temp_obj['discount'] = $('#targetDiscount').prop('value')
+
+      $('.targetStatus').eq(temp_index).removeClass('targetStatusPending')
+      $('.targetStatus').eq(temp_index).html('IN PROGRESS')
+
+      var oReq = new XMLHttpRequest()
+      oReq.timeout = 10000
+      oReq.ontimeout = reqTimeout
+      oReq.addEventListener("load", reqListener)
+
+      oReq.open("GET", "{% url "pricing:update_pos_item" %}?"+  jQuery.param(temp_obj))
+      oReq.send()
+      console.log("{% url "pricing:update_pos_item" %}?"+  jQuery.param(temp_obj))
+
+    }
+  }
+
+  function reqTimeout(){
+    dropNextInQueue()
+  }
+
+  function reqListener() {
+    temp_url = new URL(this.responseURL)
+    temp_params = new URLSearchParams(temp_url.searchParams)
+    temp_handle = temp_params.get('handle')
+
+    for(i=0;i<$('.targetHandle').length;i++){
+      if($('.targetHandle').eq(i).html()==temp_handle){
+        $('.targetStatus').eq(i).html('<strong>'+ this.responseText +'</strong>')
+      }
+    }
+
+    dropNextInQueue()
+  }
 
 
   // LISTNERS
@@ -303,8 +356,14 @@
   $('#resetQueueButton').on('click', resetRows)
   $('#dropPricesButton').on('click', dorpPricesFunction)
 
+  $('.targetPricing').on('click', function(){$('#targetDiscount').prop('value', 0); $('#targetSRU').prop('checked', true)})
+  $('.targetHold').on('click', function(){$('#targetDiscount').prop('value', 0); $('#targetSRU').prop('checked', true)})
+  $('.target25').on('click', function(){$('#targetDiscount').prop('value', 25); $('#targetSRU').prop('checked', false)})
+  $('.target50').on('click', function(){$('#targetDiscount').prop('value', 50); $('#targetSRU').prop('checked', false)})
+  $('.target75').on('click', function(){$('#targetDiscount').prop('value', 75); $('#targetSRU').prop('checked', false)})
+  $('.targetReset').on('click', function(){$('#targetDiscount').prop('value', 0); $('#targetSRU').prop('checked', true)})
 
-
+  // console.log({{correction}})
 </script>
 
 {% endblock %}

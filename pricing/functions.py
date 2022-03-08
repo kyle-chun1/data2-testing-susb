@@ -156,29 +156,32 @@ def color_wheel_2022(d=''):
 
 ################### CAREFUL - - - - CHANGE using COMPARE_AT_PRICE REFERENCE
 def drop_price(handle,factor, TAGS):   # SINGULAR HANDLE
-    sleep(0.2)
-    the_request = requests.get(S_URL+'products.json', params={'handle': handle, 'fields':'id,handle,variants'})
-    the_response = json.loads(the_request.text)
-#     print('Query Shopify Response Code: ', the_request.status_code)
-    sleep(0.2)
-    the_id = the_response['products'][0]['id']
+    try:
+        sleep(0.5)
+        the_request = requests.get(S_URL+'products.json', params={'handle': handle, 'fields':'id,handle,variants'})
+        the_response = json.loads(the_request.text)
+    #     print('Query Shopify Response Code: ', the_request.status_code)
+        sleep(0.5)
+        the_id = the_response['products'][0]['id']
 
-    update_dict = {'product': {'id':the_id, 'tags':TAGS } }
-    update_variants = []
-    for i in the_response['products'][0]['variants']:
+        update_dict = {'product': {'id':the_id, 'tags':TAGS } }
+        update_variants = []
+        for i in the_response['products'][0]['variants']:
 
-            ######### IMPORTANT >>>>>>>>>> UPDATE WITH AI in COMPARE_AT_PRICE
-        if float(factor)>=1.0:
-            update_variants.append({'id':i['id'], 'price':  i['compare_at_price'] , 'compare_at_price': ''})
-        elif type(i['compare_at_price']) == type(None):
-            update_variants.append({'id':i['id'], 'price':  float(i['price'])*factor , 'compare_at_price': i['price']})
-        else:
-            update_variants.append({'id':i['id'], 'price': float( i['compare_at_price']) * factor , 'compare_at_price': i['compare_at_price']})
+                ######### IMPORTANT >>>>>>>>>> UPDATE WITH AI in COMPARE_AT_PRICE
+            if float(factor)>=1.0:
+                update_variants.append({'id':i['id'], 'price':  i['compare_at_price'] , 'compare_at_price': ''})
+            elif type(i['compare_at_price']) == type(None):
+                update_variants.append({'id':i['id'], 'price':  float(i['price'])*factor , 'compare_at_price': i['price']})
+            else:
+                update_variants.append({'id':i['id'], 'price': float( i['compare_at_price']) * factor , 'compare_at_price': i['compare_at_price']})
 
 
-    update_dict['product']['variants'] = update_variants
+        update_dict['product']['variants'] = update_variants
 
-    the_post = requests.put(S_URL + 'products/' + str(the_id) + '.json', json=update_dict)
-    # print(handle," - UPDATE REQUEST Status Code (200 is good): ", the_post.status_code)
-    # print(the_post.text)
-    return the_post.status_code
+        the_post = requests.put(S_URL + 'products/' + str(the_id) + '.json', json=update_dict)
+        # print(handle," - UPDATE REQUEST Status Code (200 is good): ", the_post.status_code)
+        # print(the_post.text)
+        return the_post.status_code
+    except:
+        return '404'

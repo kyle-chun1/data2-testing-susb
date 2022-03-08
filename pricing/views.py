@@ -18,7 +18,7 @@ from visitors.functions import start_end_date
 
 import pandas as pd
 
-
+from time import sleep
 from collections import defaultdict
 
 
@@ -358,7 +358,6 @@ def update_pos(request):
 
 
     try:
-        print('GOOGLE')
         correction = int(float(request.GET['correction']))
     except:
         correction = 0
@@ -372,9 +371,6 @@ def update_pos(request):
         'color_rotations' : color_wheel_2022(date_query),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
         'correction': correction,
     }
-
-
-    print(color_wheel_2022())
 
 
     return render(request, 'pricing/update_pos.html', return_dict)
@@ -407,3 +403,13 @@ def update_pos_item(request):
         tags+=',SRUE'
 
     return HttpResponse(drop_price(handle,new_ratio,tags))
+
+
+
+def update_pos_item_test(request):
+    sleep(2)
+    x = timezone.now().astimezone(pytz.timezone('US/Eastern'))
+    print(request.GET.get('handle',-1))
+    print(request.GET.get('discount',-1))
+    print(request.GET.get('sru',-1))
+    return HttpResponse(f'WORKING {x}')
