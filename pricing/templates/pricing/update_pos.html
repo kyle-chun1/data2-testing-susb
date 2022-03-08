@@ -199,7 +199,7 @@
 {% block javascript_end %}
 <script type="text/javascript">
 
-  $('#allProductsTable').DataTable({'pageLength': 50})
+  // $('#allProductsTable').DataTable({'pageLength': 5})
 
   let all_products = {{all_products | safe}}
   let add_button_html = '<button type="button" class="btn-sm btn btn-success targetDelete">DEL</button>'
