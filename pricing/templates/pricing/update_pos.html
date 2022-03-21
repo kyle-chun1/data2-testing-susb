@@ -9,6 +9,37 @@
 
 {% block content %}
 
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+      <form method="GET">
+        <div class="row">
+          <!-- <div class="row"> -->
+          <div class="col">
+            <div class="form-group">
+    					<!-- <label class="form-label">Start Date</label> -->
+              <h3>Select the desired date: </h3>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <input class="form-control" type="date" name="date" value="{{date}}" min="2021-01-05">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <button class="form-control btn btn-primary btn-md" type="submit">CHANGE DATE & RELOAD</button>
+            </div>
+          </div>
+  			</div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <div class="row">
 
@@ -116,7 +147,7 @@
             <input class="mx-3" type="number" min=0 max=100 step=1 value=0 id="targetDiscount">
             <input class="form-check-input mt-1" id="targetSRU" type="checkbox" value="option2"><label for="" class="px-2">SRU Eligible</label>
             <button class="btn btn-primary" id="dropPricesButton">DROP ALL PRICES IN QUEUE</button>
-            <button class="btn btn-success" id="resetQueueButton">RESET QUEUE</button>
+            <button class="btn btn-success" id="resetQueueButton">CLEAR QUEUE (Remove all)</button>
             <div class="progress mt-3">
               <div id="targetProgress" class="progress-bar bg-danger" role="progressbar" style="width: 0;" aria-valuemin="0" aria-valuemax="100">0%</div>
             </div>
@@ -177,6 +208,7 @@
 								<td>{{i.classifier}}</td>
                 <td>{{i.product_type__product_type}}</td>
 								<td>{{i.product_type__category__category}}</td>
+
                 <td><button type="button" id="{{i.shopify_handle}}" class="btn-sm btn btn-primary targetAdd">ADD</button></td>
 							</tr>
               {% endfor %}
@@ -200,9 +232,10 @@
 <script type="text/javascript">
 
   // $('#allProductsTable').DataTable({'pageLength': 5})
+  
 
   let all_products = {{all_products | safe}}
-  let add_button_html = '<button type="button" class="btn-sm btn btn-success targetDelete">DEL</button>'
+  let add_button_html = '<button type="button" class="btn-sm btn btn-success targetDelete">Remove</button>'
   // ATTACH LISTNER FOR PRODUCT BUTTONS (targetAdd)
 
   function addRow(HANDLE){
@@ -277,7 +310,7 @@
 ////////////////////////////////////////////
   function dorpPricesFunction(){
     // Step 1: Diable all other button so folks cant F***k around
-    $('button.targetAdd').prop('disabled','true')
+    $('.targetAdd').prop('disabled','true')
     $('button.targetDelete').prop('disabled','true')
     $('button.targetColorButton').prop('disabled','true')
     $('#dropPricesButton').prop('disabled','true')
@@ -350,7 +383,7 @@
 
 
   // LISTNERS
-  $('button.targetAdd').on('click', addButtonFunction)
+  $('.targetAdd').on('click', addButtonFunction)
   $('button.targetColorButton').on('click', addColorButtonFunction)
   $('#resetQueueButton').on('click', resetRows)
   $('#dropPricesButton').on('click', dorpPricesFunction)

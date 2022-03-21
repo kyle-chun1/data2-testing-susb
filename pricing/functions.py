@@ -132,8 +132,6 @@ def color_wheel_2022(d=''):
         d = datetime.now(tz=timezone('US/Eastern'))
 
 
-    d = d + timedelta(hours=6)
-
     color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
     colors = ('B','Y','O','R','G','L' )
 

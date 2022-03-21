@@ -346,9 +346,15 @@ def tester(request):
 
 
 def update_pos(request):
+
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
+
+    try:
+        date = datetime.strptime(request.GET['date'], '%Y-%m-%d').replace(tzinfo=pytz.timezone('US/Eastern'))
+    except:
+        date = timezone.now().astimezone(pytz.timezone('US/Eastern'))
 
     all_products_query = Product.objects.values('location__location', 'id', 'shopify_handle', 'classifier', 'product_type__product_type', 'product_type__category__category')
     all_products = dict()
@@ -363,17 +369,18 @@ def update_pos(request):
         correction = 0
 
 
-    date_query = timezone.now() + timedelta(days=correction)
-
     return_dict = {
 
         'all_products':  all_products,
-        'color_rotations' : color_wheel_2022(date_query),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
-        'correction': correction,
+        'color_rotations' : color_wheel_2022(date),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
+        'date':date.strftime('%Y-%m-%d'),
     }
 
 
     return render(request, 'pricing/update_pos.html', return_dict)
+
+
+
 
 
 
