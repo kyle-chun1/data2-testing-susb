@@ -348,7 +348,7 @@ def tester(request):
 def update_pos(request):
 
     #authentication
-    if not request.user.is_authenticated:
+    if not request.user.is_staff:
         return redirect('HOME')
 
     try:
@@ -376,7 +376,7 @@ def update_pos(request):
         'date':date.strftime('%Y-%m-%d'),
     }
 
-
+    for i in range(10): print(request.user.is_staff)
     return render(request, 'pricing/update_pos.html', return_dict)
 
 
