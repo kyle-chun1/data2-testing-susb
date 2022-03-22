@@ -221,6 +221,48 @@
 			</div>
 		</div>
 
+
+    <div class="card p-4 my-5">
+			<div class="card-header">
+				<h1 class="card-title mb-0 h1">ALL THE PRODUCTS - Dynamic LOOKUP / SEARCH</h1>
+			</div>
+			<div class="card-body">
+				<p class="card-text">Use this dynamic list to search, sort, and find products</p>
+
+
+        <div class="table-sm">
+					<table id="allProductsTable2" class="table mb-0">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Handle</th>
+								<th>Location</th>
+								<th>Color</th>
+                <th>Product_Type</th>
+								<th>Category</th>
+							</tr>
+						</thead>
+						<tbody>
+              {% for i in all_products.values %}
+              <tr class="dbProducts2">
+								<td>{{i.id}}</td>
+								<td>{{i.shopify_handle}}</td>
+                <td>{{i.location__location}}</td>
+								<td>{{i.classifier}}</td>
+                <td>{{i.product_type__product_type}}</td>
+								<td>{{i.product_type__category__category}}</td>
+							</tr>
+              {% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+
+
+			</div>
+		</div>
+
+
   </div>
 </div>
 
@@ -231,8 +273,8 @@
 {% block javascript_end %}
 <script type="text/javascript">
 
-  // $('#allProductsTable').DataTable({'pageLength': 5})
-  
+  $('#allProductsTable2').DataTable({'pageLength': 50})
+
 
   let all_products = {{all_products | safe}}
   let add_button_html = '<button type="button" class="btn-sm btn btn-success targetDelete">Remove</button>'
