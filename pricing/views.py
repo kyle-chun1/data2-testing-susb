@@ -376,7 +376,6 @@ def update_pos(request):
         'date':date.strftime('%Y-%m-%d'),
     }
 
-    for i in range(10): print(request.user.is_staff)
     return render(request, 'pricing/update_pos.html', return_dict)
 
 
@@ -385,6 +384,8 @@ def update_pos(request):
 
 
 def update_pos_item(request):
+    if not request.user.is_staff:
+        return HttpResponse('500 - Unauthenticated')
 
     try:
         sru = bool(int(float(request.GET.get('sru',0))))
