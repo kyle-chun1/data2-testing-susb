@@ -21,15 +21,15 @@ admin.site.register(Link, LinkAdmin)
 
 class LinkAdmin_product(admin.ModelAdmin):
     # fields = ['url','category']
-    list_display = ('shopify_handle','order','id','location','classifier','product_type')
-    list_filter = ['location','order','product_type__category','product_type']
+    list_display = ('shopify_handle','order','id','visible','location','classifier','product_type')
+    list_filter = ['location','order','visible','product_type__category','product_type']
 
 admin.site.register(Product, LinkAdmin_product)
 
 
 class LinkAdmin_variant(admin.ModelAdmin):
     # fields = ['url','category']
-    list_display = ('variant','product','id','price',)
+    list_display = ('variant','product','id','price')
     list_filter = ['product__location','product__product_type__category','product__product_type']
 admin.site.register(Variant, LinkAdmin_variant)
 
