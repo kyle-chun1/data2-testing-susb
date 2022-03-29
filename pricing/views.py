@@ -24,7 +24,7 @@ from collections import defaultdict
 from local_settings import *
 
 
-def pricing_portal(request, location):
+def pricing_portal_legacy(request, location):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
@@ -72,7 +72,7 @@ def pricing_portal(request, location):
 
 #######&#$^#&*^$&*#^$##################################
 #######&#$^#&*^$&*#^$##################################
-def pricing_portal_legacy(request, location):
+def pricing_portal(request, location):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
