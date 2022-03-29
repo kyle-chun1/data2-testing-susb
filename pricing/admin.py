@@ -21,8 +21,8 @@ admin.site.register(Link, LinkAdmin)
 
 class LinkAdmin_product(admin.ModelAdmin):
     # fields = ['url','category']
-    list_display = ('shopify_handle','id','location','classifier','product_type')
-    list_filter = ['product_type__category','product_type','location',]
+    list_display = ('shopify_handle','order','id','location','classifier','product_type')
+    list_filter = ['location','order','product_type__category','product_type']
 
 admin.site.register(Product, LinkAdmin_product)
 

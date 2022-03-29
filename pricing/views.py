@@ -91,9 +91,9 @@ def pricing_portal(request, location):
     CC = color_wheel_2021(timezone.now())
     CColor = color_reference[CC]
 
-    products_white = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier='W').values('shopify_handle','title')
-    products_color = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier=CC).values('shopify_handle','title')
-    products_unit = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier='U').values('shopify_handle','title')
+    products_white = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier='W').values('shopify_handle','title').order_by('order', 'id')
+    products_color = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier=CC).values('shopify_handle','title').order_by('order', 'id')
+    products_unit = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier='U').values('shopify_handle','title').order_by('order', 'id')
 
     V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price').order_by('title')
 
