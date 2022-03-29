@@ -72,7 +72,7 @@ def pricing_portal(request, location):
 
 #######&#$^#&*^$&*#^$##################################
 #######&#$^#&*^$&*#^$##################################
-def pricing_portal_LEGACY(request, location):
+def pricing_portal_legacy(request, location):
     #authentication
     if not request.user.is_authenticated:
         return redirect('HOME')
@@ -93,8 +93,8 @@ def pricing_portal_LEGACY(request, location):
 
     products_white = Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier='W').values('shopify_handle','title')
     products_color = Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier=CC).values('shopify_handle','title')
+    products_unit = Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier='U').values('shopify_handle','title')
 
-    products_unit = {}
     V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price').order_by('title')
 
     # Create a SET of the unique IDS
@@ -110,7 +110,8 @@ def pricing_portal_LEGACY(request, location):
     return_dict = {
         'products_white': products_white,
         'products_color':products_color,
-        'products_unit':products_unit_test,
+        'products_unit':products_unit,
+        'products_unit_test':products_unit_test,
         'CColor' : CColor, 'CC': CC,
         'LOCATION':LOCATION,
         'TEXT':TEXT

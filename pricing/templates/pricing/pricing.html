@@ -31,80 +31,19 @@
               {% for i in products_color %}
               <button id="{{i.shopify_handle}}" type="button" class="btn {{CColor}}-tag btn-lg">{{i.title}}</button>
               {% endfor %}
-              <p>OLD OLD<br>{{CColor}} Tagged Items with Standard Prices...</p>
-              <button id="{{CC}}TBKS" type="button" class="btn {{CColor}}-tag btn-lg">Books</button>
-              <button id="{{CC}}TBMM" type="button" class="btn {{CColor}}-tag btn-lg">Building Materials</button>
-              <button id="{{CC}}TLIT" type="button" class="btn {{CColor}}-tag btn-lg">Lighting</button>
-              <button id="{{CC}}TTLS" type="button" class="btn {{CColor}}-tag btn-lg">Tools</button>
-              <button id="{{CC}}TELC" type="button" class="btn {{CColor}}-tag btn-lg">Electronics</button>
-              <button id="{{CC}}TFUR" type="button" class="btn {{CColor}}-tag btn-lg">Furniture</button>
-              <button id="{{CC}}TAPL" type="button" class="btn {{CColor}}-tag btn-lg">Appliances</button>
-              <button id="{{CC}}THOW" type="button" class="btn {{CColor}}-tag btn-lg">Housewares</button>
-              <button id="{{CC}}TJWL" type="button" class="btn {{CColor}}-tag btn-lg">Jewelry</button>
-              <button id="{{CC}}TSEA" type="button" class="btn {{CColor}}-tag btn-lg">Seasonal</button>
-              <button id="{{CC}}TACS" type="button" class="btn {{CColor}}-tag btn-lg">Accessories</button>
-              <button id="{{CC}}TCLO" type="button" class="btn {{CColor}}-tag btn-lg">Clothing</button>
-              <button id="{{CC}}TLIN" type="button" class="btn {{CColor}}-tag btn-lg">Linens</button>
-              <button id="{{CC}}TSHO" type="button" class="btn {{CColor}}-tag btn-lg">Shoes</button>
-              <button id="{{CC}}THOL" type="button" class="btn {{CColor}}-tag btn-lg">Holiday</button>
-              <button id="{{CC}}TBCY" type="button" class="btn {{CColor}}-tag btn-lg">Bicycle</button>
-              <button id="{{CC}}TBPT" type="button" class="btn {{CColor}}-tag btn-lg">Bicycle Parts</button>
       			</div>
       			<div class="tab-pane" id="white-tab" role="tabpanel">
               <p>White tagged items with standard prices. Use these for items that will not automatically go through the automatic discount system.</p>
               {% for i in products_white %}
               <button id="{{i.shopify_handle}}" type="button" class="btn White-tag btn-lg">{{i.title}}</button>
               {% endfor %}
-              <p>OLD OLD <br>White tagged items with standard prices. Use these for items that will not automatically go through the automatic discount system.</p>
-              <button id="WTBKS" type="button" class="btn White-tag btn-lg">Books</button>
-              <button id="WTMOV" type="button" class="btn White-tag btn-lg">Movies</button>
-              <button id="WTMUS" type="button" class="btn White-tag btn-lg">Music</button>
-              <button id="WTBMM" type="button" class="btn White-tag btn-lg">Building Materials</button>
-              <button id="WTLIT" type="button" class="btn White-tag btn-lg">Lighting</button>
-              <button id="WTTLS" type="button" class="btn White-tag btn-lg">Tools</button>
-              <button id="WTELC" type="button" class="btn White-tag btn-lg">Electronics</button>
-              <button id="WTFUR" type="button" class="btn White-tag btn-lg">Furniture</button>
-              <button id="WTAPL" type="button" class="btn White-tag btn-lg">Appliances</button>
-              <button id="WTHOW" type="button" class="btn White-tag btn-lg">Housewares</button>
-              <button id="WTJWL" type="button" class="btn White-tag btn-lg">Jewelry</button>
-              <button id="WTSEA" type="button" class="btn White-tag btn-lg">Seasonal</button>
-              <button id="WTACS" type="button" class="btn White-tag btn-lg">Accessories</button>
-              <button id="WTCLO" type="button" class="btn White-tag btn-lg">Clothing</button>
-              <button id="WTLIN" type="button" class="btn White-tag btn-lg">Linens</button>
-              <button id="WTSHO" type="button" class="btn White-tag btn-lg">Shoes</button>
-              <button id="WTDWS" type="button" class="btn White-tag btn-lg">Doors/Windows</button>
-              <button id="WTLUM" type="button" class="btn White-tag btn-lg">Lumber</button>
-              <button id="WTHOL" type="button" class="btn White-tag btn-lg">Holiday</button>
-              <button id="WTPER" type="button" class="btn White-tag btn-lg">Peripherals</button>
-              <button id="WTBCY" type="button" class="btn White-tag btn-lg">Bicycle</button>
-              <button id="WTBPT" type="button" class="btn White-tag btn-lg">Bicycle Parts</button>
-              <button id="WTACE" type="button" class="btn White-tag btn-lg">ACE (Misc-P)</button>
       			</div>
       			<div class="tab-pane" id="unit-tab" role="tabpanel">
               <p>Unit priced tags: Please print these on white tags.</p>
-              <button id="UTBKS" class="btn Unit-tag btn-lg">Books</button>
-              <button id="UTMOV" class="btn Unit-tag btn-lg">Movies</button>
-              <button id="UTMUS" class="btn Unit-tag btn-lg">Music</button>
-              <button id="UTBMM" class="btn Unit-tag btn-lg">Building Materials</button>
-              <button id="UTLIT" class="btn Unit-tag btn-lg">Lighting</button>
-              <button id="UTTLS" class="btn Unit-tag btn-lg">Tools</button>
-              <button id="UTELC" class="btn Unit-tag btn-lg">Electronics</button>
-              <button id="UTAPL" class="btn Unit-tag btn-lg">Appliances</button>
-              <button id="UTHOW" class="btn Unit-tag btn-lg">Housewares</button>
-              <button id="UTJWL" class="btn Unit-tag btn-lg">Jewelry</button>
-              <button id="UTSEA" class="btn Unit-tag btn-lg">Seasonal</button>
-              <button id="UTACS" class="btn Unit-tag btn-lg">Accessories</button>
-              <button id="UTCLO" class="btn Unit-tag btn-lg">Clothing</button>
-              <button id="UTLIN" class="btn Unit-tag btn-lg">Linens</button>
-              <button id="UTSHO" class="btn Unit-tag btn-lg">Shoes</button>
-              <button id="UTDWS" class="btn Unit-tag btn-lg">Doors/Windows</button>
-              <button id="UTLUM" class="btn Unit-tag btn-lg">Lumber</button>
-              <button id="UTHOL" class="btn Unit-tag btn-lg">Holiday</button>
-              <button id="UTPER" class="btn Unit-tag btn-lg">Peripherals</button>
-              <button id="UTDES" class="btn Unit-tag btn-lg">Desktop</button>
-              <button id="UTLAP" class="btn Unit-tag btn-lg">Laptop</button>
-              <button id="UTTAB" class="btn Unit-tag btn-lg">Smartphone</button>
-              <button id="UTOCP" class="btn Unit-tag btn-lg">Other Computer</button>
+
+              {% for i in products_unit %}
+              <button id="{{i.shopify_handle}}" type="button" class="btn Unit-tag btn-lg">{{i.title}}</button>
+              {% endfor %}
 
       			</div>
       		</div>
@@ -217,7 +156,7 @@
 // PULL OBJECTS FROM DJANGO
 // let products_white = {{products_white | safe}}
 // let products_color = {{products_color | safe}}
-let products_unit = {{products_unit | safe}}
+let products_unit_test = {{products_unit_test | safe}}
 let price_progression = [1,2,3,4,5,6,7,8,9,10,  12,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,   150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,  1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500]
 let color_reference = {'W':'White','U':'Unit Priced (White)', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
 //INITIALIZE THE targetOBJECT which holds values for submit check with DEFAULTS
@@ -259,7 +198,7 @@ function buttonUnit(){
   $(".selected-button").removeClass('selected-button')
   $(this).addClass('selected-button')
 
-  A = products_unit[$(this).prop('id')]
+  A = products_unit_test[$(this).prop('id')]
   $('#targetVariant').html('')
   for(i=0;i<A.length;i++){
     $('#targetVariant').append('<option id="OP' + i + '" value="'+ A[i][0] + '">' + A[i][1] + '  -  [$ ' + A[i][2] + ']</option>')
