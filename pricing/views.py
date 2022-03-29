@@ -2,8 +2,8 @@ from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponse, FileResponse
 from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField, DateTimeField
 from django.db.models.functions import Trunc, Extract
-
-from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022, drop_price
+import requests
+from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022, drop_price, data1_handle_process, shopify_handle_process
 
 from pricing.models import *
 import json
@@ -20,6 +20,8 @@ import pandas as pd
 
 from time import sleep
 from collections import defaultdict
+
+from local_settings import *
 
 
 def pricing_portal(request, location):
@@ -421,3 +423,35 @@ def update_pos_item_test(request):
     print(request.GET.get('discount',-1))
     print(request.GET.get('sru',-1))
     return HttpResponse(f'WORKING {x}')
+
+
+
+def generate_standard_variants(request):
+
+    if not request.user.is_staff:
+        return HttpResponse('500 - Unauthenticated')
+
+    MESSAGE = ''
+
+    shopify_handle = str(request.POST.get('shopify_handle', '')).strip().upper()
+    data1_handle = str(request.POST.get('data1_handle', '')).strip().upper()
+
+    if shopify_handle!='' and data1_handle != '':
+        MESSAGE += 'Shopify handle and data1 handles provided. Please only provide one handle<br><br>'
+
+    elif data1_handle=='' and shopify_handle=='':
+        # MESSAGE += 'NO INPUT RECEIVED! - both fields blank <br><br>'
+        pass
+
+    elif data1_handle:
+        MESSAGE += data1_handle_process(data1_handle)
+
+    elif shopify_handle:
+        MESSAGE += shopify_handle_process(shopify_handle)
+    else:
+        MESSAGE += 'UNKNOW ERROR <br><br>'
+
+
+    return render(request,'pricing/generate_standard_variants.html',{'MESSAGE': MESSAGE} )
+
+    return HttpResponse(log)

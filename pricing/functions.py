@@ -14,7 +14,8 @@ import io
 from datetime import datetime, timedelta
 from pytz import timezone
 
-from pricing.functions import S_URL
+from time import sleep
+# from pricing.functions import S_URL
 
 
 def fill_variants_color(handle):
@@ -183,3 +184,114 @@ def drop_price(handle,factor, TAGS):   # SINGULAR HANDLE
         return the_post.status_code
     except:
         return '404'
+
+
+
+def data1_handle_process(data1_handle):
+
+    if data1_handle.strip() == '':
+        return 'BLANK INPUT'
+
+    price_progression = [1,2,3,4,5,6,7,8,9,10,  12,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,   150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,  1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500]
+    color_lookup = {'W':'White','R':'Red','O':'Orange','G':'Green','B':'Blue','L':'Lavender','Y':'Yellow'}
+    log = ''
+    # 'first check if there exists the handle in the system:
+    log += f'Attempting to check for input:[{data1_handle}] in data1 portal<br><br>'
+
+    try:
+        temp = Product.objects.get(shopify_handle=str(data1_handle),  )
+        log += f'Product found in the system! Procuct(id): {temp.id} <br><br>'# Product.objects.get(shopify_handle='WTBKS')
+        # CHECK ABOUT COLOR !!! > Only colors and White allowed
+        if data1_handle[0].upper() in color_lookup:
+            log += f'Color {color_lookup[ data1_handle[0] ]} <br><br>'
+        else:
+            log += f'Unsupported COLOR : {data1_handle[0]}. Only White/Green/Blue/Orange/Lavender/Yellow are allowed<br><br>'
+            return log
+        # CHECK IF THERE ARE NO VARIANTS IN THE CURRENT PRODUCT
+        temp_length = len(Variant.objects.filter(product=temp))
+        if temp_length <= 0:
+            log += f'Verified OK:  There are variants under this product! <br><br>'
+        else:
+            log += f'FAILED!!:- Cannot generate variant to Products that have variants under them.<br><br>'
+            log += f'There are {temp_length} variants under {data1_handle}<br><br>'
+            log += f'There should 0 variants under this product in order to generate the standard items under it.'
+            return log
+    except:
+        log += f'Product with specified handle was NOT found in the data1 Portal. (or other error occured when querying item)<br><br>'
+        return log
+
+    # ALL CHECKS PASSED AT THIS POINT > CREATE ITEMS
+    log += f'... Now attempting to create variants in {data1_handle} between $1 and $1500<br><br>'
+
+    try:
+        for i in price_progression:
+            Variant(  product=temp, title=f'${i}',  price=float(i), variant=f'{data1_handle}{i}'     ).save()
+        log += '<strong>SUCCESS:</strong> VARIANTS CREATED SUCCESSFULLY! - Please verify them in the portal<br><br>'
+
+    except:
+        log += 'ERROR OCCURED - white generating products<br><br>'
+        return log
+
+    return log
+
+
+
+def shopify_handle_process(shopify_handle):
+    price_progression = [1,2,3,4,5,6,7,8,9,10,  12,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,   150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,  1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500]
+    color_lookup = {'W':'White','R':'Red','O':'Orange','G':'Green','B':'Blue','L':'Lavender','Y':'Yellow'}
+    log = ''
+
+    if shopify_handle[0] not in color_lookup or len(shopify_handle)!=5:
+        log += 'ERROR: Handle needs to be 5 character long AND the first character must be W/R/G/B/Y/O/L'
+        return log
+
+    #Contact Shopify
+
+    log += f'Attempting to find [{shopify_handle}] in Shopify...<br><br>'
+    sleep(1)
+    the_request = requests.get(f'{S_URL}products.json?handle={shopify_handle}')
+    the_response = the_request.json()
+
+    if len(the_response['products']) == 0:
+        log += f'FAIL: PRODUCT DOES NOT EXIST! - Please ensure the product exists<br><br>'
+        return log
+    elif len(the_response['products']) > 1:
+        log += 'More than one product found, Not proceding'
+        return log
+    else: #MUST BE FOUND
+        log += f'Handle FOUND: handle:[{shopify_handle}] exists in Shopify with ID:{the_response["products"][0]["id"]}<br><br>'
+
+    variants_list = []
+    for i in price_progression:
+        variants_list.append({
+            'option1':f'${i}',
+            'price':i,
+            'compare_at_price':'',
+            'barcode': f'{shopify_handle}{i}',
+            'sku': f'{shopify_handle}{i}',
+            'inventory_managment':'shopify',
+    })
+    log += 'Attempting to add standard variants between $1-1500 in SHOPIFY<br><br>'
+
+    try:
+        sleep(2)
+        the_post = requests.put(f'{S_URL}products/{the_response["products"][0]["id"]}.json',
+            json = {
+                'product':{
+                    'id': the_response["products"][0]["id"],
+                    'variants' : variants_list,
+                    'tags': 'SRUE,data1-generator'
+
+                }
+        })
+        log += f'Shopify Response Code : {the_post.status_code} [ FYI: 200=SUCCESS ]<br><br>'
+        log += f'Please verify that the variants have been made!<br><br>'
+
+        if the_post.status_code!=200:
+            log += f'<br><br>Shopify Response:<br><br>{the_post.json()}'
+
+    except:
+        log += 'ERROR SUBMITTING SEQUENCE TO SHOPIFY'
+        return log
+
+    return log
