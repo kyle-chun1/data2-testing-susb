@@ -28,6 +28,8 @@ class Product(models.Model):
     classifier = models.CharField(max_length=1, choices = classifier_choices)
     shopify_handle = models.CharField(max_length=12, unique=True)
     title = models.CharField(max_length=256, default='')
+    visible = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
     def __str__(self):############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
         return self.title ############ DONT CHANGE - USED IN THE STR FOR BARCODE AI
 
