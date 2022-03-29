@@ -6,6 +6,7 @@ app_name='pricing'
 
 urlpatterns = [
     path('portal/<slug:location>/', pricing_portal, name='portal'),
+    path('portal_LEGACY/<slug:location>/', pricing_portal_LEGACY, name='pricing_portal_LEGACY'),
     path('raw/<slug:location>/', raw, name='raw'),
     path('stats/<slug:location>/', stats, name='stats'),
     path('submit/', pricing_submit, name='submit'),

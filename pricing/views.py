@@ -37,21 +37,9 @@ def pricing_portal(request, location):
     else:
         return(redirect('/'))
 
-
-
     products_std = [i.shopify_handle for i in Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier__in=['W','R','G','B','Y','L','O'])]
     products_unit = {}
     V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price').order_by('title')
-
-
-########################### FOCUS / BACKUP
-    # for i in V:
-    #     try:
-    #         if i['variant'][0].upper() != 'K':
-    #             products_unit[i['variant'][0:5]].append([ i['variant'],i['title'],f"{i['price']:.2f}" ])
-    #     except:
-    #         products_unit[i['variant'][0:5]] = list()
-###########################
 
     # Create a SET of the unique IDS
     products_ids = set([x['variant'][0:5] for x in V])
@@ -80,6 +68,78 @@ def pricing_portal(request, location):
 
 
 
+
+
+#######&#$^#&*^$&*#^$##################################
+#######&#$^#&*^$&*#^$##################################
+def pricing_portal_LEGACY(request, location):
+    #authentication
+    if not request.user.is_authenticated:
+        return redirect('HOME')
+
+    # LOCATION SLUG CHECK
+    if location.upper() in ['TRMC', 'TRC', 'TRMC', 'RMC']:
+        LOCATION = 'T'
+        TEXT = 'TRMC : ReUse MEGACENTER'
+    elif location.upper() in ['IRC', 'IRMC']:
+        LOCATION = 'I'
+        TEXT = 'IRC : Ithaca ReUse Center'
+    else:
+        return(redirect('/'))
+
+    color_reference = {'W':'White', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
+    CC = color_wheel_2021(timezone.now())
+    CColor = color_reference[CC]
+
+    products_white = Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier='W').values('shopify_handle','title')
+    products_color = Product.objects.filter(location=Location.objects.get(location=LOCATION), classifier=CC).values('shopify_handle','title')
+
+    products_unit = {}
+    V = Variant.objects.filter(product__location=Location.objects.get(location=LOCATION), product__classifier='U', visible=True).values('variant','title','price').order_by('title')
+
+    # Create a SET of the unique IDS
+    products_ids = set([x['variant'][0:5] for x in V])
+    #Declare a blank Dict and Add the unique IDS to the dict with empty lists()
+    products_unit_test = {}
+    for i in products_ids:
+        products_unit_test[i] = list()
+
+    for i in V:
+        products_unit_test[ i['variant'][:5] ].append([  i['variant'],i['title'],f"{i['price']:.2f}"  ])
+
+    return_dict = {
+        'products_white': products_white,
+        'products_color':products_color,
+        'products_unit':products_unit_test,
+        'CColor' : CColor, 'CC': CC,
+        'LOCATION':LOCATION,
+        'TEXT':TEXT
+    }
+
+    return render(request, 'pricing/pricing.html',return_dict)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def pricing_submit(request):
     #authentication
     if not request.user.is_authenticated:
@@ -101,11 +161,13 @@ def pricing_submit(request):
             TITLE = str(V.title)
 
         #Submit to DB!!!
-        STAFF_ID = str(request.user.email).split('@fingerlakesreuse.org')[0]
-        submission = Pricing.objects.create(variant=Variant.objects.get(variant=VARIANT), quantity=QUANTITY, staff_id=STAFF_ID, print=PRINT, inventory=INVENTORY)
+        #########IMPORTANT : ONLY SUBMIT IF inventory=True; Rest getting depricated
+        if INVENTORY:
+            STAFF_ID = str(request.user.email).split('@fingerlakesreuse.org')[0]
+            submission = Pricing.objects.create(variant=V, quantity=QUANTITY, staff_id=STAFF_ID, print=PRINT, inventory=INVENTORY)
 
         #GENERATE CODE
-	# HARDCODE EMERGENCY #JAN27 2022
+	    # HARDCODE EMERGENCY #JAN27 2022
         X = barcode_reuse_1(VARIANT, V.price, TITLE, color_reference[V.variant[0]], ' '.join(VARIANT[:5]), QUANTITY)
         return FileResponse(X, as_attachment=False, filename="barcode.pdf")
 
