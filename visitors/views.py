@@ -37,7 +37,7 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
         location = request.POST['location']
 
     try:
-        flr_email = request.user.email
+        # flr_email = request.user.email
         count = int(request.POST['count'])
         if count > 10:
             count = 10
@@ -47,7 +47,7 @@ def submit(request):  #ASUME LOCATIONS ARE CORRECT
         return redirect('/visitors/test')
     ##############################
     if count != 0 :
-        RECORD = Visitors(timestamp=timezone.now(),flr_email=flr_email,count=count,location=location)
+        RECORD = Visitors(timestamp=timezone.now(),count=count,location=location)
         RECORD.save()
         capacity_generate(RECORD)
 
