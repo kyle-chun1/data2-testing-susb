@@ -150,8 +150,24 @@ def color_wheel_2022(d=''):
     }
     return return_dict
 
+def color_wheel_2026(d=''):
+    # fixed color wheel rotations with lavender removed
+    if d == '':
+        d = datetime.now(tz=timezone('US/Eastern'))
 
+    color_ref = datetime(2025,9,9, tzinfo=timezone('US/Eastern'))
+    colors = ('G', 'B', 'Y', 'O', 'R')
+    current = ((d - color_ref).days // 7) % 5
 
+    return_dict = {
+        'pricing': colors[current],
+        'hold': colors[(current + 4) % 5],
+        '25': colors[(current + 3) % 5],
+        '50': colors[(current + 2) % 5],
+        '75': colors[(current + 1) % 5],
+        'reset': colors[(current + 1) % 5]
+    }
+    return return_dict
 
 ################### CAREFUL - - - - CHANGE using COMPARE_AT_PRICE REFERENCE
 def drop_price(handle,factor, TAGS):   # SINGULAR HANDLE
