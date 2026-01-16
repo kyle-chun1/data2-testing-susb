@@ -116,42 +116,41 @@ def barcode_reuse_1(VARIANT,PRICE,TITLE, COLOR, HANDLE, QUANTITY):
     return buffer
 
 
-def color_wheel_2021(d=''):
+def color_wheel_current(d=''):
     #INTENTIONALLY SETTING D TO BLANK, SINCE THIE DECLARATION HAPPENS ONE TIME! AND STATS THAT WAY TILL GUNICORN IS REBOOTED@!!!!!
     # NEVER KEEP PYTHONG FUNCTIONS WITH DEFAULT VALUES IN THE DECLATION SEGMENT.
+    # previously called color_wheel_2021. removed lavender
     if d=='':
         d = datetime.now(tz=timezone('US/Eastern'))
     color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
-    colors = ('B','Y','O','R','G','L' )
-    return colors[ (d - color_ref).days // 7 % 6 ]
+    colors = ('G', 'B', 'Y', 'O', 'R')
+    return colors[ (d - color_ref).days // 7 % 5 ]
 
 
-def color_wheel_2022(d=''):
-    #INTENTIONALLY SETTING D TO BLANK, SINCE THIE DECLARATION HAPPENS ONE TIME! AND STATS THAT WAY TILL GUNICORN IS REBOOTED@!!!!!
-    # NEVER KEEP PYTHONG FUNCTIONS WITH DEFAULT VALUES IN THE DECLATION SEGMENT.
-    if d=='':
-        d = datetime.now(tz=timezone('US/Eastern'))
+# def color_wheel_2022(d=''):
+#     #INTENTIONALLY SETTING D TO BLANK, SINCE THIE DECLARATION HAPPENS ONE TIME! AND STATS THAT WAY TILL GUNICORN IS REBOOTED@!!!!!
+#     # NEVER KEEP PYTHONG FUNCTIONS WITH DEFAULT VALUES IN THE DECLATION SEGMENT.
+#     if d=='':
+#         d = datetime.now(tz=timezone('US/Eastern'))
 
 
-    color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
-    colors = ('B','Y','O','R','G','L' )
+#     color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
+#     colors = ('B','Y','O','R','G','L' )
 
+#     current = (d - color_ref).days // 7 % 6
 
-
-    current = (d - color_ref).days // 7 % 6
-
-    return_dict = {
-        'pricing': colors[current],
-        'hold': colors[(current + 5) % 6],
-        '25': colors[(current + 4) % 6],
-        '50': colors[(current + 3) % 6],
-        '75': colors[(current + 2) % 6],
-        'reset': colors[(current + 1) % 6]
-    }
-    return return_dict
+#     return_dict = {
+#         'pricing': colors[current],
+#         'hold': colors[(current + 5) % 6],
+#         '25': colors[(current + 4) % 6],
+#         '50': colors[(current + 3) % 6],
+#         '75': colors[(current + 2) % 6],
+#         'reset': colors[(current + 1) % 6]
+#     }
+#     return return_dict
 
 def color_wheel_2026(d=''):
-    # fixed color wheel rotations with lavender removed
+    # fixed color wheel rotations with lavender removed. updated version of color_wheel_2022
     if d == '':
         d = datetime.now(tz=timezone('US/Eastern'))
 

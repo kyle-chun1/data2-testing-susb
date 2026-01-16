@@ -3,7 +3,7 @@ from django.http import HttpResponse, FileResponse
 from django.db.models import Sum, Avg, Count, Min, Max, ExpressionWrapper, F, DecimalField, DateTimeField
 from django.db.models.functions import Trunc, Extract
 import requests
-from pricing.functions import barcode_reuse_1, color_wheel_2021, color_wheel_2022, drop_price, data1_handle_process, shopify_handle_process
+from pricing.functions import barcode_reuse_1, color_wheel_2026, color_wheel_current, drop_price, data1_handle_process, shopify_handle_process
 
 from pricing.models import *
 import json
@@ -54,7 +54,7 @@ def pricing_portal_legacy(request, location):
 ########################### TEST SEGMENT END
 
     color_reference = {'W':'White', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
-    CC = color_wheel_2021(timezone.now())
+    CC = color_wheel_current(timezone.now())
     CColor = color_reference[CC]
     print(CC,CColor)
 
@@ -88,7 +88,7 @@ def pricing_portal(request, location):
         return(redirect('/'))
 
     color_reference = {'W':'White', 'R':'Red', 'B':'Blue', 'Y':'Yellow', 'G':'Green', 'O':'Orange', 'L':'Lavender'}
-    CC = color_wheel_2021(timezone.now())
+    CC = color_wheel_current(timezone.now())
     CColor = color_reference[CC]
 
     products_white = Product.objects.filter(visible=True, location=Location.objects.get(location=LOCATION), classifier='W').values('shopify_handle','title').order_by('order', 'id')
@@ -437,7 +437,7 @@ def update_pos(request):
     return_dict = {
 
         'all_products':  all_products,
-        'color_rotations' : color_wheel_2022(date),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
+        'color_rotations' : color_wheel_2026(date),  #{'pricing':'B', 'hold': 'L', '25': 'G', '50':'R', '75':'O', 'reset':'Y'},
         'date':date.strftime('%Y-%m-%d'),
     }
 
