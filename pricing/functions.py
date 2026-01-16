@@ -122,7 +122,7 @@ def color_wheel_current(d=''):
     # previously called color_wheel_2021. removed lavender
     if d=='':
         d = datetime.now(tz=timezone('US/Eastern'))
-    color_ref = datetime(2021,1,5, tzinfo=timezone('US/Eastern'))
+    color_ref = datetime(2025,9,9, tzinfo=timezone('US/Eastern'))
     colors = ('G', 'B', 'Y', 'O', 'R')
     return colors[ (d - color_ref).days // 7 % 5 ]
 
